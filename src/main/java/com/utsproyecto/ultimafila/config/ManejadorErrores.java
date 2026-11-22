@@ -3,6 +3,8 @@ package com.utsproyecto.ultimafila.config;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -13,6 +15,19 @@ public class ManejadorErrores {
 	public ModelAndView noEncontrado() {
 		return vistaError(HttpStatus.NOT_FOUND, "Página no encontrada",
 				"La página que buscas no existe o fue movida.");
+	}
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ModelAndView identificadorInvalido() {
+		return noEncontrado();
+	}
+
+	@ExceptionHandler(ResponseStatusException.class)
+	public ModelAndView errorConEstado(ResponseStatusException e) {
+		if (e.getStatusCode().value() == HttpStatus.NOT_FOUND.value()) {
+			return noEncontrado();
+		}
+		return errorInterno();
 	}
 
 	@ExceptionHandler(Exception.class)

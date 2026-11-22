@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Iniciar sesión')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+      <h1>Iniciar sesión</h1>
+
+      <div class="alert alert-danger" role="alert" th:if="${fallo != null}" th:text="${fallo}"></div>
+
+      <form class="card card-uf p-3" th:action="@{/login}" method="post">
+        <div class="mb-3">
+          <label for="correo" class="form-label">Correo</label>
+          <input type="email" class="form-control" id="correo" name="correo" th:value="${correo}"
+                 maxlength="120" required autocomplete="email">
+        </div>
+        <div class="mb-3">
+          <label for="clave" class="form-label">Clave</label>
+          <input type="password" class="form-control" id="clave" name="clave" maxlength="100"
+                 required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-uf">Entrar</button>
+        <p class="mb-0 mt-3 small text-suave">¿No tienes cuenta? <a th:href="@{/registro}">Regístrate</a></p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

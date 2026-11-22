@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.utsproyecto.ultimafila.model.Boleta;
 import com.utsproyecto.ultimafila.model.CanalCompra;
 import com.utsproyecto.ultimafila.model.Compra;
+import com.utsproyecto.ultimafila.model.EstadoBoleta;
+import com.utsproyecto.ultimafila.model.EstadoFuncion;
 import com.utsproyecto.ultimafila.model.Funcion;
 import com.utsproyecto.ultimafila.model.Rol;
 import com.utsproyecto.ultimafila.model.Silla;
@@ -38,6 +42,7 @@ import jakarta.servlet.http.HttpSession;
 public class CompraController {
 
 	private static final String LETRAS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+	private static final int MAXIMO_BOLETAS = 6;
 	private static final SecureRandom ALEATORIO = new SecureRandom();
 
 	private final FuncionRepository funcionRepository;
@@ -69,6 +74,11 @@ public class CompraController {
 			flash.addFlashAttribute("error", "Elige al menos una silla disponible");
 			return "redirect:/funciones/" + funcion + "/sillas";
 		}
+		String motivo = motivoRechazo(laFuncion, elegidas);
+		if (motivo != null) {
+			flash.addFlashAttribute("error", motivo);
+			return "redirect:/funciones/" + funcion + "/sillas";
+		}
 		model.addAttribute("funcion", laFuncion);
 		model.addAttribute("sillas", elegidas);
 		model.addAttribute("total", laFuncion.getPrecio().multiply(BigDecimal.valueOf(elegidas.size())));
@@ -83,10 +93,16 @@ public class CompraController {
 		if (sesion.getAttribute("rol") != Rol.CLIENTE) {
 			return "redirect:/acceso-denegado";
 		}
-		Funcion laFuncion = buscarFuncion(funcion);
+		Funcion laFuncion = funcionRepository.buscarConBloqueo(funcion)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		List<Silla> elegidas = sillasValidas(laFuncion, sillas);
 		if (elegidas == null) {
 			flash.addFlashAttribute("error", "Elige al menos una silla disponible");
+			return "redirect:/funciones/" + funcion + "/sillas";
+		}
+		String motivo = motivoRechazo(laFuncion, elegidas);
+		if (motivo != null) {
+			flash.addFlashAttribute("error", motivo);
 			return "redirect:/funciones/" + funcion + "/sillas";
 		}
 		Usuario cliente = usuarioRepository.findById((Long) sesion.getAttribute("usuarioId"))
@@ -149,6 +165,23 @@ public class CompraController {
 		boolean todasValidas = sillas.size() == distintos.size() && sillas.stream()
 				.allMatch(s -> s.isActiva() && s.getSala().getId().equals(funcion.getSala().getId()));
 		return todasValidas ? sillas : null;
+	}
+
+	// Reglas de compra: función iniciada o cancelada (BR-005), máximo 6 boletas (BR-002), silla vendida (BR-001)
+	private String motivoRechazo(Funcion funcion, List<Silla> sillas) {
+		if (funcion.getEstado() == EstadoFuncion.CANCELADA) {
+			return "La función fue cancelada";
+		}
+		if (!funcion.getFechaHoraInicio().isAfter(LocalDateTime.now())) {
+			return "La función ya inició";
+		}
+		if (sillas.size() > MAXIMO_BOLETAS) {
+			return "Máximo 6 boletas por compra";
+		}
+		Set<Long> vendidas = Set.copyOf(boletaRepository.buscarIdsSillasOcupadas(funcion.getId(), EstadoBoleta.CANCELADA));
+		return sillas.stream().filter(s -> vendidas.contains(s.getId()))
+				.min(Comparator.comparing(Silla::getFila).thenComparing(Silla::getNumero))
+				.map(s -> "La silla " + s.getFila() + s.getNumero() + " ya fue vendida").orElse(null);
 	}
 
 	private String codigoUnico(String prefijo, Predicate<String> existe) {

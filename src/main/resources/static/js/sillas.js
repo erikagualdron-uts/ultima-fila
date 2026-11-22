@@ -10,6 +10,8 @@
   var lista = document.getElementById("lista-sillas");
   var total = document.getElementById("total");
   var aviso = document.getElementById("aviso-limite");
+  var campos = document.getElementById("campos-sillas");
+  var continuar = document.getElementById("btn-continuar");
 
   function dinero(valor) {
     return "$ " + valor.toLocaleString("es-CO");
@@ -24,6 +26,17 @@
       item.textContent = "Silla " + boton.dataset.etiqueta;
       lista.appendChild(item);
     });
+    if (campos) {
+      campos.innerHTML = "";
+      elegidas.forEach(function (boton) {
+        var campo = document.createElement("input");
+        campo.type = "hidden";
+        campo.name = "sillas";
+        campo.value = boton.dataset.id;
+        campos.appendChild(campo);
+      });
+      continuar.disabled = elegidas.length === 0;
+    }
   }
 
   mapa.addEventListener("click", function (evento) {

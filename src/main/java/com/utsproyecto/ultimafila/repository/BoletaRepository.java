@@ -13,6 +13,12 @@ public interface BoletaRepository extends JpaRepository<Boleta, Long> {
 
 	long countByFuncionIdAndEstadoNot(Long idFuncion, EstadoBoleta estado);
 
+	boolean existsByCodigo(String codigo);
+
+	@Query("SELECT b FROM Boleta b JOIN FETCH b.silla JOIN FETCH b.funcion f JOIN FETCH f.pelicula JOIN FETCH f.sala "
+			+ "WHERE b.compra.id = :idCompra ORDER BY b.silla.fila, b.silla.numero")
+	List<Boleta> buscarDeCompra(@Param("idCompra") Long idCompra);
+
 	@Query("SELECT b.silla.id FROM Boleta b WHERE b.funcion.id = :idFuncion AND b.estado <> :estado")
 	List<Long> buscarIdsSillasOcupadas(@Param("idFuncion") Long idFuncion, @Param("estado") EstadoBoleta estado);
 }

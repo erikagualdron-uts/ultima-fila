@@ -22,6 +22,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [ ] REQ-CIN-004 Registro de cliente con Bean Validation y hash con sal (P-03)
 - [ ] REQ-CIN-005 Inicio y cierre de sesión con HttpSession (P-04)
 - [ ] REQ-CIN-006 Interceptor por rol y acceso denegado (P-21)
+- [ ] REQ-CIN-025 Landing en `/` con destacadas, funciones de hoy, 3 pasos, salas y footer (P-22)
 - [ ] Revisión cruzada de los PR de Yeziel
 
 ### Yeziel (YARC)

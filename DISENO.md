@@ -40,6 +40,8 @@ Estados de función: pocas sillas `#e8a33d` con texto `#2b1a00`; agotada `#3d353
 | Alert / avisos | Mensajes flash del patrón PRG; avisos oscuros con borde dorado abajo a la derecha |
 | Pagination | Cartelera (8 por página) y tablas |
 
+**Landing (P-22, `/`):** misma paleta y componentes que la cartelera, en este orden: hero (marca en Playfair itálica, frase corta, botón `.btn-uf` «Ver cartelera» y botones secundarios «Iniciar sesión» y «Registrarme» con borde borgoña), película destacada y 4 tarjetas `.peli`, franja «Funciones de hoy» con `.chip-funcion`, «Cómo comprar» en 3 pasos con número en círculo borgoña, salas y horarios en tarjetas `--uf-tarjeta`, y footer oscuro con contacto. Movimiento: el hero y las tarjetas entran con la animación de entrada (`--mov-lenta`, escalonada); las secciones de abajo no se animan al hacer scroll. Un solo `h1` en el hero.
+
 **Mapa de sillas:** pantalla dorada curva al frente, filas con letra, pasillo central. Libre: blanca con borde borgoña. Elegida: borgoña. Vendida o fuera de servicio: gris `#cfc4b6`, deshabilitada. Siempre con leyenda. Sillas de 26×24 px (22×21 px en celular).
 
 **Afiches:** imagen por enlace (`poster_url`) con `object-fit: cover`; si falla, degradado con el título en Playfair.

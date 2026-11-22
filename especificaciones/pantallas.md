@@ -1,10 +1,10 @@
-# Inventario de pantallas (21)
+# Inventario de pantallas (22)
 
 Plantillas Thymeleaf con HTML, CSS, JavaScript y Bootstrap, sobre un layout común (navbar según rol, footer y alertas). Los requisitos las citan por código.
 
 | Cód. | Pantalla | Ruta | Rol | Elementos clave | Sprint |
 |---|---|---|---|---|---|
-| P-01 | Cartelera (inicio) | `/` | Público | Buscador, filtros de género y fecha, tarjetas, paginador | 1 |
+| P-01 | Cartelera | `/cartelera` | Público | Buscador, filtros de género y fecha, tarjetas, paginador | 1 |
 | P-02 | Detalle de película | `/peliculas/{id}` | Público | Póster, sinopsis, clasificación, funciones futuras con sillas disponibles | 1 |
 | P-03 | Registro | `/registro` | Público | Formulario con errores por campo | 1 |
 | P-04 | Inicio de sesión | `/login` | Público | Formulario y alerta de credenciales inválidas | 1 |
@@ -25,6 +25,7 @@ Plantillas Thymeleaf con HTML, CSS, JavaScript y Bootstrap, sobre un layout com�
 | P-19 | Control de ingreso | `/acomodador` | Acomodador | Campo de código y resultado en verde o rojo | 2 |
 | P-20 | Ocupación de función | `/acomodador/funciones/{id}` | Acomodador | Mapa con libres, vendidas e ingresadas y totales | 2 |
 | P-21 | Error y acceso denegado | `/error`, `/acceso-denegado` | Todos | Mensaje amigable y botón para volver al inicio | 1 |
+| P-22 | Página de inicio (landing) | `/` | Público | Hero con la marca y «Ver cartelera», películas destacadas, funciones de hoy, cómo comprar en 3 pasos, salas y horarios, footer con contacto, botones Iniciar sesión y Registrarme | 1 |
 
 ## Rutas protegidas por el interceptor
 
@@ -40,6 +41,6 @@ Sin sesión en una ruta protegida: redirige a `/login`. Con sesión de otro rol:
 
 ## Destino tras iniciar sesión
 
-Administrador → `/admin` · Taquillero → `/taquilla` · Acomodador → `/acomodador` · Cliente → `/`.
+Administrador → `/admin` · Taquillero → `/taquilla` · Acomodador → `/acomodador` · Cliente → `/cartelera`. El visitante sin sesión entra por la landing (`/`).
 
 > P-05 en el plan figura como «Público»: el visitante puede ver el mapa, pero para confirmar la compra debe iniciar sesión como Cliente.

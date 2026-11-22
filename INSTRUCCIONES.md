@@ -58,15 +58,39 @@ com.utsproyecto.ultimafila
 - Thymeleaf + HTML5 + CSS3 + JavaScript + Bootstrap 5.
 - Bootstrap servido desde `static/` (debe funcionar sin internet).
 - Layout común con fragmentos: navbar según rol, footer y alertas.
+- Rutas públicas: `/` es la landing (P-22, REQ-CIN-025) y `/cartelera` la cartelera (P-01). 22 pantallas y 25 requisitos en total.
 - Un solo CSS propio (`static/css/ultimafila.css`) y JS propio en `static/js/`.
 - Sigue `DISENO.md` (paleta, tipografías, movimiento y accesibilidad). Toda pantalla debe verse bien desde 375 px.
 
-## Flujo Git
+## Flujo Git (Claude Code hace commit y push)
 
-- `main` protegida. **Una rama por requisito:** `feature/REQ-CIN-001`, `feature/REQ-CIN-014`, etc. La configuración base va en `feature/config-base`.
-- Commits pequeños en español: `REQ-CIN-001: listar cartelera paginada`.
-- Pull request revisado por el otro desarrollador antes de unir. El PR indica qué criterios Given/When/Then se probaron.
-- Nunca subas claves reales. Las credenciales de MySQL van en variables de entorno.
+### Requisitos previos (los prepara Erika una sola vez)
+
+- Git instalado (`git --version`).
+- Identidad configurada: `git config --global user.name "Erika Gualdron"` y `git config --global user.email "<tu correo de GitHub>"`.
+- Remote apuntando al repositorio: `git remote -v` debe mostrar `origin` con la URL del repo de GitHub.
+- Sesión de GitHub iniciada en el equipo (Git Credential Manager o token), de modo que `git push` funcione sin pedir clave.
+- La primera vez que Claude Code haga `git commit` o `git push` pedirá permiso: elige la opción de permitirlo siempre en este proyecto.
+
+### Qué hace Claude Code al terminar cada requisito (sin preguntar cada vez)
+
+1. Trabaja en la rama del requisito: `git checkout -b feature/REQ-CIN-XXX` desde `main` actualizada (`git checkout main && git pull`). La configuración base va en `feature/config-base`. Si la rama ya existe, la reutiliza.
+2. Revisa `git status` y `git diff --staged` y confirma que **no** entran claves, `target/`, `data/`, archivos `.env` ni configuración personal. Si aparece algo así, lo saca del commit y avisa.
+3. Agrega solo los archivos del requisito (`git add <archivos>`, nunca `git add -A` a ciegas).
+4. Hace commit en español con el formato `REQ-CIN-001: listar cartelera paginada`.
+5. Sube la rama: `git push -u origin feature/REQ-CIN-XXX`.
+6. Muestra un resumen: rama, archivos incluidos, mensaje del commit y resultado del push.
+
+### Prohibido
+
+- Push directo a `main`, `git push --force` o `--force-with-lease`, reescribir historial (`rebase` de ramas ya subidas, `reset --hard`, `commit --amend` de commits subidos).
+- Saltarse hooks (`--no-verify`) o cambiar la configuración de Git del usuario.
+- Si hay conflictos, el push falla o la rama remota tiene cambios que no están en local, **se detiene y avisa** con el error. No intenta arreglarlo por su cuenta.
+
+### Revisión
+
+- El pull request de cada rama hacia `main` lo abre Erika o Yeziel en GitHub y lo revisa el otro desarrollador antes de unir. El PR indica qué criterios Given/When/Then se probaron.
+- Nunca se suben claves reales. Las credenciales de MySQL van en variables de entorno.
 
 ## Cómo trabajar cada requisito
 
@@ -75,6 +99,7 @@ com.utsproyecto.ultimafila
 3. Implementa solo eso.
 4. Explica cómo probar cada criterio AC en `http://localhost:8093`.
 5. Marca la tarea en `especificaciones/tasks.md`.
+6. Hace commit y push de la rama según el «Flujo Git» y muestra el resumen.
 
 ---
 
@@ -91,5 +116,7 @@ Luego, en la rama feature/config-base:
 6. Crea el @ControllerAdvice y la pantalla de error P-21.
 7. Crea data.sql con los datos ficticios del plan.
 Antes de codificar, muéstrame la lista de archivos que vas a crear y pregúntame lo que no esté claro.
-Cuando terminemos, seguimos con REQ-CIN-001 (cartelera paginada) en la rama feature/REQ-CIN-001.
+Al terminar, haz commit y push de feature/config-base según el Flujo Git y muéstrame el resumen.
+Luego seguimos con REQ-CIN-001 (cartelera paginada en /cartelera) en la rama feature/REQ-CIN-001
+y después con REQ-CIN-025 (landing en /) en la rama feature/REQ-CIN-025.
 ```

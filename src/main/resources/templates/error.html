@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head(${titulo ?: 'Error'})}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-5 text-center">
+  <p class="display-1 mb-0" style="font-family: 'Playfair Display', Georgia, serif; color: var(--uf-borgona);"
+     th:text="${codigo ?: status ?: 'Error'}">404</p>
+  <h1 class="h2" th:text="${titulo ?: 'Algo salió mal'}">Página no encontrada</h1>
+  <p class="text-suave mb-4" th:text="${mensaje ?: 'Ocurrió un problema. Puedes volver al inicio e intentar de nuevo.'}">Mensaje</p>
+  <a class="btn btn-uf btn-lg" th:href="@{/}">Volver al inicio</a>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

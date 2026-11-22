@@ -5,8 +5,8 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 ## Preparación (13 al 15 de noviembre)
 
 - [x] Proyecto Spring Boot en Spring Tools for Eclipse (Maven, Java 21, 7 dependencias)
-- [ ] `feature/config-base`: properties (puerto 8093, perfiles h2 y mysql), paquetes, `.gitignore`
-- [ ] Bootstrap 5 y fuentes en `static/`, layout Thymeleaf, CSS base de `DISENO.md`
+- [x] `feature/config-base`: properties (puerto 8093, perfiles h2 y mysql), paquetes, `.gitignore`
+- [x] Bootstrap 5 y fuentes en `static/`, layout Thymeleaf, CSS base de `DISENO.md`
 - [ ] Repositorio en GitHub con ambos como colaboradores, `main` protegida, tablero Scrum
 
 ## Sprint 1 (16 al 20 de noviembre) · Facilita Erika
@@ -15,7 +15,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 
 ### Erika (EVGP)
 - [ ] Constitución SDD (`constitucion.md`)
-- [ ] Layout Thymeleaf con Bootstrap: navbar según rol, footer, alertas
+- [x] Layout Thymeleaf con Bootstrap: navbar según rol, footer, alertas
 - [ ] REQ-CIN-001 Cartelera paginada (P-01)
 - [ ] REQ-CIN-002 Búsqueda y filtros por género y fecha (P-01)
 - [ ] REQ-CIN-003 Detalle de película con funciones futuras (P-02)
@@ -25,8 +25,8 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [ ] Revisión cruzada de los PR de Yeziel
 
 ### Yeziel (YARC)
-- [ ] MER y 8 entidades JPA con enums y repositorios
-- [ ] Configuración H2 y `data.sql` (5 géneros, 10 películas, 3 salas, funciones de 2 semanas, 5 usuarios)
+- [x] MER y 8 entidades JPA con enums y repositorios
+- [x] Configuración H2 y `data.sql` (5 géneros, 10 películas, 3 salas, funciones de 2 semanas, 5 usuarios)
 - [ ] REQ-CIN-007 CRUD de géneros (P-10)
 - [ ] REQ-CIN-008 CRUD de películas (P-11, P-12)
 - [ ] REQ-CIN-009 Salas con generación de sillas (P-13)

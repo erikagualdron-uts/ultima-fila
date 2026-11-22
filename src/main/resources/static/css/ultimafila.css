@@ -1,0 +1,265 @@
+/* Última Fila - estilo clásico de cine de barrio (ver DISENO.md) */
+
+@font-face { font-family: "Playfair Display"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/playfair-600.woff2") format("woff2"); }
+@font-face { font-family: "Playfair Display"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/playfair-700.woff2") format("woff2"); }
+@font-face { font-family: "Playfair Display"; font-style: italic; font-weight: 700; font-display: swap; src: url("../fonts/playfair-700i.woff2") format("woff2"); }
+@font-face { font-family: "Lora"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/lora-400.woff2") format("woff2"); }
+@font-face { font-family: "Lora"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/lora-600.woff2") format("woff2"); }
+@font-face { font-family: "Lora"; font-style: italic; font-weight: 400; font-display: swap; src: url("../fonts/lora-400i.woff2") format("woff2"); }
+
+:root {
+  --uf-fondo: #f6efe1;
+  --uf-tarjeta: #fffaf0;
+  --uf-borde: #e2d3b3;
+  --uf-borgona: #651823;
+  --uf-borgona-hover: #4a1019;
+  --uf-dorado: #c9a45c;
+  --uf-precio: #6e4f14;
+  --uf-texto: #2b2320;
+  --uf-texto-suave: #5e514a;
+  --uf-pocas: #e8a33d;
+  --uf-agotada: #3d3530;
+  --uf-silla-ocupada: #cfc4b6;
+  --uf-footer: #2b2320;
+  --uf-footer-texto: #cbbca6;
+
+  --mov-rapida: .15s;
+  --mov-media: .25s;
+  --mov-lenta: .4s;
+  --curva-salida: cubic-bezier(.2, .7, .2, 1);
+  --curva-suave: cubic-bezier(.4, 0, .2, 1);
+
+  --bs-body-font-family: Lora, Georgia, serif;
+  --bs-body-color: var(--uf-texto);
+  --bs-body-bg: var(--uf-fondo);
+  --bs-border-color: var(--uf-borde);
+}
+
+body {
+  font-family: Lora, Georgia, serif;
+  color: var(--uf-texto);
+  background: var(--uf-fondo);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1; }
+
+h1, h2, h3, .h1, .h2, .h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  color: var(--uf-borgona);
+}
+
+h1, .h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+
+a { color: var(--uf-borgona); }
+a:hover { color: var(--uf-borgona-hover); }
+
+.text-suave { color: var(--uf-texto-suave); }
+.precio { color: var(--uf-precio); font-weight: 600; }
+
+/* Foco visible */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-control:focus,
+.form-select:focus {
+  outline: 3px solid var(--uf-dorado);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Navbar */
+.navbar-uf {
+  background: var(--uf-borgona);
+  border-bottom: 2px solid var(--uf-dorado);
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  transition: padding var(--mov-media) var(--curva-suave);
+}
+.navbar-uf::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--mov-media) var(--curva-suave);
+}
+.navbar-uf.compacta { padding-top: .35rem; padding-bottom: .35rem; }
+.navbar-uf.compacta::after { opacity: 1; }
+.navbar-uf .navbar-brand {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #fff;
+  transform-origin: left center;
+  transition: transform var(--mov-media) var(--curva-suave);
+}
+.navbar-uf.compacta .navbar-brand { transform: scale(.86); }
+.navbar-uf .nav-link { color: #f6efe1; padding: .5rem .75rem; }
+.navbar-uf .nav-link:hover { color: #fff; }
+.navbar-uf .navbar-toggler { border-color: rgba(255, 255, 255, .5); }
+
+/* Botones */
+.btn-uf {
+  background: var(--uf-borgona);
+  border: 1px solid var(--uf-borgona);
+  color: #fff;
+  transition: background-color var(--mov-rapida) var(--curva-suave),
+              color var(--mov-rapida) var(--curva-suave),
+              transform var(--mov-rapida) var(--curva-suave);
+}
+.btn-uf:hover { background: var(--uf-borgona-hover); border-color: var(--uf-borgona-hover); color: #fff; }
+.btn:active { transform: scale(.97); }
+
+.btn-hora {
+  background: transparent;
+  border: 1px solid var(--uf-borgona);
+  color: var(--uf-borgona);
+  min-width: 44px;
+  transition: background-color var(--mov-rapida) var(--curva-suave),
+              color var(--mov-rapida) var(--curva-suave),
+              transform var(--mov-rapida) var(--curva-suave);
+}
+.btn-hora:hover { background: var(--uf-borgona); color: #fff; }
+.btn-hora.pocas { border-style: dashed; background: var(--uf-pocas); color: #2b1a00; }
+.btn-hora.agotada { background: var(--uf-agotada); color: #fff; text-decoration: line-through; pointer-events: none; }
+
+/* Tarjetas y formularios */
+.card-uf, .card {
+  background: var(--uf-tarjeta);
+  border: 1px solid var(--uf-borde);
+}
+.form-control, .form-select { border-color: var(--uf-borde); background-color: var(--uf-tarjeta); }
+.table { --bs-table-bg: var(--uf-tarjeta); --bs-table-border-color: var(--uf-borde); }
+
+/* Pestañas */
+.nav-tabs { border-bottom-color: var(--uf-borde); }
+.nav-tabs .nav-link {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  color: var(--uf-texto-suave);
+  border: 0;
+  border-bottom: 3px solid transparent;
+}
+.nav-tabs .nav-link.active { color: var(--uf-borgona); background: transparent; border-bottom-color: var(--uf-borgona); }
+
+/* Tarjeta de película */
+.peli {
+  position: relative;
+  background: var(--uf-tarjeta);
+  border: 1px solid var(--uf-borde);
+  border-radius: .5rem;
+  overflow: hidden;
+  opacity: 0;
+  animation: entrada var(--mov-lenta) var(--curva-salida) forwards;
+  animation-delay: calc(var(--paso, 0) * 60ms);
+  transition: transform var(--mov-media) var(--curva-suave);
+}
+.peli::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 10px 22px rgba(43, 35, 32, .28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--mov-media) var(--curva-suave);
+}
+.peli:hover { transform: translateY(-4px); }
+.peli:hover::after { opacity: 1; }
+.peli .afiche { aspect-ratio: 2 / 3; overflow: hidden; background: linear-gradient(160deg, var(--uf-borgona), var(--uf-borgona-hover)); }
+.peli .afiche img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--mov-lenta) var(--curva-suave); }
+.peli:hover .afiche img { transform: scale(1.04); }
+.afiche-respaldo {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 1rem;
+  text-align: center; color: #fff; font-family: "Playfair Display", Georgia, serif; font-weight: 700;
+}
+
+@keyframes entrada {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 575.98px) {
+  .peli { display: flex; }
+  .peli .afiche { width: 38%; flex: none; }
+}
+
+/* Insignias */
+.badge-uf { background: var(--uf-borgona); color: #fff; }
+
+/* Avisos */
+.alertas-uf { position: fixed; right: 1rem; bottom: 1rem; z-index: 1080; width: min(22rem, calc(100vw - 2rem)); }
+.aviso-uf {
+  background: var(--uf-texto);
+  color: #fff;
+  border-bottom: 3px solid var(--uf-dorado);
+  border-radius: .375rem;
+  padding: .75rem 1rem;
+  margin-top: .5rem;
+  animation: aviso var(--mov-media) var(--curva-salida) both;
+}
+.aviso-uf.error { background: #7a1f1f; }
+.aviso-uf.saliendo { opacity: 0; transform: translateY(10px); transition: opacity var(--mov-media), transform var(--mov-media); }
+@keyframes aviso {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Esqueleto de carga */
+.esqueleto { position: relative; overflow: hidden; background: var(--uf-borde); border-radius: .375rem; min-height: 1rem; }
+.esqueleto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+  transform: translateX(-100%);
+  animation: brillo 1.4s infinite;
+}
+@keyframes brillo { to { transform: translateX(100%); } }
+
+/* Mapa de sillas */
+.pantalla-sala {
+  height: 14px;
+  margin: 0 auto 1.5rem;
+  max-width: 420px;
+  background: var(--uf-dorado);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.fila-sillas { display: flex; justify-content: center; align-items: center; gap: 4px; margin-bottom: 4px; }
+.fila-sillas .letra { width: 20px; font-weight: 600; text-align: center; }
+.silla {
+  width: 26px; height: 24px; padding: 0;
+  border: 1px solid var(--uf-borgona);
+  border-radius: 5px 5px 2px 2px;
+  background: #fff;
+  transition: background-color var(--mov-media) var(--curva-suave), transform var(--mov-media) var(--curva-suave);
+}
+.silla.elegida { background: var(--uf-borgona); animation: pop var(--mov-media) var(--curva-suave); }
+.silla:disabled, .silla.ocupada { background: var(--uf-silla-ocupada); border-color: var(--uf-silla-ocupada); cursor: not-allowed; }
+.silla.pasillo { margin-left: 18px; }
+@keyframes pop { 50% { transform: scale(1.15); } }
+@media (max-width: 575.98px) { .silla { width: 22px; height: 21px; } }
+
+/* Footer */
+.footer-uf { background: var(--uf-footer); color: var(--uf-footer-texto); padding: 1.5rem 0; margin-top: 3rem; }
+.footer-uf a { color: var(--uf-footer-texto); }
+
+/* Movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .peli:hover, .peli:hover .afiche img, .btn:active, .navbar-uf.compacta .navbar-brand { transform: none; }
+  .esqueleto::after { display: none; }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Cartelera')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <h1>En cartelera</h1>
+
+  <div aria-live="polite">
+    <p class="text-suave mt-4" th:if="${peliculas.empty}">No hay películas en cartelera por ahora.</p>
+
+    <div class="row g-4 mt-1" th:unless="${peliculas.empty}">
+      <div class="col-12 col-sm-6 col-lg-3" th:each="p, fila : ${peliculas.content}">
+        <article class="peli h-100" th:style="'--paso:' + ${fila.index}">
+          <div class="afiche">
+            <img th:if="${p.posterUrl != null and !p.posterUrl.isBlank()}" th:src="${p.posterUrl}"
+                 th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo}" loading="lazy">
+            <div th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}" class="afiche-respaldo"
+                 role="img" th:aria-label="'Afiche de ' + ${p.titulo}" th:text="${p.titulo}"></div>
+          </div>
+          <div class="p-3">
+            <h2 class="h5 mb-2" th:text="${p.titulo}">Título</h2>
+            <p class="mb-1 small text-suave" th:text="${p.genero.nombre} + ' · ' + ${p.duracionMin} + ' min'">Género · 100 min</p>
+            <span class="badge badge-uf" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <nav class="mt-4" aria-label="Paginación de la cartelera" th:if="${peliculas.totalPages > 1}">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${peliculas.first} ? 'disabled'">
+        <a class="page-link" th:href="@{/(pagina=${peliculas.number})}">Anterior</a>
+      </li>
+      <li class="page-item" th:each="n : ${#numbers.sequence(1, peliculas.totalPages)}"
+          th:classappend="${n == peliculas.number + 1} ? 'active'">
+        <a class="page-link" th:href="@{/(pagina=${n})}" th:text="${n}"
+           th:attr="aria-current=${n == peliculas.number + 1} ? 'page'">1</a>
+      </li>
+      <li class="page-item" th:classappend="${peliculas.last} ? 'disabled'">
+        <a class="page-link" th:href="@{/(pagina=${peliculas.number + 2})}">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

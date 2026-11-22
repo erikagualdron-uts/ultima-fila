@@ -17,3 +17,15 @@
     }, 3500);
   });
 })();
+
+// Si un afiche no carga, se muestra el degradado con el título
+document.querySelectorAll(".afiche img").forEach(function (img) {
+  img.addEventListener("error", function () {
+    var respaldo = document.createElement("div");
+    respaldo.className = "afiche-respaldo";
+    respaldo.setAttribute("role", "img");
+    respaldo.setAttribute("aria-label", "Afiche de " + img.dataset.titulo);
+    respaldo.textContent = img.dataset.titulo;
+    img.replaceWith(respaldo);
+  });
+});

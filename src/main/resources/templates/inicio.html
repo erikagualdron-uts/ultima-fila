@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Inicio')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main>
+  <section class="hero-uf" aria-labelledby="titulo-hero">
+    <div class="container text-center">
+      <h1 id="titulo-hero" class="hero-marca entra" style="--paso:0">Última Fila</h1>
+      <p class="lead entra" style="--paso:1">Cine Comunitario Luz de Barrio: buenas películas, a precio de barrio.</p>
+      <div class="d-flex flex-wrap justify-content-center gap-2 entra" style="--paso:2">
+        <a class="btn btn-uf btn-lg" th:href="@{/cartelera}">Ver cartelera</a>
+        <th:block th:if="${session.rol == null}">
+          <a class="btn btn-outline-uf btn-lg" th:href="@{/login}">Iniciar sesión</a>
+          <a class="btn btn-outline-uf btn-lg" th:href="@{/registro}">Registrarme</a>
+        </th:block>
+      </div>
+    </div>
+  </section>
+
+  <section class="container py-4" aria-labelledby="titulo-destacadas">
+    <h2 id="titulo-destacadas">Películas destacadas</h2>
+    <p class="text-suave" th:if="${destacadas.empty}">Pronto tendremos nuevas películas.
+      <a th:href="@{/cartelera}">Ver cartelera</a></p>
+    <div class="row g-4 mt-1" th:unless="${destacadas.empty}">
+      <div class="col-12 col-sm-6 col-lg-3" th:each="p, fila : ${destacadas}">
+        <article class="peli h-100" th:style="'--paso:' + ${fila.index}">
+          <div class="afiche">
+            <img th:if="${p.posterUrl != null and !p.posterUrl.isBlank()}" th:src="${p.posterUrl}"
+                 th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo}" loading="lazy">
+            <div th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}" class="afiche-respaldo"
+                 role="img" th:aria-label="'Afiche de ' + ${p.titulo}" th:text="${p.titulo}"></div>
+          </div>
+          <div class="p-3">
+            <h3 class="h5 mb-2"><a class="enlace-tarjeta" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h3>
+            <p class="mb-1 small text-suave" th:text="${p.genero.nombre} + ' · ' + ${p.duracionMin} + ' min'">Género · 100 min</p>
+            <span class="badge badge-uf" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="franja-uf" aria-labelledby="titulo-hoy">
+    <div class="container py-4">
+      <h2 id="titulo-hoy">Funciones de hoy</h2>
+      <div aria-live="polite">
+        <p class="mb-0" th:if="${funcionesHoy.empty}">Hoy no hay funciones programadas.
+          <a th:href="@{/cartelera}">Ver cartelera</a></p>
+        <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0" th:unless="${funcionesHoy.empty}">
+          <li th:each="f : ${funcionesHoy}">
+            <span class="chip-funcion">
+              <strong th:text="${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">18:00</strong>
+              <span th:text="${f.pelicula.titulo}">Película</span> ·
+              <span th:text="${f.sala.nombre}">Sala 1</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="container py-4" aria-labelledby="titulo-pasos">
+    <h2 id="titulo-pasos">Cómo comprar</h2>
+    <ol class="row g-3 list-unstyled mt-1">
+      <li class="col-12 col-md-4">
+        <div class="paso-uf"><span class="numero-paso" aria-hidden="true">1</span><span>Elige tu película</span></div>
+      </li>
+      <li class="col-12 col-md-4">
+        <div class="paso-uf"><span class="numero-paso" aria-hidden="true">2</span><span>Elige tus sillas</span></div>
+      </li>
+      <li class="col-12 col-md-4">
+        <div class="paso-uf"><span class="numero-paso" aria-hidden="true">3</span><span>Paga y recibe tus códigos</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="container pb-2" aria-labelledby="titulo-salas">
+    <h2 id="titulo-salas">Salas y horarios</h2>
+    <div class="row g-3 mt-1">
+      <div class="col-12 col-md-4" th:each="s : ${salas}">
+        <article class="card-uf p-3 h-100 rounded">
+          <h3 class="h5" th:text="${s.nombre}">Sala 1</h3>
+          <p class="small text-suave mb-2" th:text="'Capacidad: ' + ${s.filas * s.sillasPorFila} + ' sillas'">Capacidad: 60 sillas</p>
+          <p class="small mb-1">Horarios de hoy:</p>
+          <ul class="list-unstyled small mb-0">
+            <li th:each="f : ${funcionesHoy}" th:if="${f.sala.id == s.id}"
+                th:text="${#temporals.format(f.fechaHoraInicio, 'HH:mm')} + ' · ' + ${f.pelicula.titulo}">18:00 · Película</li>
+            <li class="text-suave" th:unless="${#lists.contains(funcionesHoy.![sala.id], s.id)}">Sin funciones hoy</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

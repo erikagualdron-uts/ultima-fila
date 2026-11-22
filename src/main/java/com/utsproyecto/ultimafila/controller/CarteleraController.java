@@ -21,7 +21,7 @@ public class CarteleraController {
 		this.peliculaRepository = peliculaRepository;
 	}
 
-	@GetMapping("/")
+	@GetMapping("/cartelera")
 	public String cartelera(@RequestParam(defaultValue = "1") int pagina, Model model) {
 		int indice = Math.max(pagina, 1) - 1;
 		Page<Pelicula> peliculas = peliculaRepository.buscarEnCartelera(PageRequest.of(indice, POR_PAGINA));

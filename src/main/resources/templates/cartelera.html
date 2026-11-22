@@ -32,15 +32,15 @@
   <nav class="mt-4" aria-label="Paginación de la cartelera" th:if="${peliculas.totalPages > 1}">
     <ul class="pagination justify-content-center">
       <li class="page-item" th:classappend="${peliculas.first} ? 'disabled'">
-        <a class="page-link" th:href="@{/(pagina=${peliculas.number})}">Anterior</a>
+        <a class="page-link" th:href="@{/cartelera(pagina=${peliculas.number})}">Anterior</a>
       </li>
       <li class="page-item" th:each="n : ${#numbers.sequence(1, peliculas.totalPages)}"
           th:classappend="${n == peliculas.number + 1} ? 'active'">
-        <a class="page-link" th:href="@{/(pagina=${n})}" th:text="${n}"
+        <a class="page-link" th:href="@{/cartelera(pagina=${n})}" th:text="${n}"
            th:attr="aria-current=${n == peliculas.number + 1} ? 'page'">1</a>
       </li>
       <li class="page-item" th:classappend="${peliculas.last} ? 'disabled'">
-        <a class="page-link" th:href="@{/(pagina=${peliculas.number + 2})}">Siguiente</a>
+        <a class="page-link" th:href="@{/cartelera(pagina=${peliculas.number + 2})}">Siguiente</a>
       </li>
     </ul>
   </nav>

@@ -246,6 +246,9 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
 .silla.pasillo { margin-left: 18px; }
 @keyframes pop { 50% { transform: scale(1.15); } }
 @media (max-width: 575.98px) { .silla { width: 22px; height: 21px; } }
+#mapa { overflow-x: auto; padding-bottom: .5rem; }
+.leyenda-sillas .silla { display: inline-block; vertical-align: middle; }
+.resumen-sillas { background: var(--uf-tarjeta); border: 1px solid var(--uf-borde); border-radius: .5rem; }
 
 /* Landing */
 .hero-uf { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--uf-borde); }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Sillas de la sala')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <a th:href="@{/admin/salas}">&larr; Volver a las salas</a>
+  <h1 class="h2 mt-2" th:text="'Sillas de ' + ${sala.nombre}">Sillas de Sala 1</h1>
+  <p class="text-suave">Pulsa una silla para marcarla fuera de servicio o para activarla de nuevo. Las sillas fuera de servicio no se venden en las funciones futuras.</p>
+
+  <div id="mapa" role="group" aria-label="Sillas de la sala">
+    <div class="pantalla-sala" aria-hidden="true"></div>
+    <p class="text-center text-suave small mb-3">Pantalla</p>
+
+    <div class="fila-sillas" th:each="fila : ${filas}">
+      <span class="letra" aria-hidden="true" th:text="${fila.key}">A</span>
+      <th:block th:each="silla, estado : ${fila.value}">
+        <form th:action="@{/admin/salas/{id}/sillas/{idSilla}/alternar(id=${sala.id},idSilla=${silla.id})}" method="post">
+          <button type="submit" class="silla"
+                  th:classappend="${(estado.index == fila.value.size() / 2 ? 'pasillo' : '') + (silla.activa ? '' : ' ocupada')}"
+                  th:attr="aria-label=${'Silla ' + fila.key + silla.numero + ', ' + (silla.activa ? 'activa. Pulsa para marcarla fuera de servicio' : 'fuera de servicio. Pulsa para activarla')},title=${fila.key + silla.numero}"></button>
+        </form>
+      </th:block>
+    </div>
+
+    <ul class="leyenda-sillas list-inline text-center mt-3 mb-0 small">
+      <li class="list-inline-item"><span class="silla"></span> Activa</li>
+      <li class="list-inline-item"><span class="silla ocupada"></span> Fuera de servicio</li>
+    </ul>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

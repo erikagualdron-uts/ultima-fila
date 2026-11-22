@@ -7,8 +7,31 @@
 <main class="container py-4">
   <h1>En cartelera</h1>
 
+  <form class="row g-2 align-items-end mt-2" th:action="@{/cartelera}" method="get" role="search">
+    <div class="col-12 col-md-4">
+      <label for="q" class="form-label">Buscar por título</label>
+      <input type="search" class="form-control" id="q" name="q" th:value="${q}" maxlength="100">
+    </div>
+    <div class="col-6 col-md-3">
+      <label for="genero" class="form-label">Género</label>
+      <select class="form-select" id="genero" name="genero">
+        <option value="">Todos</option>
+        <option th:each="g : ${generos}" th:value="${g.id}" th:text="${g.nombre}"
+                th:selected="${genero != null and genero == g.id}">Género</option>
+      </select>
+    </div>
+    <div class="col-6 col-md-3">
+      <label for="fecha" class="form-label">Fecha</label>
+      <input type="date" class="form-control" id="fecha" name="fecha" th:value="${fecha}">
+    </div>
+    <div class="col-12 col-md-2 d-flex gap-2">
+      <button type="submit" class="btn btn-uf flex-fill">Filtrar</button>
+      <a class="btn btn-outline-uf" th:href="@{/cartelera}">Limpiar</a>
+    </div>
+  </form>
+
   <div aria-live="polite">
-    <p class="text-suave mt-4" th:if="${peliculas.empty}">No hay películas en cartelera por ahora.</p>
+    <p class="text-suave mt-4" th:if="${peliculas.empty}">No se encontraron películas.</p>
 
     <div class="row g-4 mt-1" th:unless="${peliculas.empty}">
       <div class="col-12 col-sm-6 col-lg-3" th:each="p, fila : ${peliculas.content}">
@@ -32,15 +55,15 @@
   <nav class="mt-4" aria-label="Paginación de la cartelera" th:if="${peliculas.totalPages > 1}">
     <ul class="pagination justify-content-center">
       <li class="page-item" th:classappend="${peliculas.first} ? 'disabled'">
-        <a class="page-link" th:href="@{/(pagina=${peliculas.number})}">Anterior</a>
+        <a class="page-link" th:href="@{/cartelera(pagina=${peliculas.number},q=${q},genero=${genero},fecha=${fecha})}">Anterior</a>
       </li>
       <li class="page-item" th:each="n : ${#numbers.sequence(1, peliculas.totalPages)}"
           th:classappend="${n == peliculas.number + 1} ? 'active'">
-        <a class="page-link" th:href="@{/(pagina=${n})}" th:text="${n}"
+        <a class="page-link" th:href="@{/cartelera(pagina=${n},q=${q},genero=${genero},fecha=${fecha})}" th:text="${n}"
            th:attr="aria-current=${n == peliculas.number + 1} ? 'page'">1</a>
       </li>
       <li class="page-item" th:classappend="${peliculas.last} ? 'disabled'">
-        <a class="page-link" th:href="@{/(pagina=${peliculas.number + 2})}">Siguiente</a>
+        <a class="page-link" th:href="@{/cartelera(pagina=${peliculas.number + 2},q=${q},genero=${genero},fecha=${fecha})}">Siguiente</a>
       </li>
     </ul>
   </nav>

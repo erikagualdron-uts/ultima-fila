@@ -247,9 +247,39 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
 @keyframes pop { 50% { transform: scale(1.15); } }
 @media (max-width: 575.98px) { .silla { width: 22px; height: 21px; } }
 
+/* Landing */
+.hero-uf { padding: 3.5rem 0 2.5rem; border-bottom: 1px solid var(--uf-borde); }
+.hero-marca { font-style: italic; margin-bottom: .75rem; }
+.entra { opacity: 0; animation: entrada var(--mov-lenta) var(--curva-salida) forwards; animation-delay: calc(var(--paso, 0) * 60ms); }
+.btn-outline-uf {
+  background: transparent;
+  border: 1px solid var(--uf-borgona);
+  color: var(--uf-borgona);
+  transition: background-color var(--mov-rapida) var(--curva-suave),
+              color var(--mov-rapida) var(--curva-suave),
+              transform var(--mov-rapida) var(--curva-suave);
+}
+.btn-outline-uf:hover { background: var(--uf-borgona); color: #fff; }
+.enlace-tarjeta { text-decoration: none; }
+.enlace-tarjeta:hover { text-decoration: underline; }
+.franja-uf { background: var(--uf-tarjeta); border-top: 1px solid var(--uf-borde); border-bottom: 1px solid var(--uf-borde); }
+.chip-funcion { display: inline-block; padding: .35rem .75rem; border: 1px solid var(--uf-borgona); border-radius: 2rem; background: #fff; }
+.paso-uf { display: flex; align-items: center; gap: .75rem; padding: 1rem; background: var(--uf-tarjeta); border: 1px solid var(--uf-borde); border-radius: .5rem; height: 100%; }
+.numero-paso {
+  flex: none; width: 2.25rem; height: 2.25rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--uf-borgona); color: #fff; font-family: "Playfair Display", Georgia, serif; font-weight: 700;
+}
+
+/* Detalle de película */
+.afiche-detalle { aspect-ratio: 2 / 3; max-width: 320px; background: linear-gradient(160deg, var(--uf-borgona), var(--uf-borgona-hover)); }
+.afiche-detalle img { width: 100%; height: 100%; object-fit: cover; }
+.sinopsis { max-width: 46ch; }
+
 /* Footer */
 .footer-uf { background: var(--uf-footer); color: var(--uf-footer-texto); padding: 1.5rem 0; margin-top: 3rem; }
 .footer-uf a { color: var(--uf-footer-texto); }
+.footer-uf address { margin-bottom: 0; }
 
 /* Movimiento reducido */
 @media (prefers-reduced-motion: reduce) {

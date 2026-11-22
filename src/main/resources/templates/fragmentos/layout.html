@@ -18,7 +18,7 @@
     </button>
     <div class="collapse navbar-collapse" id="menuPrincipal">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" th:href="@{/}">Cartelera</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/cartelera}">Cartelera</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'ADMINISTRADOR'}"><a class="nav-link" th:href="@{/admin}">Administración</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'TAQUILLERO'}"><a class="nav-link" th:href="@{/taquilla}">Taquilla</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'ACOMODADOR'}"><a class="nav-link" th:href="@{/acomodador}">Control de ingreso</a></li>
@@ -40,10 +40,16 @@
   <div class="aviso-uf error" role="alert" th:if="${error != null}" th:text="${error}"></div>
 </div>
 
-<footer th:fragment="footer" class="footer-uf">
+<!-- Datos de contacto ficticios (de ejemplo): se cambian aquí, en th:with -->
+<footer th:fragment="footer" class="footer-uf"
+        th:with="direccion='Calle 45 # 12-34, Bucaramanga',telefono='(607) 555-0123',correo='contacto@ultimafila.example'">
   <div class="container text-center">
     <p class="mb-1">Cine Comunitario Luz de Barrio · Última Fila</p>
-    <p class="mb-0 small">Proyecto académico UTS · Programación en Java</p>
+    <address class="mb-1 small">
+      <span th:text="${direccion}"></span> · <span th:text="${telefono}"></span> ·
+      <a th:href="'mailto:' + ${correo}" th:text="${correo}"></a>
+    </address>
+    <p class="mb-0 small">Datos de contacto de ejemplo · Proyecto académico UTS · Programación en Java</p>
   </div>
 </footer>
 

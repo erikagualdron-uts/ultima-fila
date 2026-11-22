@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Elegir sillas')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <a th:href="@{/peliculas/{id}(id=${funcion.pelicula.id})}">&larr; Volver a la película</a>
+
+  <h1 class="h2 mt-2" th:text="${funcion.pelicula.titulo}">Película</h1>
+  <p class="text-suave">
+    <span th:text="${funcion.sala.nombre}">Sala 1</span> ·
+    <span th:text="${#temporals.format(funcion.fechaHoraInicio, 'dd/MM/yyyy HH:mm')}">01/12/2026 18:30</span> ·
+    <span class="precio" th:text="${'$ ' + #numbers.formatDecimal(funcion.precio, 1, 'POINT', 0, 'COMMA')}">$ 12.000</span> por silla
+  </p>
+
+  <div class="alert alert-warning" role="alert" th:if="${bloqueo != null}" th:text="${bloqueo}">Aviso</div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-8">
+      <div id="mapa" th:attr="data-precio=${funcion.precio.toBigInteger()}" role="group" aria-label="Mapa de sillas">
+        <div class="pantalla-sala" aria-hidden="true"></div>
+        <p class="text-center text-suave small mb-3">Pantalla</p>
+
+        <div class="fila-sillas" th:each="fila : ${filas}">
+          <span class="letra" aria-hidden="true" th:text="${fila.key}">A</span>
+          <th:block th:each="silla, estado : ${fila.value}">
+            <button type="button" class="silla"
+                    th:classappend="${(estado.index == fila.value.size() / 2 ? 'pasillo' : '') + (!silla.activa or vendidas.contains(silla.id) ? ' ocupada' : '')}"
+                    th:attr="data-etiqueta=${fila.key + silla.numero},
+                             aria-label=${'Silla ' + fila.key + silla.numero + ', ' + (!silla.activa ? 'fuera de servicio' : (vendidas.contains(silla.id) ? 'vendida' : 'libre'))},
+                             aria-pressed='false'"
+                    th:disabled="${bloqueo != null or !silla.activa or vendidas.contains(silla.id)}"></button>
+          </th:block>
+        </div>
+
+        <ul class="leyenda-sillas list-inline text-center mt-3 mb-0 small">
+          <li class="list-inline-item"><span class="silla"></span> Libre</li>
+          <li class="list-inline-item"><span class="silla elegida"></span> Elegida</li>
+          <li class="list-inline-item"><span class="silla ocupada"></span> Vendida o fuera de servicio</li>
+        </ul>
+      </div>
+    </div>
+
+    <aside class="col-12 col-lg-4">
+      <div class="resumen-sillas p-3" aria-live="polite">
+        <h2 class="h5">Tu selección</h2>
+        <p class="mb-1">Sillas: <strong id="contador">0</strong> de 6</p>
+        <ul id="lista-sillas" class="list-unstyled mb-2"></ul>
+        <p class="mb-2">Total: <strong class="precio" id="total">$ 0</strong></p>
+        <p id="aviso-limite" class="text-danger small mb-0"></p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+<script th:src="@{/js/sillas.js}"></script>
+</body>
+</html>

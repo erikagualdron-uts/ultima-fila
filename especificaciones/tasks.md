@@ -43,7 +43,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 **Meta:** la app funciona sobre MySQL, el Cliente compra y cancela en línea, el Taquillero vende con las mismas reglas, el Acomodador valida el ingreso, el Administrador consulta el dashboard y gestiona al personal, y la interfaz es responsiva y maneja errores.
 
 ### Erika (EVGP), primero 013 a 015 porque REQ-CIN-018 depende de ellos
-- [ ] REQ-CIN-013 Mapa de sillas con JavaScript: contador, límite y total (P-05)
+- [x] REQ-CIN-013 Mapa de sillas con JavaScript: contador, límite y total (P-05)
 - [ ] REQ-CIN-014 Compra en línea en una transacción con pago simulado (P-05, P-06, P-08)
 - [ ] REQ-CIN-015 Reglas de compra con bloqueo pesimista (P-06)
 - [ ] REQ-CIN-016 Mis boletas y comprobante (P-07, P-08)

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Funciones')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h1 class="mb-0">Funciones</h1>
+    <a class="btn btn-uf" th:href="@{/admin/funciones/nueva}">Programar función</a>
+  </div>
+
+  <form class="row g-2 mb-3" th:action="@{/admin/funciones}" method="get">
+    <div class="col-12 col-sm-4">
+      <label for="fecha" class="form-label">Fecha</label>
+      <input type="date" class="form-control" id="fecha" name="fecha" th:value="${fecha}">
+    </div>
+    <div class="col-12 col-sm-4">
+      <label for="sala" class="form-label">Sala</label>
+      <select class="form-select" id="sala" name="sala">
+        <option value="0">Todas</option>
+        <option th:each="s : ${salas}" th:value="${s.id}" th:text="${s.nombre}" th:selected="${s.id == idSala}"></option>
+      </select>
+    </div>
+    <div class="col-12 col-sm-auto d-flex align-items-end gap-2">
+      <button type="submit" class="btn btn-uf">Filtrar</button>
+      <a class="btn btn-outline-uf" th:href="@{/admin/funciones}">Limpiar</a>
+    </div>
+  </form>
+
+  <div class="table-responsive" aria-live="polite">
+    <table class="table align-middle">
+      <caption class="visually-hidden">Listado de funciones</caption>
+      <thead>
+        <tr>
+          <th scope="col">Película</th><th scope="col">Sala</th><th scope="col">Inicio</th>
+          <th scope="col">Fin</th><th scope="col">Precio</th><th scope="col">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="f : ${funciones}">
+          <td th:text="${f.pelicula.titulo}">Película</td>
+          <td th:text="${f.sala.nombre}">Sala 1</td>
+          <td th:text="${#temporals.format(f.fechaHoraInicio, 'dd/MM/yyyy HH:mm')}">01/12/2026 18:00</td>
+          <td th:text="${#temporals.format(f.fechaHoraFin, 'HH:mm')}">20:15</td>
+          <td class="precio" th:text="${'$ ' + #numbers.formatDecimal(f.precio, 1, 'POINT', 0, 'COMMA')}">$ 12.000</td>
+          <td th:text="${f.estado.name() == 'PROGRAMADA'} ? 'Programada' : 'Cancelada'">Programada</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(funciones)}"><td colspan="6" class="text-suave">No hay funciones para ese filtro.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

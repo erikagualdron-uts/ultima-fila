@@ -17,7 +17,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [ ] Constitución SDD (`constitucion.md`)
 - [x] Layout Thymeleaf con Bootstrap: navbar según rol, footer, alertas
 - [x] REQ-CIN-001 Cartelera paginada (P-01)
-- [ ] REQ-CIN-002 Búsqueda y filtros por género y fecha (P-01)
+- [x] REQ-CIN-002 Búsqueda y filtros por género y fecha (P-01)
 - [ ] REQ-CIN-003 Detalle de película con funciones futuras (P-02)
 - [ ] REQ-CIN-004 Registro de cliente con Bean Validation y hash con sal (P-03)
 - [ ] REQ-CIN-005 Inicio y cierre de sesión con HttpSession (P-04)

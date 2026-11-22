@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Películas')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h1 class="mb-0">Películas</h1>
+    <a class="btn btn-uf" th:href="@{/admin/peliculas/nueva}">Nueva película</a>
+  </div>
+
+  <form class="row g-2 mb-3" th:action="@{/admin/peliculas}" method="get" role="search">
+    <div class="col-12 col-sm">
+      <label for="q" class="visually-hidden">Buscar por título</label>
+      <input type="search" class="form-control" id="q" name="q" th:value="${q}" placeholder="Buscar por título">
+    </div>
+    <div class="col-auto"><button type="submit" class="btn btn-uf">Buscar</button></div>
+  </form>
+
+  <div class="table-responsive" aria-live="polite">
+    <table class="table align-middle">
+      <caption class="visually-hidden">Listado de películas</caption>
+      <thead>
+        <tr>
+          <th scope="col">Título</th><th scope="col">Género</th><th scope="col">Duración</th>
+          <th scope="col">Clasificación</th><th scope="col">Estado</th><th scope="col" class="text-end">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="p : ${peliculas.content}">
+          <td th:text="${p.titulo}">Título</td>
+          <td th:text="${p.genero.nombre}">Drama</td>
+          <td th:text="${p.duracionMin} + ' min'">120 min</td>
+          <td><span class="badge badge-uf" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span></td>
+          <td th:text="${p.enCartelera} ? 'En cartelera' : 'Fuera de cartelera'">En cartelera</td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-sm btn-outline-uf" th:href="@{/admin/peliculas/{id}/editar(id=${p.id})}"
+               th:aria-label="'Editar ' + ${p.titulo}">Editar</a>
+            <button type="button" class="btn btn-sm btn-outline-uf" data-bs-toggle="modal"
+                    th:data-bs-target="'#eliminar' + ${p.id}" th:aria-label="'Eliminar ' + ${p.titulo}">Eliminar</button>
+
+            <div class="modal fade text-start" th:id="'eliminar' + ${p.id}" tabindex="-1"
+                 th:aria-labelledby="'titulo' + ${p.id}" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" th:action="@{/admin/peliculas/{id}/eliminar(id=${p.id})}" method="post">
+                  <div class="modal-header">
+                    <h2 class="modal-title h5" th:id="'titulo' + ${p.id}">Eliminar película</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-body">¿Eliminar la película «<span th:text="${p.titulo}"></span>»?</div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-uf" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-uf">Eliminar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr th:if="${peliculas.empty}"><td colspan="6" class="text-suave">No se encontraron películas.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <nav class="mt-3" aria-label="Paginación de películas" th:if="${peliculas.totalPages > 1}">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${peliculas.first} ? 'disabled'">
+        <a class="page-link" th:href="@{/admin/peliculas(pagina=${peliculas.number},q=${q})}">Anterior</a>
+      </li>
+      <li class="page-item" th:each="n : ${#numbers.sequence(1, peliculas.totalPages)}"
+          th:classappend="${n == peliculas.number + 1} ? 'active'">
+        <a class="page-link" th:href="@{/admin/peliculas(pagina=${n},q=${q})}" th:text="${n}"
+           th:attr="aria-current=${n == peliculas.number + 1} ? 'page'">1</a>
+      </li>
+      <li class="page-item" th:classappend="${peliculas.last} ? 'disabled'">
+        <a class="page-link" th:href="@{/admin/peliculas(pagina=${peliculas.number + 2},q=${q})}">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

@@ -11,6 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "peliculas")
@@ -20,19 +24,26 @@ public class Pelicula {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank(message = "El título es obligatorio")
+	@Size(max = 120, message = "Máximo 120 caracteres")
 	@Column(nullable = false, length = 120)
 	private String titulo;
 
+	@NotBlank(message = "La sinopsis es obligatoria")
+	@Size(max = 1000, message = "Máximo 1000 caracteres")
 	@Column(nullable = false, length = 1000)
 	private String sinopsis;
 
+	@Min(value = 1, message = "La duración debe ser de al menos 1 minuto")
 	@Column(name = "duracion_min", nullable = false)
 	private int duracionMin;
 
+	@NotNull(message = "Elige una clasificación")
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 20)
 	private Clasificacion clasificacion;
 
+	@Size(max = 500, message = "Máximo 500 caracteres")
 	@Column(name = "poster_url", length = 500)
 	private String posterUrl;
 

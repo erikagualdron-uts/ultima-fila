@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Película')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <h1 th:text="${pelicula.id == null} ? 'Nueva película' : 'Editar película'">Nueva película</h1>
+
+      <form class="card card-uf p-3" th:action="@{/admin/peliculas}" th:object="${pelicula}" method="post" novalidate>
+        <input type="hidden" th:field="*{id}">
+        <div class="mb-3">
+          <label for="titulo" class="form-label">Título</label>
+          <input type="text" class="form-control" id="titulo" th:field="*{titulo}"
+                 th:classappend="${#fields.hasErrors('titulo')} ? 'is-invalid'" maxlength="120">
+          <div class="invalid-feedback" th:errors="*{titulo}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="sinopsis" class="form-label">Sinopsis</label>
+          <textarea class="form-control" id="sinopsis" rows="4" th:field="*{sinopsis}"
+                    th:classappend="${#fields.hasErrors('sinopsis')} ? 'is-invalid'" maxlength="1000"></textarea>
+          <div class="invalid-feedback" th:errors="*{sinopsis}"></div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-4 mb-3">
+            <label for="duracionMin" class="form-label">Duración (min)</label>
+            <input type="number" class="form-control" id="duracionMin" th:field="*{duracionMin}"
+                   th:classappend="${#fields.hasErrors('duracionMin')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{duracionMin}"></div>
+          </div>
+          <div class="col-12 col-sm-4 mb-3">
+            <label for="idGenero" class="form-label">Género</label>
+            <select class="form-select" id="idGenero" name="genero.id"
+                    th:classappend="${#fields.hasErrors('genero.id')} ? 'is-invalid'">
+              <option value="">Elige un género</option>
+              <option th:each="g : ${generos}" th:value="${g.id}" th:text="${g.nombre}"
+                      th:selected="${pelicula.genero != null and pelicula.genero.id == g.id}"></option>
+            </select>
+            <div class="invalid-feedback" th:errors="*{genero.id}"></div>
+          </div>
+          <div class="col-12 col-sm-4 mb-3">
+            <label for="clasificacion" class="form-label">Clasificación</label>
+            <select class="form-select" id="clasificacion" th:field="*{clasificacion}"
+                    th:classappend="${#fields.hasErrors('clasificacion')} ? 'is-invalid'">
+              <option value="">Elige una clasificación</option>
+              <option th:each="c : ${clasificaciones}" th:value="${c}" th:text="${c.name().replace('_', ' ')}"></option>
+            </select>
+            <div class="invalid-feedback" th:errors="*{clasificacion}"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="posterUrl" class="form-label">Enlace del afiche (opcional)</label>
+          <input type="url" class="form-control" id="posterUrl" th:field="*{posterUrl}"
+                 th:classappend="${#fields.hasErrors('posterUrl')} ? 'is-invalid'" maxlength="500">
+          <div class="invalid-feedback" th:errors="*{posterUrl}"></div>
+        </div>
+        <div class="form-check mb-3">
+          <input type="checkbox" class="form-check-input" id="enCartelera" th:field="*{enCartelera}">
+          <label for="enCartelera" class="form-check-label">En cartelera</label>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-uf">Guardar</button>
+          <a class="btn btn-outline-uf" th:href="@{/admin/peliculas}">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

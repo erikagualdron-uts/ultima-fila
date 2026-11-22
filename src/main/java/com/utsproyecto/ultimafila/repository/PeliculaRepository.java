@@ -36,4 +36,8 @@ public interface PeliculaRepository extends JpaRepository<Pelicula, Long> {
 			+ "ORDER BY p.titulo")
 	List<Pelicula> buscarDestacadas(@Param("estado") EstadoFuncion estado, @Param("ahora") LocalDateTime ahora,
 			Pageable pageable);
+
+	@Query(value = "SELECT p FROM Pelicula p JOIN FETCH p.genero WHERE LOWER(p.titulo) LIKE :titulo ORDER BY p.titulo",
+			countQuery = "SELECT COUNT(p) FROM Pelicula p WHERE LOWER(p.titulo) LIKE :titulo")
+	Page<Pelicula> buscarParaAdmin(@Param("titulo") String titulo, Pageable pageable);
 }

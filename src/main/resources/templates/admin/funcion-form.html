@@ -10,6 +10,9 @@
       <h1>Programar función</h1>
 
       <form class="card card-uf p-3" th:action="@{/admin/funciones}" th:object="${funcionForm}" method="post" novalidate>
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasGlobalErrors()}">
+          <span th:each="e : ${#fields.globalErrors()}" th:text="${e}"></span>
+        </div>
         <div class="mb-3">
           <label for="idPelicula" class="form-label">Película</label>
           <select class="form-select" id="idPelicula" th:field="*{idPelicula}"

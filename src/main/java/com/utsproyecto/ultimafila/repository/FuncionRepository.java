@@ -40,6 +40,12 @@ public interface FuncionRepository extends JpaRepository<Funcion, Long> {
 	List<Funcion> buscarParaAdmin(@Param("idSala") long idSala, @Param("conFecha") boolean conFecha,
 			@Param("desde") LocalDateTime desde, @Param("hasta") LocalDateTime hasta);
 
+	// Se cruzan si una empieza antes de que la otra termine; terminar justo cuando otra empieza no cuenta
+	@Query("SELECT f FROM Funcion f JOIN FETCH f.pelicula WHERE f.sala.id = :idSala AND f.estado = :estado "
+			+ "AND f.fechaHoraInicio < :fin AND f.fechaHoraFin > :inicio ORDER BY f.fechaHoraInicio")
+	List<Funcion> buscarCruzadas(@Param("idSala") Long idSala, @Param("estado") EstadoFuncion estado,
+			@Param("inicio") LocalDateTime inicio, @Param("fin") LocalDateTime fin);
+
 	@Query("SELECT COUNT(f) FROM Funcion f WHERE f.pelicula.id = :idPelicula AND f.estado = :estado "
 			+ "AND f.fechaHoraInicio > :ahora")
 	long contarFuturasDePelicula(@Param("idPelicula") Long idPelicula, @Param("estado") EstadoFuncion estado,

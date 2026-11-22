@@ -34,6 +34,12 @@ public interface FuncionRepository extends JpaRepository<Funcion, Long> {
 	List<Funcion> buscarPorDia(@Param("estado") EstadoFuncion estado, @Param("desde") LocalDateTime desde,
 			@Param("hasta") LocalDateTime hasta);
 
+	@Query("SELECT f FROM Funcion f JOIN FETCH f.pelicula JOIN FETCH f.sala "
+			+ "WHERE (:idSala = 0 OR f.sala.id = :idSala) AND (:conFecha = false "
+			+ "OR (f.fechaHoraInicio >= :desde AND f.fechaHoraInicio < :hasta)) ORDER BY f.fechaHoraInicio")
+	List<Funcion> buscarParaAdmin(@Param("idSala") long idSala, @Param("conFecha") boolean conFecha,
+			@Param("desde") LocalDateTime desde, @Param("hasta") LocalDateTime hasta);
+
 	@Query("SELECT COUNT(f) FROM Funcion f WHERE f.pelicula.id = :idPelicula AND f.estado = :estado "
 			+ "AND f.fechaHoraInicio > :ahora")
 	long contarFuturasDePelicula(@Param("idPelicula") Long idPelicula, @Param("estado") EstadoFuncion estado,

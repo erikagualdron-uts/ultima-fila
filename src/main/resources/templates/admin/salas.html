@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Salas')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <h1>Salas</h1>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-5">
+      <form class="card card-uf p-3" th:action="@{/admin/salas}" th:object="${sala}" method="post" novalidate>
+        <h2 class="h4">Nueva sala</h2>
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+                 th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'" maxlength="60">
+          <div class="invalid-feedback" th:errors="*{nombre}"></div>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label for="filas" class="form-label">Filas</label>
+            <input type="number" class="form-control" id="filas" th:field="*{filas}"
+                   th:classappend="${#fields.hasErrors('filas')} ? 'is-invalid'" min="1" max="26" aria-describedby="ayudaFilas">
+            <div class="form-text" id="ayudaFilas">De 1 a 26 (letras A a Z).</div>
+            <div class="invalid-feedback" th:errors="*{filas}"></div>
+          </div>
+          <div class="col-6 mb-3">
+            <label for="sillasPorFila" class="form-label">Sillas por fila</label>
+            <input type="number" class="form-control" id="sillasPorFila" th:field="*{sillasPorFila}"
+                   th:classappend="${#fields.hasErrors('sillasPorFila')} ? 'is-invalid'" min="1" max="30">
+            <div class="invalid-feedback" th:errors="*{sillasPorFila}"></div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-uf">Guardar sala</button>
+      </form>
+    </div>
+
+    <div class="col-12 col-lg-7">
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <caption class="visually-hidden">Listado de salas</caption>
+          <thead>
+            <tr><th scope="col">Nombre</th><th scope="col">Filas</th><th scope="col">Sillas por fila</th><th scope="col">Total de sillas</th></tr>
+          </thead>
+          <tbody>
+            <tr th:each="s : ${salas}">
+              <td th:text="${s.nombre}">Sala 1</td>
+              <td th:text="${s.filas}">5</td>
+              <td th:text="${s.sillasPorFila}">8</td>
+              <td th:text="${s.filas * s.sillasPorFila}">40</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(salas)}"><td colspan="4" class="text-suave">Aún no hay salas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

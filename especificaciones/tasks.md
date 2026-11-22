@@ -29,7 +29,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [x] Configuración H2 y `data.sql` (5 géneros, 10 películas, 3 salas, funciones de 2 semanas, 5 usuarios)
 - [x] REQ-CIN-007 CRUD de géneros (P-10)
 - [x] REQ-CIN-008 CRUD de películas (P-11, P-12)
-- [ ] REQ-CIN-009 Salas con generación de sillas (P-13)
+- [x] REQ-CIN-009 Salas con generación de sillas (P-13)
 - [ ] REQ-CIN-010 Sillas fuera de servicio (P-14)
 - [ ] REQ-CIN-011 Programar funciones con cálculo de fin (P-15, P-16)
 - [ ] REQ-CIN-012 Regla de no solapamiento (P-16)

@@ -9,4 +9,8 @@ import com.utsproyecto.ultimafila.model.Sala;
 public interface SalaRepository extends JpaRepository<Sala, Long> {
 
 	List<Sala> findByActivaTrueOrderByNombre();
+
+	List<Sala> findAllByOrderByNombre();
+
+	boolean existsByNombreIgnoreCase(String nombre);
 }

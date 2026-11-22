@@ -2,6 +2,8 @@ package com.utsproyecto.ultimafila.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.utsproyecto.ultimafila.model.EstadoFuncion;
 import com.utsproyecto.ultimafila.model.Funcion;
 import com.utsproyecto.ultimafila.model.FuncionForm;
 import com.utsproyecto.ultimafila.model.Pelicula;
@@ -28,6 +31,7 @@ import jakarta.validation.Valid;
 public class AdminFuncionController {
 
 	private static final int MINUTOS_LIMPIEZA = 15;
+	private static final DateTimeFormatter HORA = DateTimeFormatter.ofPattern("HH:mm");
 
 	private final FuncionRepository funcionRepository;
 	private final PeliculaRepository peliculaRepository;
@@ -79,11 +83,19 @@ public class AdminFuncionController {
 		}
 
 		LocalDateTime inicio = LocalDateTime.of(form.getFecha(), form.getHora());
+		LocalDateTime fin = inicio.plusMinutes(pelicula.getDuracionMin() + MINUTOS_LIMPIEZA);
+		List<Funcion> cruzadas = funcionRepository.buscarCruzadas(sala.getId(), EstadoFuncion.PROGRAMADA, inicio, fin);
+		if (!cruzadas.isEmpty()) {
+			errores.reject("cruce", "Se cruza con la función de las "
+					+ cruzadas.get(0).getFechaHoraInicio().toLocalTime().format(HORA) + " de «"
+					+ cruzadas.get(0).getPelicula().getTitulo() + "» en " + sala.getNombre());
+			return formulario(model);
+		}
 		Funcion funcion = new Funcion();
 		funcion.setPelicula(pelicula);
 		funcion.setSala(sala);
 		funcion.setFechaHoraInicio(inicio);
-		funcion.setFechaHoraFin(inicio.plusMinutes(pelicula.getDuracionMin() + MINUTOS_LIMPIEZA));
+		funcion.setFechaHoraFin(fin);
 		funcion.setPrecio(form.getPrecio());
 		funcionRepository.save(funcion);
 		flash.addFlashAttribute("mensaje", "Función programada");

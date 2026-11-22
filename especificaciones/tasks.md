@@ -32,7 +32,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [x] REQ-CIN-009 Salas con generación de sillas (P-13)
 - [x] REQ-CIN-010 Sillas fuera de servicio (P-14)
 - [x] REQ-CIN-011 Programar funciones con cálculo de fin (P-15, P-16)
-- [ ] REQ-CIN-012 Regla de no solapamiento (P-16)
+- [x] REQ-CIN-012 Regla de no solapamiento (P-16)
 - [ ] Revisión cruzada de los PR de Erika
 
 ### Cierre

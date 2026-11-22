@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Géneros')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <h1>Géneros</h1>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-5">
+      <form class="card card-uf p-3" th:action="@{/admin/generos}" th:object="${genero}" method="post" novalidate>
+        <h2 class="h4" th:text="*{id == null} ? 'Nuevo género' : 'Editar género'">Nuevo género</h2>
+        <input type="hidden" th:field="*{id}">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+                 th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'" maxlength="60">
+          <div class="invalid-feedback" th:errors="*{nombre}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="descripcion" class="form-label">Descripción (opcional)</label>
+          <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}"
+                 th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid'" maxlength="255">
+          <div class="invalid-feedback" th:errors="*{descripcion}"></div>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-uf">Guardar</button>
+          <a class="btn btn-outline-uf" th:if="*{id != null}" th:href="@{/admin/generos}">Cancelar</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-12 col-lg-7">
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <caption class="visually-hidden">Listado de géneros</caption>
+          <thead>
+            <tr><th scope="col">Nombre</th><th scope="col">Descripción</th><th scope="col" class="text-end">Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr th:each="g : ${generos}">
+              <td th:text="${g.nombre}">Drama</td>
+              <td class="text-suave" th:text="${g.descripcion}"></td>
+              <td class="text-end text-nowrap">
+                <a class="btn btn-sm btn-outline-uf" th:href="@{/admin/generos(editar=${g.id})}"
+                   th:aria-label="'Editar ' + ${g.nombre}">Editar</a>
+                <button type="button" class="btn btn-sm btn-outline-uf" data-bs-toggle="modal"
+                        th:data-bs-target="'#eliminar' + ${g.id}" th:aria-label="'Eliminar ' + ${g.nombre}">Eliminar</button>
+
+                <div class="modal fade text-start" th:id="'eliminar' + ${g.id}" tabindex="-1"
+                     th:aria-labelledby="'titulo' + ${g.id}" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <form class="modal-content" th:action="@{/admin/generos/{id}/eliminar(id=${g.id})}" method="post">
+                      <div class="modal-header">
+                        <h2 class="modal-title h5" th:id="'titulo' + ${g.id}">Eliminar género</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                      </div>
+                      <div class="modal-body">¿Eliminar el género «<span th:text="${g.nombre}"></span>»?</div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-uf" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-uf">Eliminar</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(generos)}"><td colspan="3" class="text-suave">Aún no hay géneros.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

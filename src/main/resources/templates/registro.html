@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Registro')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+      <h1>Crear cuenta</h1>
+      <p class="text-suave">Regístrate como cliente para comprar tus boletas en línea.</p>
+
+      <form class="card card-uf p-3" th:action="@{/registro}" th:object="${registroForm}" method="post" novalidate>
+        <div class="mb-3">
+          <label for="nombreCompleto" class="form-label">Nombre completo</label>
+          <input type="text" class="form-control" id="nombreCompleto" th:field="*{nombreCompleto}"
+                 th:classappend="${#fields.hasErrors('nombreCompleto')} ? 'is-invalid'" maxlength="120" autocomplete="name">
+          <div class="invalid-feedback" th:errors="*{nombreCompleto}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="documento" class="form-label">Documento</label>
+          <input type="text" class="form-control" id="documento" th:field="*{documento}"
+                 th:classappend="${#fields.hasErrors('documento')} ? 'is-invalid'" maxlength="20">
+          <div class="invalid-feedback" th:errors="*{documento}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="correo" class="form-label">Correo</label>
+          <input type="email" class="form-control" id="correo" th:field="*{correo}"
+                 th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid'" maxlength="120" autocomplete="email">
+          <div class="invalid-feedback" th:errors="*{correo}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="clave" class="form-label">Clave</label>
+          <input type="password" class="form-control" id="clave" th:field="*{clave}"
+                 th:classappend="${#fields.hasErrors('clave')} ? 'is-invalid'" maxlength="100"
+                 autocomplete="new-password" aria-describedby="ayudaClave">
+          <div class="form-text" id="ayudaClave">Mínimo 8 caracteres.</div>
+          <div class="invalid-feedback" th:errors="*{clave}"></div>
+        </div>
+        <button type="submit" class="btn btn-uf">Registrarme</button>
+        <p class="mb-0 mt-3 small text-suave">¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión</a></p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

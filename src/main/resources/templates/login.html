@@ -9,9 +9,11 @@
     <div class="col-12 col-md-8 col-lg-5">
       <h1>Iniciar sesión</h1>
 
-      <div class="alert alert-danger" role="alert" th:if="${fallo != null}" th:text="${fallo}"></div>
+      <div class="alerta-uf" role="alert" th:if="${fallo != null}" th:text="${fallo}"></div>
 
-      <form class="card card-uf p-3" th:action="@{/login}" method="post">
+      <form class="card card-uf tarjeta-acceso" th:action="@{/login}" method="post">
+        <div class="tarjeta-marca" aria-hidden="true">Última Fila</div>
+        <div class="p-3">
         <div class="mb-3">
           <label for="correo" class="form-label">Correo</label>
           <input type="email" class="form-control" id="correo" name="correo" th:value="${correo}"
@@ -19,11 +21,16 @@
         </div>
         <div class="mb-3">
           <label for="clave" class="form-label">Clave</label>
-          <input type="password" class="form-control" id="clave" name="clave" maxlength="100"
-                 required autocomplete="current-password">
+          <div class="input-group">
+            <input type="password" class="form-control" id="clave" name="clave" maxlength="100"
+                   required autocomplete="current-password">
+            <button type="button" class="btn btn-outline-uf" data-mostrar-clave="clave"
+                    aria-controls="clave" aria-pressed="false">Mostrar</button>
+          </div>
         </div>
         <button type="submit" class="btn btn-uf">Entrar</button>
         <p class="mb-0 mt-3 small text-suave">¿No tienes cuenta? <a th:href="@{/registro}">Regístrate</a></p>
+        </div>
       </form>
     </div>
   </div>

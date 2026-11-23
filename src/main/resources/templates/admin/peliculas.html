@@ -33,7 +33,7 @@
           <td th:text="${p.titulo}">Título</td>
           <td th:text="${p.genero.nombre}">Drama</td>
           <td th:text="${p.duracionMin} + ' min'">120 min</td>
-          <td><span class="badge badge-uf" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span></td>
+          <td><span th:replace="~{fragmentos/layout :: clasificacion(${p.clasificacion})}"></span></td>
           <td th:text="${p.enCartelera} ? 'En cartelera' : 'Fuera de cartelera'">En cartelera</td>
           <td class="text-end text-nowrap">
             <a class="btn btn-sm btn-outline-uf" th:href="@{/admin/peliculas/{id}/editar(id=${p.id})}"

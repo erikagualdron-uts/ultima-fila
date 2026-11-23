@@ -57,14 +57,41 @@
   });
 })();
 
-// Si un afiche no carga, se muestra el degradado con el título
-document.querySelectorAll(".afiche img").forEach(function (img) {
-  img.addEventListener("error", function () {
-    var respaldo = document.createElement("div");
-    respaldo.className = "afiche-respaldo";
-    respaldo.setAttribute("role", "img");
-    respaldo.setAttribute("aria-label", "Afiche de " + img.dataset.titulo);
-    respaldo.textContent = img.dataset.titulo;
-    img.replaceWith(respaldo);
+// Si un afiche no carga, se muestra el degradado con el título y el género
+function usarRespaldo(img) {
+  var respaldo = document.createElement("div");
+  respaldo.className = "afiche-respaldo";
+  respaldo.setAttribute("role", "img");
+  respaldo.setAttribute("aria-label", "Afiche de " + img.dataset.titulo);
+  var titulo = document.createElement("span");
+  titulo.className = "respaldo-titulo";
+  titulo.textContent = img.dataset.titulo;
+  respaldo.appendChild(titulo);
+  if (img.dataset.genero) {
+    var genero = document.createElement("span");
+    genero.className = "respaldo-genero";
+    genero.textContent = img.dataset.genero;
+    respaldo.appendChild(genero);
+  }
+  img.replaceWith(respaldo);
+}
+
+document.querySelectorAll(".afiche img, .afiche-detalle img, .afiche-hero img").forEach(function (img) {
+  if (img.complete && img.naturalWidth === 0) {
+    usarRespaldo(img);
+  } else {
+    img.addEventListener("error", function () { usarRespaldo(img); });
+  }
+});
+
+// Mostrar u ocultar la clave
+document.querySelectorAll("[data-mostrar-clave]").forEach(function (boton) {
+  var campo = document.getElementById(boton.dataset.mostrarClave);
+  if (!campo) return;
+  boton.addEventListener("click", function () {
+    var visible = campo.type === "password";
+    campo.type = visible ? "text" : "password";
+    boton.textContent = visible ? "Ocultar" : "Mostrar";
+    boton.setAttribute("aria-pressed", visible);
   });
 });

@@ -316,3 +316,58 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
   .peli:hover, .peli:hover .afiche img, .btn:active, .navbar-uf.compacta .navbar-brand { transform: none; }
   .esqueleto::after { display: none; }
 }
+
+/* Indicador de pasos de la compra */
+.pasos-compra { display: flex; gap: .5rem; margin-bottom: 1rem; padding: 0; }
+.pasos-compra li {
+  flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: .5rem;
+  padding: .5rem; background: var(--uf-tarjeta); border: 1px solid var(--uf-borde); border-radius: .5rem;
+  color: var(--uf-texto-suave); font-size: .9rem;
+}
+.pasos-compra .numero-paso { width: 1.75rem; height: 1.75rem; background: var(--uf-texto-suave); font-size: .85rem; }
+.pasos-compra li.hecho .numero-paso { background: var(--uf-borgona-hover); }
+.pasos-compra li.actual { border-color: var(--uf-borgona); border-bottom: 3px solid var(--uf-borgona); color: var(--uf-borgona); font-weight: 600; }
+.pasos-compra li.actual .numero-paso { background: var(--uf-borgona); }
+@media (max-width: 575.98px) { .pasos-compra li { flex-direction: column; gap: .15rem; font-size: .8rem; } }
+
+/* Comprobante: boleta con talón */
+.boleta { position: relative; display: flex; height: 100%; background: var(--uf-tarjeta); border: 1px solid var(--uf-borde); border-radius: .5rem; break-inside: avoid; }
+.boleta-cuerpo { flex: 1 1 auto; min-width: 0; padding: 1rem 1.25rem; }
+.boleta-marca { font-style: italic; font-family: "Playfair Display", Georgia, serif; color: var(--uf-texto-suave); }
+.boleta-talon {
+  position: relative; flex: none; width: 8.5rem; padding: 1rem .75rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .25rem; text-align: center;
+  border-left: 2px dashed var(--uf-dorado);
+}
+.boleta-talon::before, .boleta-talon::after {
+  content: ""; position: absolute; left: -.6rem; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: var(--uf-fondo);
+}
+.boleta-talon::before { top: -.55rem; }
+.boleta-talon::after { bottom: -.55rem; }
+.boleta-silla { font-family: "Playfair Display", Georgia, serif; font-size: 2rem; line-height: 1; color: var(--uf-borgona); }
+.boleta-codigo { font-family: ui-monospace, Consolas, monospace; font-size: .95rem; font-weight: 700; color: var(--uf-texto); overflow-wrap: anywhere; }
+@media (max-width: 575.98px) { .boleta-talon { width: 7.5rem; padding-left: .5rem; padding-right: .5rem; } .boleta-cuerpo { padding: .75rem; } }
+
+/* Insignias de estado (compra y boleta) */
+.insignia-estado { color: #fff; }
+.estado-pagada { background: #1f5130; }
+.estado-vendida { background: var(--uf-borgona); }
+.estado-usada { background: var(--uf-texto); }
+.estado-cancelada { background: var(--uf-texto-suave); }
+
+/* Tarjetas: insignia de clasificación sobre el afiche */
+.peli .afiche { position: relative; }
+.insignia-clasif { position: absolute; top: .5rem; left: .5rem; font-size: .7rem; }
+
+/* Hero con película destacada */
+.afiche-hero { aspect-ratio: 2 / 3; max-width: 260px; margin: 0 auto; overflow: hidden; border: 1px solid var(--uf-borde); border-radius: .5rem; background: linear-gradient(160deg, var(--uf-borgona), var(--uf-borgona-hover)); }
+.afiche-hero img { width: 100%; height: 100%; object-fit: cover; }
+.etiqueta-destacada { font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--uf-texto-suave); }
+.hero-titulo { font-size: clamp(1.6rem, 4vw, 2.4rem); }
+.sinopsis-corta { display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 767.98px) { .sinopsis-corta { margin-left: auto; margin-right: auto; } }
+
+/* Cartelera: resultados y esqueleto */
+#resultados { transition: opacity var(--mov-rapida) var(--curva-suave); }
+#resultados.saliendo { opacity: 0; }
+.esqueleto-peli { aspect-ratio: 2 / 3; border: 1px solid var(--uf-borde); }

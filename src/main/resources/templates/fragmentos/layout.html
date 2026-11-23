@@ -44,6 +44,15 @@
   </ul>
 </nav>
 
+<ol th:fragment="pasos(actual)" class="pasos-compra list-unstyled" aria-label="Pasos de la compra">
+  <li th:each="nombre, i : ${ {'Sillas', 'Confirmar', 'Comprobante'} }"
+      th:classappend="${i.count lt actual ? 'hecho' : (i.count == actual ? 'actual' : '')}"
+      th:attr="aria-current=${i.count == actual} ? 'step'">
+    <span class="numero-paso" aria-hidden="true" th:text="${i.count}">1</span>
+    <span th:text="${nombre}">Sillas</span>
+  </li>
+</ol>
+
 <div th:fragment="alertas" class="alertas-uf" aria-live="polite">
   <div class="aviso-uf" role="status" th:if="${mensaje != null}" th:text="${mensaje}"></div>
   <div class="aviso-uf error" role="alert" th:if="${error != null}" th:text="${error}"></div>

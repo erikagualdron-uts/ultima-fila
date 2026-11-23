@@ -30,7 +30,7 @@
     </div>
   </form>
 
-  <div aria-live="polite">
+  <div id="resultados" aria-live="polite">
     <p class="text-suave mt-4" th:if="${peliculas.empty}">No se encontraron películas.</p>
 
     <div class="row g-4 mt-1" th:unless="${peliculas.empty}">
@@ -41,11 +41,11 @@
                  th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo}" loading="lazy">
             <div th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}" class="afiche-respaldo"
                  role="img" th:aria-label="'Afiche de ' + ${p.titulo}" th:text="${p.titulo}"></div>
+            <span class="badge badge-uf insignia-clasif" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
           </div>
           <div class="p-3">
             <h2 class="h5 mb-2"><a class="peli-enlace" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h2>
             <p class="mb-1 small text-suave" th:text="${p.genero.nombre} + ' · ' + ${p.duracionMin} + ' min'">Género · 100 min</p>
-            <span class="badge badge-uf" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
           </div>
         </article>
       </div>
@@ -72,5 +72,6 @@
 <footer th:replace="~{fragmentos/layout :: footer}"></footer>
 <div th:replace="~{fragmentos/layout :: alertas}"></div>
 <th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+<script th:src="@{/js/cartelera.js}"></script>
 </body>
 </html>

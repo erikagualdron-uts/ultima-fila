@@ -5,38 +5,39 @@
 <nav th:replace="~{fragmentos/layout :: navbar}"></nav>
 
 <main class="container py-4">
+  <ol th:replace="~{fragmentos/layout :: pasos(3)}"></ol>
   <h1 class="h2">Comprobante de compra</h1>
-  <p class="text-suave">Código de compra: <strong th:text="${compra.codigo}">C-ABC12345</strong></p>
+  <p class="text-suave mb-1">
+    Código de compra: <strong th:text="${compra.codigo}">C-ABC12345</strong> ·
+    <span class="badge insignia-estado" th:classappend="'estado-' + ${#strings.toLowerCase(compra.estado)}"
+          th:text="${#strings.capitalize(#strings.toLowerCase(compra.estado))}">Pagada</span>
+  </p>
+  <p>Total: <strong class="precio" th:text="${'$ ' + #numbers.formatDecimal(compra.total, 1, 'POINT', 0, 'COMMA')}">$ 24.000</strong></p>
 
-  <div class="resumen-sillas p-3 mb-3">
-    <h2 class="h5" th:text="${funcion.pelicula.titulo}">Película</h2>
-    <p class="text-suave mb-2">
-      <span th:text="${funcion.sala.nombre}">Sala 1</span> ·
-      <span th:text="${#temporals.format(funcion.fechaHoraInicio, 'dd/MM/yyyy HH:mm')}">01/12/2026 18:30</span>
-    </p>
-    <p class="mb-0">
-      Estado: <span class="badge text-bg-success" th:text="${compra.estado}">PAGADA</span> ·
-      Total: <strong class="precio" th:text="${'$ ' + #numbers.formatDecimal(compra.total, 1, 'POINT', 0, 'COMMA')}">$ 24.000</strong>
-    </p>
+  <div class="row g-3">
+    <div class="col-12 col-lg-6" th:each="boleta : ${boletas}">
+      <article class="boleta" th:aria-label="'Boleta de la silla ' + ${boleta.silla.fila + boleta.silla.numero}">
+        <div class="boleta-cuerpo">
+          <p class="boleta-marca mb-1">Última Fila · Luz de Barrio</p>
+          <h2 class="h4 mb-1" th:text="${funcion.pelicula.titulo}">Película</h2>
+          <p class="text-suave mb-1">
+            <span th:text="${funcion.sala.nombre}">Sala 1</span> ·
+            <span th:text="${#temporals.format(funcion.fechaHoraInicio, 'dd/MM/yyyy HH:mm')}">01/12/2026 18:30</span>
+          </p>
+          <p class="precio mb-0" th:text="${'$ ' + #numbers.formatDecimal(funcion.precio, 1, 'POINT', 0, 'COMMA')}">$ 12.000</p>
+        </div>
+        <div class="boleta-talon">
+          <span class="small text-suave">Silla</span>
+          <strong class="boleta-silla" th:text="${boleta.silla.fila + boleta.silla.numero}">A1</strong>
+          <code class="boleta-codigo" th:text="${boleta.codigo}">B-ABC12345</code>
+          <span class="badge insignia-estado" th:classappend="'estado-' + ${#strings.toLowerCase(boleta.estado)}"
+                th:text="${#strings.capitalize(#strings.toLowerCase(boleta.estado))}">Vendida</span>
+        </div>
+      </article>
+    </div>
   </div>
 
-  <div class="table-responsive">
-    <table class="table align-middle">
-      <caption class="visually-hidden">Boletas de la compra</caption>
-      <thead>
-        <tr><th scope="col">Silla</th><th scope="col">Código de boleta</th><th scope="col">Estado</th></tr>
-      </thead>
-      <tbody>
-        <tr th:each="boleta : ${boletas}">
-          <td th:text="${boleta.silla.fila + boleta.silla.numero}">A1</td>
-          <td><code th:text="${boleta.codigo}">B-ABC12345</code></td>
-          <td><span class="badge text-bg-secondary" th:text="${boleta.estado}">VENDIDA</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <button type="button" class="btn btn-uf" onclick="window.print()">Imprimir</button>
+  <button type="button" class="btn btn-uf mt-4" onclick="window.print()">Imprimir</button>
 </main>
 
 <footer th:replace="~{fragmentos/layout :: footer}"></footer>

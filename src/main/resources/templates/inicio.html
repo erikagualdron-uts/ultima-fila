@@ -5,16 +5,35 @@
 <nav th:replace="~{fragmentos/layout :: navbar}"></nav>
 
 <main>
-  <section class="hero-uf" aria-labelledby="titulo-hero">
-    <div class="container text-center">
-      <h1 id="titulo-hero" class="hero-marca entra" style="--paso:0">Última Fila</h1>
-      <p class="lead entra" style="--paso:1">Cine Comunitario Luz de Barrio: buenas películas, a precio de barrio.</p>
-      <div class="d-flex flex-wrap justify-content-center gap-2 entra" style="--paso:2">
-        <a class="btn btn-uf btn-lg" th:href="@{/cartelera}">Ver cartelera</a>
-        <th:block th:if="${session.rol == null}">
-          <a class="btn btn-outline-uf btn-lg" th:href="@{/login}">Iniciar sesión</a>
-          <a class="btn btn-outline-uf btn-lg" th:href="@{/registro}">Registrarme</a>
-        </th:block>
+  <section class="hero-uf" aria-labelledby="titulo-hero" th:with="d=${destacadas.empty ? null : destacadas[0]}">
+    <div class="container">
+      <div class="row align-items-center g-4 justify-content-center">
+        <div class="col-8 col-sm-5 col-md-4 col-lg-3" th:if="${d != null}">
+          <div class="afiche afiche-hero entra" style="--paso:0">
+            <img th:if="${d.posterUrl != null and !d.posterUrl.isBlank()}" th:src="${d.posterUrl}"
+                 th:alt="'Afiche de ' + ${d.titulo}" th:attr="data-titulo=${d.titulo}">
+            <div th:unless="${d.posterUrl != null and !d.posterUrl.isBlank()}" class="afiche-respaldo"
+                 role="img" th:aria-label="'Afiche de ' + ${d.titulo}" th:text="${d.titulo}"></div>
+          </div>
+        </div>
+        <div class="col-12" th:classappend="${d != null} ? 'col-md-8 col-lg-7 text-center text-md-start' : 'text-center'">
+          <h1 id="titulo-hero" class="hero-marca entra" style="--paso:0">Última Fila</h1>
+          <p class="lead entra" style="--paso:1">Cine Comunitario Luz de Barrio: buenas películas, a precio de barrio.</p>
+          <div class="hero-destacada entra" style="--paso:2" th:if="${d != null}">
+            <p class="etiqueta-destacada mb-1">Película destacada</p>
+            <h2 class="hero-titulo" th:text="${d.titulo}">Título</h2>
+            <p class="small text-suave mb-2" th:text="${d.genero.nombre} + ' · ' + ${d.duracionMin} + ' min'">Género · 100 min</p>
+            <p class="sinopsis sinopsis-corta" th:text="${d.sinopsis}">Sinopsis</p>
+          </div>
+          <div class="d-flex flex-wrap gap-2 entra justify-content-center" th:classappend="${d != null} ? 'justify-content-md-start'" style="--paso:3">
+            <a class="btn btn-uf btn-lg" th:if="${d != null}" th:href="@{/peliculas/{id}(id=${d.id})}">Comprar boletas</a>
+            <a class="btn btn-lg" th:classappend="${d != null} ? 'btn-outline-uf' : 'btn-uf'" th:href="@{/cartelera}">Ver cartelera</a>
+            <th:block th:if="${session.rol == null}">
+              <a class="btn btn-outline-uf btn-lg" th:href="@{/login}">Iniciar sesión</a>
+              <a class="btn btn-outline-uf btn-lg" th:href="@{/registro}">Registrarme</a>
+            </th:block>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -31,11 +50,11 @@
                  th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo}" loading="lazy">
             <div th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}" class="afiche-respaldo"
                  role="img" th:aria-label="'Afiche de ' + ${p.titulo}" th:text="${p.titulo}"></div>
+            <span class="badge badge-uf insignia-clasif" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
           </div>
           <div class="p-3">
-            <h3 class="h5 mb-2"><a class="enlace-tarjeta" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h3>
+            <h3 class="h5 mb-2"><a class="peli-enlace" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h3>
             <p class="mb-1 small text-suave" th:text="${p.genero.nombre} + ' · ' + ${p.duracionMin} + ' min'">Género · 100 min</p>
-            <span class="badge badge-uf" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
           </div>
         </article>
       </div>

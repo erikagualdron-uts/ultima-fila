@@ -10,7 +10,9 @@
       <h1>Crear cuenta</h1>
       <p class="text-suave">Regístrate como cliente para comprar tus boletas en línea.</p>
 
-      <form class="card card-uf p-3" th:action="@{/registro}" th:object="${registroForm}" method="post" novalidate>
+      <form class="card card-uf tarjeta-acceso" th:action="@{/registro}" th:object="${registroForm}" method="post" novalidate>
+        <div class="tarjeta-marca" aria-hidden="true">Última Fila</div>
+        <div class="p-3">
         <div class="mb-3">
           <label for="nombreCompleto" class="form-label">Nombre completo</label>
           <input type="text" class="form-control" id="nombreCompleto" th:field="*{nombreCompleto}"
@@ -31,14 +33,19 @@
         </div>
         <div class="mb-3">
           <label for="clave" class="form-label">Clave</label>
-          <input type="password" class="form-control" id="clave" th:field="*{clave}"
-                 th:classappend="${#fields.hasErrors('clave')} ? 'is-invalid'" maxlength="100"
-                 autocomplete="new-password" aria-describedby="ayudaClave">
+          <div class="input-group has-validation">
+            <input type="password" class="form-control" id="clave" th:field="*{clave}"
+                   th:classappend="${#fields.hasErrors('clave')} ? 'is-invalid'" maxlength="100"
+                   autocomplete="new-password" aria-describedby="ayudaClave">
+            <button type="button" class="btn btn-outline-uf" data-mostrar-clave="clave"
+                    aria-controls="clave" aria-pressed="false">Mostrar</button>
+            <div class="invalid-feedback" th:errors="*{clave}"></div>
+          </div>
           <div class="form-text" id="ayudaClave">Mínimo 8 caracteres.</div>
-          <div class="invalid-feedback" th:errors="*{clave}"></div>
         </div>
         <button type="submit" class="btn btn-uf">Registrarme</button>
         <p class="mb-0 mt-3 small text-suave">¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión</a></p>
+        </div>
       </form>
     </div>
   </div>

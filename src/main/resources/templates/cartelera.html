@@ -31,17 +31,21 @@
   </form>
 
   <div id="resultados" aria-live="polite">
-    <p class="text-suave mt-4" th:if="${peliculas.empty}">No se encontraron películas.</p>
+    <div class="vacio-uf" th:if="${peliculas.empty}">
+      <div class="butaca" aria-hidden="true"></div>
+      <p class="mb-0">No se encontraron películas.</p>
+    </div>
 
     <div class="row g-4 mt-1" th:unless="${peliculas.empty}">
       <div class="col-12 col-sm-6 col-lg-3" th:each="p, fila : ${peliculas.content}">
         <article class="peli h-100" th:style="'--paso:' + ${fila.index}">
           <div class="afiche">
             <img th:if="${p.posterUrl != null and !p.posterUrl.isBlank()}" th:src="${p.posterUrl}"
-                 th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo}" loading="lazy">
-            <div th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}" class="afiche-respaldo"
-                 role="img" th:aria-label="'Afiche de ' + ${p.titulo}" th:text="${p.titulo}"></div>
-            <span class="badge badge-uf insignia-clasif" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
+                 th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo},data-genero=${p.genero.nombre}" loading="lazy">
+            <th:block th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}">
+              <div th:replace="~{fragmentos/layout :: respaldoAfiche(${p})}"></div>
+            </th:block>
+            <span th:replace="~{fragmentos/layout :: clasificacion(${p.clasificacion})}"></span>
           </div>
           <div class="p-3">
             <h2 class="h5 mb-2"><a class="peli-enlace" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h2>

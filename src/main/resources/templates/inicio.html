@@ -11,9 +11,10 @@
         <div class="col-8 col-sm-5 col-md-4 col-lg-3" th:if="${d != null}">
           <div class="afiche afiche-hero entra" style="--paso:0">
             <img th:if="${d.posterUrl != null and !d.posterUrl.isBlank()}" th:src="${d.posterUrl}"
-                 th:alt="'Afiche de ' + ${d.titulo}" th:attr="data-titulo=${d.titulo}">
-            <div th:unless="${d.posterUrl != null and !d.posterUrl.isBlank()}" class="afiche-respaldo"
-                 role="img" th:aria-label="'Afiche de ' + ${d.titulo}" th:text="${d.titulo}"></div>
+                 th:alt="'Afiche de ' + ${d.titulo}" th:attr="data-titulo=${d.titulo},data-genero=${d.genero.nombre}">
+            <th:block th:unless="${d.posterUrl != null and !d.posterUrl.isBlank()}">
+              <div th:replace="~{fragmentos/layout :: respaldoAfiche(${d})}"></div>
+            </th:block>
           </div>
         </div>
         <div class="col-12" th:classappend="${d != null} ? 'col-md-8 col-lg-7 text-center text-md-start' : 'text-center'">
@@ -39,7 +40,7 @@
   </section>
 
   <section class="container py-4" aria-labelledby="titulo-destacadas">
-    <h2 id="titulo-destacadas">Películas destacadas</h2>
+    <h2 id="titulo-destacadas" class="titulo-seccion">Películas destacadas</h2>
     <p class="text-suave" th:if="${destacadas.empty}">Pronto tendremos nuevas películas.
       <a th:href="@{/cartelera}">Ver cartelera</a></p>
     <div class="row g-4 mt-1" th:unless="${destacadas.empty}">
@@ -47,10 +48,11 @@
         <article class="peli h-100" th:style="'--paso:' + ${fila.index}">
           <div class="afiche">
             <img th:if="${p.posterUrl != null and !p.posterUrl.isBlank()}" th:src="${p.posterUrl}"
-                 th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo}" loading="lazy">
-            <div th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}" class="afiche-respaldo"
-                 role="img" th:aria-label="'Afiche de ' + ${p.titulo}" th:text="${p.titulo}"></div>
-            <span class="badge badge-uf insignia-clasif" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
+                 th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo},data-genero=${p.genero.nombre}" loading="lazy">
+            <th:block th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}">
+              <div th:replace="~{fragmentos/layout :: respaldoAfiche(${p})}"></div>
+            </th:block>
+            <span th:replace="~{fragmentos/layout :: clasificacion(${p.clasificacion})}"></span>
           </div>
           <div class="p-3">
             <h3 class="h5 mb-2"><a class="peli-enlace" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h3>
@@ -63,17 +65,17 @@
 
   <section class="franja-uf" aria-labelledby="titulo-hoy">
     <div class="container py-4">
-      <h2 id="titulo-hoy">Funciones de hoy</h2>
+      <h2 id="titulo-hoy" class="titulo-seccion">Funciones de hoy</h2>
       <div aria-live="polite">
         <p class="mb-0" th:if="${funcionesHoy.empty}">Hoy no hay funciones programadas.
           <a th:href="@{/cartelera}">Ver cartelera</a></p>
         <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0" th:unless="${funcionesHoy.empty}">
           <li th:each="f : ${funcionesHoy}">
-            <span class="chip-funcion">
+            <a class="chip-funcion" th:href="@{/peliculas/{id}(id=${f.pelicula.id})}">
               <strong th:text="${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">18:00</strong>
               <span th:text="${f.pelicula.titulo}">Película</span> ·
               <span th:text="${f.sala.nombre}">Sala 1</span>
-            </span>
+            </a>
           </li>
         </ul>
       </div>
@@ -81,7 +83,7 @@
   </section>
 
   <section class="container py-4" aria-labelledby="titulo-pasos">
-    <h2 id="titulo-pasos">Cómo comprar</h2>
+    <h2 id="titulo-pasos" class="titulo-seccion">Cómo comprar</h2>
     <ol class="row g-3 list-unstyled mt-1">
       <li class="col-12 col-md-4">
         <div class="paso-uf"><span class="numero-paso" aria-hidden="true">1</span><span>Elige tu película</span></div>
@@ -96,7 +98,7 @@
   </section>
 
   <section class="container pb-2" aria-labelledby="titulo-salas">
-    <h2 id="titulo-salas">Salas y horarios</h2>
+    <h2 id="titulo-salas" class="titulo-seccion">Salas y horarios</h2>
     <div class="row g-3 mt-1">
       <div class="col-12 col-md-4" th:each="s : ${salas}">
         <article class="card-uf p-3 h-100 rounded">

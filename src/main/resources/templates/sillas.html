@@ -26,7 +26,7 @@
           <span class="letra" aria-hidden="true" th:text="${fila.key}">A</span>
           <th:block th:each="silla, estado : ${fila.value}">
             <button type="button" class="silla"
-                    th:classappend="${(estado.index == fila.value.size() / 2 ? 'pasillo' : '') + (!silla.activa or vendidas.contains(silla.id) ? ' ocupada' : '')}"
+                    th:classappend="${(estado.index == fila.value.size() / 2 ? 'pasillo' : '') + (!silla.activa ? ' fuera' : (vendidas.contains(silla.id) ? ' vendida' : ''))}"
                     th:attr="data-id=${silla.id},data-etiqueta=${fila.key + silla.numero},
                              aria-label=${'Silla ' + fila.key + silla.numero + ', ' + (!silla.activa ? 'fuera de servicio' : (vendidas.contains(silla.id) ? 'vendida' : 'libre'))},
                              aria-pressed='false'"
@@ -37,7 +37,8 @@
         <ul class="leyenda-sillas list-inline text-center mt-3 mb-0 small">
           <li class="list-inline-item"><span class="silla"></span> Libre</li>
           <li class="list-inline-item"><span class="silla elegida"></span> Elegida</li>
-          <li class="list-inline-item"><span class="silla ocupada"></span> Vendida o fuera de servicio</li>
+          <li class="list-inline-item"><span class="silla vendida"></span> Vendida</li>
+          <li class="list-inline-item"><span class="silla fuera"></span> Fuera de servicio</li>
         </ul>
       </div>
     </div>

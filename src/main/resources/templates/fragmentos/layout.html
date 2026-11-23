@@ -35,6 +35,15 @@
   </div>
 </nav>
 
+<nav th:fragment="menuAdmin(activo)" class="menu-admin" aria-label="Administración">
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link" th:classappend="${activo == 'generos'} ? 'active'" th:attr="aria-current=${activo == 'generos'} ? 'page'" th:href="@{/admin/generos}">Géneros</a></li>
+    <li class="nav-item"><a class="nav-link" th:classappend="${activo == 'peliculas'} ? 'active'" th:attr="aria-current=${activo == 'peliculas'} ? 'page'" th:href="@{/admin/peliculas}">Películas</a></li>
+    <li class="nav-item"><a class="nav-link" th:classappend="${activo == 'salas'} ? 'active'" th:attr="aria-current=${activo == 'salas'} ? 'page'" th:href="@{/admin/salas}">Salas</a></li>
+    <li class="nav-item"><a class="nav-link" th:classappend="${activo == 'funciones'} ? 'active'" th:attr="aria-current=${activo == 'funciones'} ? 'page'" th:href="@{/admin/funciones}">Funciones</a></li>
+  </ul>
+</nav>
+
 <div th:fragment="alertas" class="alertas-uf" aria-live="polite">
   <div class="aviso-uf" role="status" th:if="${mensaje != null}" th:text="${mensaje}"></div>
   <div class="aviso-uf error" role="alert" th:if="${error != null}" th:text="${error}"></div>

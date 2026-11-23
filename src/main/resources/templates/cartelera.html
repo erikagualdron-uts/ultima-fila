@@ -43,7 +43,7 @@
                  role="img" th:aria-label="'Afiche de ' + ${p.titulo}" th:text="${p.titulo}"></div>
           </div>
           <div class="p-3">
-            <h2 class="h5 mb-2" th:text="${p.titulo}">Título</h2>
+            <h2 class="h5 mb-2"><a class="peli-enlace" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h2>
             <p class="mb-1 small text-suave" th:text="${p.genero.nombre} + ' · ' + ${p.duracionMin} + ' min'">Género · 100 min</p>
             <span class="badge badge-uf" th:text="${p.clasificacion.name().replace('_', ' ')}">TODO PUBLICO</span>
           </div>

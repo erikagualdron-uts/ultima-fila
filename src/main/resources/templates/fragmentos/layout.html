@@ -9,7 +9,8 @@
 </head>
 <body>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark navbar-uf" aria-label="Navegación principal">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark navbar-uf" aria-label="Navegación principal"
+     th:with="plantilla=${#execInfo.templateStack[0].template}">
   <div class="container">
     <a class="navbar-brand" th:href="@{/}">Última Fila</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
@@ -18,13 +19,13 @@
     </button>
     <div class="collapse navbar-collapse" id="menuPrincipal">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" th:href="@{/cartelera}">Cartelera</a></li>
-        <li class="nav-item" th:if="${session.rol?.name() == 'ADMINISTRADOR'}"><a class="nav-link" th:href="@{/admin/peliculas}">Administración</a></li>
+        <li class="nav-item"><a class="nav-link" th:classappend="${plantilla == 'cartelera'} ? 'activo'" th:attr="aria-current=${plantilla == 'cartelera'} ? 'page'" th:href="@{/cartelera}">Cartelera</a></li>
+        <li class="nav-item" th:if="${session.rol?.name() == 'ADMINISTRADOR'}"><a class="nav-link" th:classappend="${plantilla.startsWith('admin/')} ? 'activo'" th:attr="aria-current=${plantilla.startsWith('admin/')} ? 'page'" th:href="@{/admin/peliculas}">Administración</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'TAQUILLERO'}"><a class="nav-link" th:href="@{/taquilla}">Taquilla</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'ACOMODADOR'}"><a class="nav-link" th:href="@{/acomodador}">Control de ingreso</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'CLIENTE'}"><a class="nav-link" th:href="@{/mis-boletas}">Mis boletas</a></li>
-        <li class="nav-item" th:if="${session.rol == null}"><a class="nav-link" th:href="@{/login}">Iniciar sesión</a></li>
-        <li class="nav-item" th:if="${session.rol == null}"><a class="nav-link" th:href="@{/registro}">Registrarse</a></li>
+        <li class="nav-item" th:if="${session.rol == null}"><a class="nav-link" th:classappend="${plantilla == 'login'} ? 'activo'" th:attr="aria-current=${plantilla == 'login'} ? 'page'" th:href="@{/login}">Iniciar sesión</a></li>
+        <li class="nav-item" th:if="${session.rol == null}"><a class="nav-link" th:classappend="${plantilla == 'registro'} ? 'activo'" th:attr="aria-current=${plantilla == 'registro'} ? 'page'" th:href="@{/registro}">Registrarse</a></li>
         <li class="nav-item" th:if="${session.rol != null}">
           <form th:action="@{/logout}" method="post" class="d-inline">
             <button type="submit" class="nav-link btn btn-link">Salir</button>
@@ -55,6 +56,11 @@
 
 <span th:fragment="clasificacion(valor)" class="badge badge-clasif" th:classappend="'clasif-' + ${#strings.toLowerCase(valor.name())}"
       th:text="${valor.name() == 'TODO_PUBLICO' ? 'Todo público' : '+' + #strings.substringAfter(valor.name(), 'MAYOR_')}">Todo público</span>
+
+<div th:fragment="respaldoAfiche(p)" class="afiche-respaldo" role="img" th:aria-label="'Afiche de ' + ${p.titulo}">
+  <span class="respaldo-titulo" th:text="${p.titulo}">Título</span>
+  <span class="respaldo-genero" th:text="${p.genero.nombre}">Género</span>
+</div>
 
 <div th:fragment="alertas" class="alertas-uf" aria-live="polite">
   <div class="aviso-uf" role="status" th:if="${mensaje != null}" th:text="${mensaje}"></div>

@@ -264,6 +264,7 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
 .menu-admin { margin-bottom: 1.5rem; }
 .menu-admin .nav-link { font-family: "Playfair Display", Georgia, serif; font-weight: 600; color: var(--uf-borgona); }
 .menu-admin .nav-link.active { border-bottom: 3px solid var(--uf-borgona); }
+@media (max-width: 575.98px) { .menu-admin .nav-link { padding: .5rem .6rem; } }
 .peli-enlace { color: inherit; text-decoration: none; }
 .peli-enlace::after { content: ""; position: absolute; inset: 0; z-index: 1; }
 .peli-enlace:hover { color: var(--uf-borgona); }

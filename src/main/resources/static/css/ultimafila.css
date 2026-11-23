@@ -205,7 +205,12 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
   margin-top: .5rem;
   animation: aviso var(--mov-media) var(--curva-salida) both;
 }
-.aviso-uf.error { background: #7a1f1f; }
+.aviso-uf.error { background: #7a1f1f; padding-right: 2.5rem; position: relative; }
+.aviso-cerrar {
+  position: absolute; top: .25rem; right: .25rem; width: 2rem; height: 2rem;
+  background: transparent; border: 0; border-radius: .25rem; color: #fff; font-size: 1.4rem; line-height: 1;
+}
+.aviso-cerrar:hover { background: rgba(255, 255, 255, .15); }
 .aviso-uf.saliendo { opacity: 0; transform: translateY(10px); transition: opacity var(--mov-media), transform var(--mov-media); }
 @keyframes aviso {
   from { opacity: 0; transform: translateY(10px); }
@@ -371,3 +376,15 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
 #resultados { transition: opacity var(--mov-rapida) var(--curva-suave); }
 #resultados.saliendo { opacity: 0; }
 .esqueleto-peli { aspect-ratio: 2 / 3; border: 1px solid var(--uf-borde); }
+
+/* Impresión: solo el contenido del comprobante */
+@media print {
+  .navbar-uf, .footer-uf, .alertas-uf, .pasos-compra, .btn { display: none !important; }
+  body { background: #fff; min-height: 0; display: block; }
+  .container { max-width: 100%; }
+  .boleta { border-color: #000; background: #fff; margin-bottom: .5rem; }
+  .boleta-talon { border-left-color: #000; }
+  .boleta-talon::before, .boleta-talon::after { background: #fff; }
+  .insignia-estado { background: none !important; color: #000; border: 1px solid #000; }
+  a { color: #000; text-decoration: none; }
+}

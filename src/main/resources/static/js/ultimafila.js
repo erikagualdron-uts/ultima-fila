@@ -9,12 +9,51 @@
     actualizar();
   }
 
-  // Los avisos se cierran solos a los 3,5 s
+  function cerrarAviso(aviso) {
+    aviso.classList.add("saliendo");
+    setTimeout(function () { aviso.remove(); }, 300);
+  }
+
+  // Los avisos de éxito se cierran solos a los 3,5 s; los de error se quedan hasta pulsar ×
   document.querySelectorAll(".aviso-uf").forEach(function (aviso) {
-    setTimeout(function () {
-      aviso.classList.add("saliendo");
-      setTimeout(function () { aviso.remove(); }, 300);
-    }, 3500);
+    if (!aviso.classList.contains("error")) {
+      setTimeout(function () { cerrarAviso(aviso); }, 3500);
+      return;
+    }
+    var boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "aviso-cerrar";
+    boton.setAttribute("aria-label", "Cerrar aviso");
+    boton.textContent = "\u00d7";
+    boton.addEventListener("click", function () { cerrarAviso(aviso); });
+    aviso.appendChild(boton);
+  });
+
+  // Formularios que no deben enviarse dos veces (data-envio-unico="Texto mientras procesa")
+  document.querySelectorAll("form[data-envio-unico]").forEach(function (formulario) {
+    var boton = formulario.querySelector('button[type="submit"]');
+    if (!boton) return;
+    var textoOriginal = boton.textContent;
+    formulario.addEventListener("submit", function (evento) {
+      if (boton.disabled) {
+        evento.preventDefault();
+        return;
+      }
+      boton.disabled = true;
+      boton.textContent = formulario.dataset.envioUnico;
+    });
+    // Al volver con «Atrás» el botón vuelve a estar disponible
+    window.addEventListener("pageshow", function (evento) {
+      if (evento.persisted) {
+        boton.disabled = false;
+        boton.textContent = textoOriginal;
+      }
+    });
+  });
+
+  // Botones «Imprimir»
+  document.querySelectorAll("[data-imprimir]").forEach(function (boton) {
+    boton.addEventListener("click", function () { window.print(); });
   });
 })();
 

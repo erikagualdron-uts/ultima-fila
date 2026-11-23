@@ -23,6 +23,7 @@
           <label for="descripcion" class="form-label">Descripción (opcional)</label>
           <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}"
                  th:classappend="${#fields.hasErrors('descripcion')} ? 'is-invalid'" maxlength="255">
+          <div class="form-text" data-contador="descripcion" aria-live="polite">Máximo 255 caracteres</div>
           <div class="invalid-feedback" th:errors="*{descripcion}"></div>
         </div>
         <div class="d-flex gap-2">
@@ -78,5 +79,6 @@
 <footer th:replace="~{fragmentos/layout :: footer}"></footer>
 <div th:replace="~{fragmentos/layout :: alertas}"></div>
 <th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+<script th:src="@{/js/admin.js}"></script>
 </body>
 </html>

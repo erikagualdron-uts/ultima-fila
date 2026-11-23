@@ -11,7 +11,7 @@
       <h1>Programar función</h1>
 
       <form class="card card-uf p-3" th:action="@{/admin/funciones}" th:object="${funcionForm}" method="post" novalidate>
-        <div class="alert alert-danger" role="alert" th:if="${#fields.hasGlobalErrors()}">
+        <div class="alerta-uf" role="alert" th:if="${#fields.hasGlobalErrors()}">
           <span th:each="e : ${#fields.globalErrors()}" th:text="${e}"></span>
         </div>
         <div class="mb-3">
@@ -19,7 +19,8 @@
           <select class="form-select" id="idPelicula" th:field="*{idPelicula}"
                   th:classappend="${#fields.hasErrors('idPelicula')} ? 'is-invalid'">
             <option value="">Elige una película</option>
-            <option th:each="p : ${peliculas}" th:value="${p.id}" th:text="${p.titulo + ' (' + p.duracionMin + ' min)'}"></option>
+            <option th:each="p : ${peliculas}" th:value="${p.id}" th:attr="data-duracion=${p.duracionMin}"
+                    th:text="${p.titulo + ' (' + p.duracionMin + ' min)'}"></option>
           </select>
           <div class="invalid-feedback" th:errors="*{idPelicula}"></div>
         </div>
@@ -46,6 +47,7 @@
             <div class="invalid-feedback" th:errors="*{hora}"></div>
           </div>
         </div>
+        <p class="fw-semibold" id="finEstimado" aria-live="polite"></p>
         <div class="mb-3">
           <label for="precio" class="form-label">Precio por silla ($)</label>
           <input type="number" class="form-control" id="precio" th:field="*{precio}" min="0" step="500"
@@ -65,5 +67,6 @@
 <footer th:replace="~{fragmentos/layout :: footer}"></footer>
 <div th:replace="~{fragmentos/layout :: alertas}"></div>
 <th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+<script th:src="@{/js/admin.js}"></script>
 </body>
 </html>

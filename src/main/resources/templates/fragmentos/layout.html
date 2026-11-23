@@ -19,7 +19,7 @@
     <div class="collapse navbar-collapse" id="menuPrincipal">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" th:href="@{/cartelera}">Cartelera</a></li>
-        <li class="nav-item" th:if="${session.rol?.name() == 'ADMINISTRADOR'}"><a class="nav-link" th:href="@{/admin}">Administración</a></li>
+        <li class="nav-item" th:if="${session.rol?.name() == 'ADMINISTRADOR'}"><a class="nav-link" th:href="@{/admin/peliculas}">Administración</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'TAQUILLERO'}"><a class="nav-link" th:href="@{/taquilla}">Taquilla</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'ACOMODADOR'}"><a class="nav-link" th:href="@{/acomodador}">Control de ingreso</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'CLIENTE'}"><a class="nav-link" th:href="@{/mis-boletas}">Mis boletas</a></li>
@@ -52,6 +52,9 @@
     <span th:text="${nombre}">Sillas</span>
   </li>
 </ol>
+
+<span th:fragment="clasificacion(valor)" class="badge badge-clasif" th:classappend="'clasif-' + ${#strings.toLowerCase(valor.name())}"
+      th:text="${valor.name() == 'TODO_PUBLICO' ? 'Todo público' : '+' + #strings.substringAfter(valor.name(), 'MAYOR_')}">Todo público</span>
 
 <div th:fragment="alertas" class="alertas-uf" aria-live="polite">
   <div class="aviso-uf" role="status" th:if="${mensaje != null}" th:text="${mensaje}"></div>

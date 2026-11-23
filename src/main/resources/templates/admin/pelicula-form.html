@@ -22,6 +22,7 @@
           <label for="sinopsis" class="form-label">Sinopsis</label>
           <textarea class="form-control" id="sinopsis" rows="4" th:field="*{sinopsis}"
                     th:classappend="${#fields.hasErrors('sinopsis')} ? 'is-invalid'" maxlength="1000"></textarea>
+          <div class="form-text" data-contador="sinopsis" aria-live="polite">Máximo 1000 caracteres</div>
           <div class="invalid-feedback" th:errors="*{sinopsis}"></div>
         </div>
         <div class="row">
@@ -46,16 +47,27 @@
             <select class="form-select" id="clasificacion" th:field="*{clasificacion}"
                     th:classappend="${#fields.hasErrors('clasificacion')} ? 'is-invalid'">
               <option value="">Elige una clasificación</option>
-              <option th:each="c : ${clasificaciones}" th:value="${c}" th:text="${c.name().replace('_', ' ')}"></option>
+              <option th:each="c : ${clasificaciones}" th:value="${c}"
+                      th:text="${c.name() == 'TODO_PUBLICO' ? 'Todo público' : '+' + #strings.substringAfter(c.name(), 'MAYOR_')}"></option>
             </select>
             <div class="invalid-feedback" th:errors="*{clasificacion}"></div>
           </div>
         </div>
         <div class="mb-3">
           <label for="posterUrl" class="form-label">Enlace del afiche (opcional)</label>
-          <input type="url" class="form-control" id="posterUrl" th:field="*{posterUrl}"
-                 th:classappend="${#fields.hasErrors('posterUrl')} ? 'is-invalid'" maxlength="500">
-          <div class="invalid-feedback" th:errors="*{posterUrl}"></div>
+          <div class="d-flex align-items-start gap-3">
+            <div class="flex-grow-1">
+              <input type="url" class="form-control" id="posterUrl" th:field="*{posterUrl}"
+                     th:classappend="${#fields.hasErrors('posterUrl')} ? 'is-invalid'" maxlength="500"
+                     aria-describedby="estadoVista">
+              <div class="invalid-feedback" th:errors="*{posterUrl}"></div>
+              <div class="form-text" id="estadoVista" aria-live="polite"></div>
+            </div>
+            <div class="vista-afiche miniatura" id="vistaAfiche">
+              <img id="vistaImagen" alt="Vista previa del afiche" hidden>
+              <div class="miniatura-respaldo" id="vistaRespaldo" role="img" aria-label="Sin vista previa del afiche">?</div>
+            </div>
+          </div>
         </div>
         <div class="form-check mb-3">
           <input type="checkbox" class="form-check-input" id="enCartelera" th:field="*{enCartelera}">
@@ -73,5 +85,6 @@
 <footer th:replace="~{fragmentos/layout :: footer}"></footer>
 <div th:replace="~{fragmentos/layout :: alertas}"></div>
 <th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+<script th:src="@{/js/admin.js}"></script>
 </body>
 </html>

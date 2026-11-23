@@ -26,7 +26,7 @@
         <p class="mb-3">Total: <strong class="precio" th:text="${'$ ' + #numbers.formatDecimal(total, 1, 'POINT', 0, 'COMMA')}">$ 24.000</strong></p>
 
         <p class="small text-suave">Pago simulado: no se cobra dinero real.</p>
-        <form th:action="@{/compras/confirmar}" method="post">
+        <form th:action="@{/compras/confirmar}" method="post" data-envio-unico="Procesando…">
           <input type="hidden" name="funcion" th:value="${funcion.id}">
           <input type="hidden" name="sillas" th:each="silla : ${sillas}" th:value="${silla.id}">
           <button type="submit" class="btn btn-uf">Pagar (simulado)</button>

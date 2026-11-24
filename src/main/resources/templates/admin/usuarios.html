@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Usuarios')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <nav th:replace="~{fragmentos/layout :: menuAdmin('usuarios')}"></nav>
+  <h1>Usuarios</h1>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-5">
+      <form class="card card-uf p-3" th:action="@{/admin/usuarios}" th:object="${personalForm}" method="post" novalidate>
+        <h2 class="h4">Nueva cuenta de personal</h2>
+        <div class="mb-3">
+          <label for="nombreCompleto" class="form-label">Nombre completo</label>
+          <input type="text" class="form-control" id="nombreCompleto" th:field="*{nombreCompleto}"
+                 th:classappend="${#fields.hasErrors('nombreCompleto')} ? 'is-invalid'" maxlength="120">
+          <div class="invalid-feedback" th:errors="*{nombreCompleto}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="documento" class="form-label">Documento</label>
+          <input type="text" class="form-control" id="documento" th:field="*{documento}"
+                 th:classappend="${#fields.hasErrors('documento')} ? 'is-invalid'" maxlength="20">
+          <div class="invalid-feedback" th:errors="*{documento}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="correo" class="form-label">Correo</label>
+          <input type="email" class="form-control" id="correo" th:field="*{correo}"
+                 th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid'" maxlength="120">
+          <div class="invalid-feedback" th:errors="*{correo}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="clave" class="form-label">Clave</label>
+          <input type="password" class="form-control" id="clave" th:field="*{clave}"
+                 th:classappend="${#fields.hasErrors('clave')} ? 'is-invalid'" maxlength="100" autocomplete="new-password">
+          <div class="form-text">Mínimo 8 caracteres</div>
+          <div class="invalid-feedback" th:errors="*{clave}"></div>
+        </div>
+        <div class="mb-3">
+          <label for="rol" class="form-label">Rol</label>
+          <select class="form-select" id="rol" th:field="*{rol}" th:classappend="${#fields.hasErrors('rol')} ? 'is-invalid'">
+            <option value="">Elige un rol</option>
+            <option th:each="r : ${rolesDePersonal}" th:value="${r}"
+                    th:text="${#strings.capitalize(#strings.toLowerCase(r))}">Taquillero</option>
+          </select>
+          <div class="invalid-feedback" th:errors="*{rol}"></div>
+        </div>
+        <button type="submit" class="btn btn-uf">Crear cuenta</button>
+      </form>
+    </div>
+
+    <div class="col-12 col-lg-7">
+      <form class="row g-2 align-items-end mb-3" th:action="@{/admin/usuarios}" method="get">
+        <div class="col-8 col-sm-6">
+          <label for="filtroRol" class="form-label">Filtrar por rol</label>
+          <select class="form-select" id="filtroRol" name="rol">
+            <option value="">Todos</option>
+            <option th:each="r : ${roles}" th:value="${r}" th:selected="${r == rolFiltro}"
+                    th:text="${#strings.capitalize(#strings.toLowerCase(r))}">Cliente</option>
+          </select>
+        </div>
+        <div class="col-4 col-sm-auto"><button type="submit" class="btn btn-outline-uf">Filtrar</button></div>
+      </form>
+
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <caption class="visually-hidden">Listado de usuarios</caption>
+          <thead>
+            <tr><th scope="col">Usuario</th><th scope="col">Rol</th><th scope="col">Estado</th><th scope="col" class="text-end">Acción</th></tr>
+          </thead>
+          <tbody aria-live="polite">
+            <tr th:each="u : ${usuarios}">
+              <td>
+                <span th:text="${u.nombreCompleto}">Nombre</span><br>
+                <span class="small text-suave" th:text="${u.correo}">correo@correo.test</span>
+              </td>
+              <td th:text="${#strings.capitalize(#strings.toLowerCase(u.rol))}">Cliente</td>
+              <td>
+                <span class="badge insignia-estado" th:classappend="${u.activo} ? 'estado-pagada' : 'estado-cancelada'"
+                      th:text="${u.activo} ? 'Activa' : 'Inactiva'">Activa</span>
+              </td>
+              <td class="text-end text-nowrap">
+                <form th:unless="${u.activo}" th:action="@{/admin/usuarios/{id}/estado(id=${u.id})}" method="post">
+                  <button type="submit" class="btn btn-sm btn-outline-uf" th:aria-label="'Activar a ' + ${u.nombreCompleto}">Activar</button>
+                </form>
+                <th:block th:if="${u.activo}">
+                  <button type="button" class="btn btn-sm btn-outline-uf" data-bs-toggle="modal"
+                          th:data-bs-target="'#inactivar' + ${u.id}" th:aria-label="'Inactivar a ' + ${u.nombreCompleto}">Inactivar</button>
+
+                  <div class="modal fade text-start" th:id="'inactivar' + ${u.id}" tabindex="-1"
+                       th:aria-labelledby="'titulo' + ${u.id}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <form class="modal-content" th:action="@{/admin/usuarios/{id}/estado(id=${u.id})}" method="post">
+                        <div class="modal-header">
+                          <h2 class="modal-title h5" th:id="'titulo' + ${u.id}">Inactivar cuenta</h2>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                          ¿Inactivar la cuenta de <strong th:text="${u.nombreCompleto}">Nombre</strong>? No podrá iniciar sesión,
+                          pero sus ventas se conservan.
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-uf" data-bs-dismiss="modal">Volver</button>
+                          <button type="submit" class="btn btn-uf">Inactivar</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </th:block>
+              </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(usuarios)}"><td colspan="4" class="text-suave">No hay usuarios con ese rol.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

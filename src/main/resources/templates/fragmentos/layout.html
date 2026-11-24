@@ -23,7 +23,7 @@
         <li class="nav-item" th:if="${session.rol?.name() == 'ADMINISTRADOR'}"><a class="nav-link" th:classappend="${plantilla.startsWith('admin/')} ? 'activo'" th:attr="aria-current=${plantilla.startsWith('admin/')} ? 'page'" th:href="@{/admin/peliculas}">Administración</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'TAQUILLERO'}"><a class="nav-link" th:href="@{/taquilla}">Taquilla</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'ACOMODADOR'}"><a class="nav-link" th:href="@{/acomodador}">Control de ingreso</a></li>
-        <li class="nav-item" th:if="${session.rol?.name() == 'CLIENTE'}"><a class="nav-link" th:href="@{/mis-boletas}">Mis boletas</a></li>
+        <li class="nav-item" th:if="${session.rol?.name() == 'CLIENTE'}"><a class="nav-link" th:classappend="${plantilla == 'mis-boletas'} ? 'activo'" th:attr="aria-current=${plantilla == 'mis-boletas'} ? 'page'" th:href="@{/mis-boletas}">Mis boletas</a></li>
         <li class="nav-item" th:if="${session.rol == null}"><a class="nav-link" th:classappend="${plantilla == 'login'} ? 'activo'" th:attr="aria-current=${plantilla == 'login'} ? 'page'" th:href="@{/login}">Iniciar sesión</a></li>
         <li class="nav-item" th:if="${session.rol == null}"><a class="nav-link" th:classappend="${plantilla == 'registro'} ? 'activo'" th:attr="aria-current=${plantilla == 'registro'} ? 'page'" th:href="@{/registro}">Registrarse</a></li>
         <li class="nav-item" th:if="${session.rol != null}">

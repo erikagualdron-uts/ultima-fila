@@ -52,7 +52,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [ ] Revisión cruzada de los PR de Yeziel
 
 ### Yeziel (YARC)
-- [ ] Migración de H2 a MySQL con perfiles
+- [x] Migración de H2 a MySQL con perfiles
 - [ ] REQ-CIN-018 Venta en taquilla (P-18, P-05, P-06, P-08)
 - [ ] REQ-CIN-019 Validación de boleta (P-19)
 - [ ] REQ-CIN-020 Rechazo de boletas inválidas (P-19)

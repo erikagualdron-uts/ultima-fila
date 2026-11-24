@@ -47,7 +47,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [x] REQ-CIN-014 Compra en línea en una transacción con pago simulado (P-05, P-06, P-08)
 - [x] REQ-CIN-015 Reglas de compra con bloqueo pesimista (P-06)
 - [x] REQ-CIN-016 Mis boletas y comprobante (P-07, P-08)
-- [ ] REQ-CIN-017 Cancelación dentro del plazo (P-07)
+- [x] REQ-CIN-017 Cancelación dentro del plazo (P-07)
 - [ ] REQ-CIN-023 Usuarios del personal (P-17)
 - [ ] Revisión cruzada de los PR de Yeziel
 

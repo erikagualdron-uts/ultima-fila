@@ -369,6 +369,13 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
 .estado-usada { background: var(--uf-texto); }
 .estado-cancelada { background: var(--uf-texto-suave); }
 
+/* Mis boletas: compra con una fila por boleta (sin tabla, sin desplazamiento horizontal) */
+.compra { background: var(--uf-tarjeta); border: 1px solid var(--uf-borde); border-radius: .5rem; padding: 1rem 1.25rem; }
+.fila-boleta { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 1rem; padding: .65rem 0; border-top: 1px solid var(--uf-borde); }
+.fila-boleta-silla { flex: none; min-width: 2.75rem; font-family: "Playfair Display", Georgia, serif; font-size: 1.5rem; line-height: 1; color: var(--uf-borgona); }
+.fila-boleta-detalle { flex: 1 1 12rem; min-width: 0; }
+.fila-boleta-codigo { flex: none; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+
 /* Tarjetas: insignia de clasificación sobre el afiche */
 .peli .afiche { position: relative; }
 .peli .afiche .badge-clasif { position: absolute; top: .5rem; left: .5rem; z-index: 1; border: 1px solid rgba(255, 255, 255, .75); }

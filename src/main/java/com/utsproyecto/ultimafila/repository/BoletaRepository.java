@@ -19,6 +19,11 @@ public interface BoletaRepository extends JpaRepository<Boleta, Long> {
 			+ "WHERE b.compra.id = :idCompra ORDER BY b.silla.fila, b.silla.numero")
 	List<Boleta> buscarDeCompra(@Param("idCompra") Long idCompra);
 
+	@Query("SELECT b FROM Boleta b JOIN FETCH b.compra c JOIN FETCH b.silla JOIN FETCH b.funcion f "
+			+ "JOIN FETCH f.pelicula JOIN FETCH f.sala WHERE c.cliente.id = :idCliente "
+			+ "ORDER BY c.fechaCompra DESC, c.id DESC, b.silla.fila, b.silla.numero")
+	List<Boleta> buscarDeCliente(@Param("idCliente") Long idCliente);
+
 	@Query("SELECT b.silla.id FROM Boleta b WHERE b.funcion.id = :idFuncion AND b.estado <> :estado")
 	List<Long> buscarIdsSillasOcupadas(@Param("idFuncion") Long idFuncion, @Param("estado") EstadoBoleta estado);
 }

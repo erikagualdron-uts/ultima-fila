@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Mis boletas')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <h1 class="h2">Mis boletas</h1>
+
+  <p th:if="${compras.isEmpty()}" class="text-suave">
+    Aún no tienes compras. <a th:href="@{/cartelera}">Mira la cartelera</a> y elige tu función.
+  </p>
+
+  <section th:each="entrada : ${compras}" class="compra mb-3" th:aria-label="'Compra ' + ${entrada.key.codigo}">
+    <h2 class="h5 mb-1">
+      <a th:href="@{/compras/{codigo}(codigo=${entrada.key.codigo})}" th:text="${entrada.key.codigo}">C-ABC12345</a>
+      <span class="badge insignia-estado ms-2" th:classappend="'estado-' + ${#strings.toLowerCase(entrada.key.estado)}"
+            th:text="${#strings.capitalize(#strings.toLowerCase(entrada.key.estado))}">Pagada</span>
+    </h2>
+    <p class="text-suave mb-2">
+      <span th:text="${#temporals.format(entrada.key.fechaCompra, 'dd/MM/yyyy HH:mm')}">24/11/2026 10:00</span> ·
+      Total <strong class="precio" th:text="${'$ ' + #numbers.formatDecimal(entrada.key.total, 1, 'POINT', 0, 'COMMA')}">$ 24.000</strong>
+    </p>
+    <ul class="list-unstyled mb-0">
+      <li class="fila-boleta" th:each="boleta : ${entrada.value}">
+        <span class="fila-boleta-silla" th:text="${boleta.silla.fila + boleta.silla.numero}"
+              th:aria-label="'Silla ' + ${boleta.silla.fila + boleta.silla.numero}">A1</span>
+        <span class="fila-boleta-detalle">
+          <strong th:text="${boleta.funcion.pelicula.titulo}">Película</strong><br>
+          <span class="text-suave">
+            <span th:text="${boleta.funcion.sala.nombre}">Sala 1</span> ·
+            <span th:text="${#temporals.format(boleta.funcion.fechaHoraInicio, 'dd/MM/yyyy HH:mm')}">01/12/2026 18:30</span>
+          </span>
+        </span>
+        <span class="fila-boleta-codigo">
+          <code class="boleta-codigo" th:text="${boleta.codigo}">B-ABC12345</code>
+          <span class="badge insignia-estado" th:classappend="'estado-' + ${#strings.toLowerCase(boleta.estado)}"
+                th:text="${#strings.capitalize(#strings.toLowerCase(boleta.estado))}">Vendida</span>
+        </span>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

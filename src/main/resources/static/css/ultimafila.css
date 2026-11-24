@@ -265,9 +265,12 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
   background: repeating-linear-gradient(45deg, #fffaf0 0 3px, var(--uf-silla-ocupada) 3px 6px);
   border: 1px dashed var(--uf-texto-suave);
 }
-.silla.pasillo { margin-left: 18px; }
+.silla.pasillo, .fila-sillas > form.pasillo { margin-left: 18px; }
 @keyframes pop { 50% { transform: scale(1.15); } }
-@media (max-width: 575.98px) { .silla { flex-basis: 22px; height: 21px; } .silla.pasillo { margin-left: 10px; } }
+@media (max-width: 575.98px) {
+  .silla { flex-basis: 22px; height: 21px; }
+  .silla.pasillo, .fila-sillas > form.pasillo { margin-left: 10px; }
+}
 #mapa { padding-bottom: .5rem; }
 .leyenda-sillas .silla { flex: none; width: 26px; }
 .leyenda-sillas .silla.elegida { animation: none; }
@@ -398,6 +401,7 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
 /* Clasificación: tono por edad, texto siempre visible */
 .badge-clasif { color: #fff; font-size: .75rem; margin-left: .25rem; }
 .peli .afiche .badge-clasif { margin-left: 0; }
+.table .badge-clasif { margin-left: 0; }
 .clasif-todo_publico { background: #1f5130; }
 .clasif-mayor_7 { background: #6e4f14; }
 .clasif-mayor_12 { background: #8a4b14; }
@@ -458,3 +462,37 @@ textarea:focus-visible, [tabindex]:focus-visible, .btn:focus-visible, .form-cont
 }
 .alerta-uf { margin-bottom: 1rem; padding: .75rem 1rem; background: var(--uf-tarjeta); border: 1px solid var(--uf-borde); border-left: 4px solid var(--uf-borgona); border-radius: .375rem; color: var(--uf-texto); }
 .chip-funcion:hover { border-color: var(--uf-borgona-hover); color: var(--uf-borgona); }
+
+/* Administración: miniatura de afiche y vista previa */
+.miniatura { flex: none; width: 40px; aspect-ratio: 2 / 3; overflow: hidden; border-radius: .25rem; background: linear-gradient(160deg, var(--uf-borgona), var(--uf-borgona-hover)); }
+.miniatura img { width: 100%; height: 100%; object-fit: cover; }
+.miniatura-respaldo {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #fff;
+  background: linear-gradient(160deg, var(--uf-borgona), var(--uf-borgona-hover)); outline: 1px solid var(--uf-dorado); outline-offset: -3px;
+  font-family: "Playfair Display", Georgia, serif; font-weight: 700;
+}
+.vista-afiche { width: 60px; }
+.vista-afiche .miniatura-respaldo { font-size: 1.5rem; }
+.vista-afiche img[hidden], .vista-afiche .miniatura-respaldo[hidden] { display: none; }
+
+/* Administración: sillas de la sala */
+.fila-sillas > form { flex: 0 1 26px; min-width: 0; display: flex; margin: 0; }
+.fila-sillas > form > .silla { flex: 1 1 auto; width: 100%; }
+@media (max-width: 575.98px) { .fila-sillas > form { flex-basis: 22px; } }
+.fila-sillas .letra { flex: none; }
+.silla .num {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: .62rem; font-weight: 600; line-height: 1; color: var(--uf-borgona); pointer-events: none;
+}
+.silla.elegida .num { color: #fff; }
+.silla.fuera .num { align-items: flex-end; padding-bottom: 1px; font-size: .5rem; color: var(--uf-texto); }
+.silla.con-cruz.fuera::after {
+  content: "\00d7"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font: 700 1rem/1 Lora, Georgia, serif; color: var(--uf-texto);
+}
+.silla.con-numero.con-cruz.fuera::after { align-items: flex-start; font-size: .8rem; }
+@media (max-width: 575.98px) { .silla .num { font-size: .55rem; } .silla.fuera .num { font-size: .45rem; } .silla.con-numero.con-cruz.fuera::after { font-size: .7rem; } }
+
+/* Administración: funciones */
+.estado-programada { background: #1f5130; }
+.fila-cancelada td:not(.estado) { text-decoration: line-through; opacity: .6; }

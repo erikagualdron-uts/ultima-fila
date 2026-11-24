@@ -17,17 +17,19 @@
     <div class="fila-sillas" th:each="fila : ${filas}">
       <span class="letra" aria-hidden="true" th:text="${fila.key}">A</span>
       <th:block th:each="silla, estado : ${fila.value}">
-        <form th:action="@{/admin/salas/{id}/sillas/{idSilla}/alternar(id=${sala.id},idSilla=${silla.id})}" method="post">
-          <button type="submit" class="silla"
-                  th:classappend="${(estado.index == fila.value.size() / 2 ? 'pasillo' : '') + (silla.activa ? '' : ' fuera')}"
-                  th:attr="aria-label=${'Silla ' + fila.key + silla.numero + ', ' + (silla.activa ? 'activa. Pulsa para marcarla fuera de servicio' : 'fuera de servicio. Pulsa para activarla')},title=${fila.key + silla.numero}"></button>
+        <form th:action="@{/admin/salas/{id}/sillas/{idSilla}/alternar(id=${sala.id},idSilla=${silla.id})}" method="post"
+              th:classappend="${estado.index == fila.value.size() / 2} ? 'pasillo'">
+          <button type="submit" class="silla con-numero con-cruz"
+                  th:classappend="${silla.activa ? '' : 'fuera'}"
+                  th:attr="aria-label=${'Silla ' + fila.key + silla.numero + ', ' + (silla.activa ? 'activa. Pulsa para marcarla fuera de servicio' : 'fuera de servicio. Pulsa para activarla')},title=${fila.key + silla.numero}"><span class="num" aria-hidden="true" th:text="${silla.numero}">1</span></button>
         </form>
       </th:block>
+      <span class="letra" aria-hidden="true" th:text="${fila.key}">A</span>
     </div>
 
     <ul class="leyenda-sillas list-inline text-center mt-3 mb-0 small">
       <li class="list-inline-item"><span class="silla"></span> Activa</li>
-      <li class="list-inline-item"><span class="silla fuera"></span> Fuera de servicio</li>
+      <li class="list-inline-item"><span class="silla con-cruz fuera"></span> Fuera de servicio</li>
     </ul>
   </div>
 </main>

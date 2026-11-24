@@ -21,6 +21,31 @@
       <span th:text="${#temporals.format(entrada.key.fechaCompra, 'dd/MM/yyyy HH:mm')}">24/11/2026 10:00</span> ·
       Total <strong class="precio" th:text="${'$ ' + #numbers.formatDecimal(entrada.key.total, 1, 'POINT', 0, 'COMMA')}">$ 24.000</strong>
     </p>
+    <div th:if="${entrada.key.estado.name() == 'PAGADA'}" class="mb-2">
+      <button type="button" class="btn btn-sm btn-outline-uf" data-bs-toggle="modal"
+              th:data-bs-target="'#cancelar-' + ${entrada.key.codigo}"
+              th:aria-label="'Cancelar la compra ' + ${entrada.key.codigo}">Cancelar compra</button>
+
+      <div class="modal fade" th:id="'cancelar-' + ${entrada.key.codigo}" tabindex="-1"
+           th:aria-labelledby="'titulo-' + ${entrada.key.codigo}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <form class="modal-content" th:action="@{/mis-boletas/{codigo}/cancelar(codigo=${entrada.key.codigo})}" method="post">
+            <div class="modal-header">
+              <h2 class="modal-title h5" th:id="'titulo-' + ${entrada.key.codigo}">Cancelar compra</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              ¿Cancelar la compra <strong th:text="${entrada.key.codigo}">C-ABC12345</strong>? Las sillas quedarán libres.
+              Solo se puede hasta 2 horas antes de la función.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-uf" data-bs-dismiss="modal">Volver</button>
+              <button type="submit" class="btn btn-uf">Cancelar compra</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     <ul class="list-unstyled mb-0">
       <li class="fila-boleta" th:each="boleta : ${entrada.value}">
         <span class="fila-boleta-silla" th:text="${boleta.silla.fila + boleta.silla.numero}"

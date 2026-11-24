@@ -14,7 +14,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 **Meta:** especificación v1.0 y MER aprobados, H2 con datos semilla, cartelera pública con búsqueda, filtros y detalle, los cuatro roles inician sesión viendo solo sus opciones, y el Administrador gestiona géneros, películas, salas, sillas y funciones sin cruces.
 
 ### Erika (EVGP)
-- [ ] Constitución SDD (`constitucion.md`)
+- [x] Constitución SDD (`constitucion.md`)
 - [x] Layout Thymeleaf con Bootstrap: navbar según rol, footer, alertas
 - [x] REQ-CIN-001 Cartelera paginada (P-01)
 - [x] REQ-CIN-002 Búsqueda y filtros por género y fecha (P-01)

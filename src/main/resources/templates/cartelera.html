@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragmentos/layout :: head('Cartelera')}"></head>
 <body>
 <nav th:replace="~{fragmentos/layout :: navbar}"></nav>
@@ -8,11 +8,12 @@
   <h1>En cartelera</h1>
 
   <form class="row g-2 align-items-end mt-2" th:action="@{/cartelera}" method="get" role="search">
-    <div class="col-12 col-md-4">
+    <input type="hidden" name="fecha" th:value="${fecha}" th:disabled="${fecha == null}">
+    <div class="col-12 col-md-5">
       <label for="q" class="form-label">Buscar por título</label>
       <input type="search" class="form-control" id="q" name="q" th:value="${q}" maxlength="100">
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-12 col-sm-6 col-md-4">
       <label for="genero" class="form-label">Género</label>
       <select class="form-select" id="genero" name="genero">
         <option value="">Todos</option>
@@ -20,15 +21,27 @@
                 th:selected="${genero != null and genero == g.id}">Género</option>
       </select>
     </div>
-    <div class="col-6 col-md-3">
-      <label for="fecha" class="form-label">Fecha</label>
-      <input type="date" class="form-control" id="fecha" name="fecha" th:value="${fecha}">
-    </div>
-    <div class="col-12 col-md-2 d-flex gap-2">
+    <div class="col-12 col-sm-6 col-md-3 d-flex gap-2">
       <button type="submit" class="btn btn-uf flex-fill">Filtrar</button>
       <a class="btn btn-outline-uf" th:href="@{/cartelera}">Limpiar</a>
     </div>
   </form>
+
+  <nav class="tira-fechas mt-3" aria-label="Filtrar por fecha">
+    <a class="chip-fecha" th:classappend="${fecha == null} ? 'activo'" th:attr="aria-current=${fecha == null} ? 'true'"
+       th:href="@{/cartelera(q=${q},genero=${genero})}">Todas</a>
+    <a class="chip-fecha" th:classappend="${fecha != null and fecha == hoy} ? 'activo'" th:attr="aria-current=${fecha != null and fecha == hoy} ? 'true'"
+       th:href="@{/cartelera(q=${q},genero=${genero},fecha=${hoy})}">Hoy</a>
+    <a class="chip-fecha" th:classappend="${fecha != null and fecha == hoy.plusDays(1)} ? 'activo'" th:attr="aria-current=${fecha != null and fecha == hoy.plusDays(1)} ? 'true'"
+       th:href="@{/cartelera(q=${q},genero=${genero},fecha=${hoy.plusDays(1)})}">Mañana</a>
+    <div class="calendario-uf" id="calendario" th:attr="data-dias=${#strings.listJoin(dias, ',')},data-hoy=${hoy},data-fecha=${fecha}">
+      <button type="button" class="chip-fecha chip-calendario" id="btn-calendario" aria-haspopup="dialog" aria-expanded="false" aria-controls="panel-calendario"
+              th:with="otra=${fecha != null and fecha != hoy and fecha != hoy.plusDays(1)}" th:classappend="${otra} ? 'activo'">
+        <span th:text="${otra} ? ${#temporals.format(fecha, 'd MMM', new java.util.Locale('es', 'CO'))} : 'Elegir fecha'">Elegir fecha</span>
+      </button>
+      <div class="panel-calendario" id="panel-calendario" role="dialog" aria-label="Elegir fecha" hidden></div>
+    </div>
+  </nav>
 
   <div id="resultados" aria-live="polite">
     <div class="vacio-uf" th:if="${peliculas.empty}">
@@ -36,22 +49,9 @@
       <p class="mb-0">No se encontraron películas.</p>
     </div>
 
-    <div class="row g-4 mt-1" th:unless="${peliculas.empty}">
-      <div class="col-12 col-sm-6 col-lg-3" th:each="p, fila : ${peliculas.content}">
-        <article class="peli h-100" th:style="'--paso:' + ${fila.index}">
-          <div class="afiche">
-            <img th:if="${p.posterUrl != null and !p.posterUrl.isBlank()}" th:src="${p.posterUrl}"
-                 th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo},data-genero=${p.genero.nombre}" loading="lazy">
-            <th:block th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}">
-              <div th:replace="~{fragmentos/layout :: respaldoAfiche(${p})}"></div>
-            </th:block>
-            <span th:replace="~{fragmentos/layout :: clasificacion(${p.clasificacion})}"></span>
-          </div>
-          <div class="p-3">
-            <h2 class="h5 mb-2"><a class="peli-enlace" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h2>
-            <p class="mb-1 small text-suave" th:text="${p.genero.nombre} + ' · ' + ${p.duracionMin} + ' min'">Género · 100 min</p>
-          </div>
-        </article>
+    <div class="row g-3 g-md-4 mt-1" th:unless="${peliculas.empty}">
+      <div class="col-6 col-md-4 col-lg-3" th:each="p, fila : ${peliculas.content}">
+        <article th:replace="~{fragmentos/layout :: tarjetaPeli(${p}, ${fila.index}, 2)}"></article>
       </div>
     </div>
   </div>
@@ -77,5 +77,6 @@
 <div th:replace="~{fragmentos/layout :: alertas}"></div>
 <th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
 <script th:src="@{/js/cartelera.js}"></script>
+<script th:src="@{/js/calendario.js}"></script>
 </body>
 </html>

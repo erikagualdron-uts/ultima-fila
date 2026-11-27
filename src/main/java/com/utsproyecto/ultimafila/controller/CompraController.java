@@ -178,7 +178,7 @@ public class CompraController {
 
 	// Reglas de compra: función iniciada o cancelada (BR-005), máximo 6 boletas (BR-002), silla vendida (BR-001);
 	// en taquilla solo se venden funciones del día
-	private String motivoRechazo(Funcion funcion, List<Silla> sillas, Rol rol) {
+	String motivoRechazo(Funcion funcion, List<Silla> sillas, Rol rol) {
 		if (funcion.getEstado() == EstadoFuncion.CANCELADA) {
 			return "La función fue cancelada";
 		}

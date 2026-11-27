@@ -70,14 +70,9 @@ public class AcomodadorController {
 		} else {
 			Boleta boleta = encontrada.get();
 			Funcion funcion = boleta.getFuncion();
-			if (boleta.getEstado() == EstadoBoleta.CANCELADA) {
-				resultado = "Boleta cancelada";
-			} else if (boleta.getEstado() == EstadoBoleta.USADA) {
-				resultado = "Boleta ya usada a las " + boleta.getFechaIngreso().format(HORA);
-			} else if (ahora.isBefore(funcion.getFechaHoraInicio().minusMinutes(MINUTOS_ANTES_DEL_INGRESO))) {
-				resultado = "Aún no se permite el ingreso";
-			} else if (ahora.isAfter(funcion.getFechaHoraFin())) {
-				resultado = "La función ya terminó";
+			String rechazo = motivoRechazoIngreso(boleta, ahora);
+			if (rechazo != null) {
+				resultado = rechazo;
 			} else {
 				boleta.setEstado(EstadoBoleta.USADA);
 				boleta.setFechaIngreso(ahora);
@@ -89,6 +84,24 @@ public class AcomodadorController {
 		flash.addFlashAttribute("valida", valida);
 		flash.addFlashAttribute("resultado", resultado);
 		return "redirect:/acomodador";
+	}
+
+	// Motivo por el que una boleta no puede ingresar, o null si puede (BR-CIN-006: desde 30 min antes hasta el fin)
+	static String motivoRechazoIngreso(Boleta boleta, LocalDateTime ahora) {
+		Funcion funcion = boleta.getFuncion();
+		if (boleta.getEstado() == EstadoBoleta.CANCELADA) {
+			return "Boleta cancelada";
+		}
+		if (boleta.getEstado() == EstadoBoleta.USADA) {
+			return "Boleta ya usada a las " + boleta.getFechaIngreso().format(HORA);
+		}
+		if (ahora.isBefore(funcion.getFechaHoraInicio().minusMinutes(MINUTOS_ANTES_DEL_INGRESO))) {
+			return "Aún no se permite el ingreso";
+		}
+		if (ahora.isAfter(funcion.getFechaHoraFin())) {
+			return "La función ya terminó";
+		}
+		return null;
 	}
 
 	// P-20: mapa de una función del día con sillas libres, vendidas por ingresar e ingresadas y el total de cada estado

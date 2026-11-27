@@ -61,7 +61,7 @@ Pasarela de pagos real (el pago es simulado), descuentos, promociones y membres�
 
 ## Datos semilla (`data.sql`, compatible H2 y MySQL)
 
-5 géneros, 10 películas, 3 salas con sus sillas, funciones de dos semanas, 1 administrador, 1 taquillero, 1 acomodador y 2 clientes. Todo ficticio.
+8 géneros, 12 películas reales con afiche local, 3 salas con sus sillas, funciones de dos semanas, 1 administrador, 1 taquillero, 1 acomodador y 2 clientes. Los demás datos (cine, salas, usuarios) son ficticios.
 
 ## Definiciones
 

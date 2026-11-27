@@ -23,7 +23,7 @@ cd ultima-fila
 
 En Windows (PowerShell o CMD): `.\mvnw.cmd spring-boot:run`. Cuando aparezca `Started UltimaFilaApplication`, abre **http://localhost:8093**.
 
-- Los datos de ejemplo se **recrean en cada arranque** (5 géneros, 10 películas, 3 salas, funciones de dos semanas y 5 usuarios). Lo que se haga en una sesión no se conserva al reiniciar.
+- Los datos de ejemplo se **recrean en cada arranque** (8 géneros, 12 películas, 3 salas, funciones de dos semanas y 5 usuarios). Lo que se haga en una sesión no se conserva al reiniciar.
 - La base es un archivo en `./data/` (fuera de Git). Solo puede haber **una instancia** a la vez: si arrancas dos, la segunda falla con «The file is locked: ultimafila.mv.db».
 - Si el puerto 8093 está ocupado, usa otro: `./mvnw spring-boot:run "-Dspring-boot.run.arguments=--server.port=8094"`.
 - En macOS o Linux, si `./mvnw` responde «Permission denied», ejecuta `chmod +x mvnw` (o usa `sh mvnw spring-boot:run`).
@@ -139,6 +139,12 @@ especificaciones   constitución, requisitos, MER, pantallas, tareas y resultado
 ```
 
 Documentación del proyecto: [`especificaciones/requisitos.md`](especificaciones/requisitos.md) (25 requisitos con criterios Given/When/Then), [`especificaciones/mer.md`](especificaciones/mer.md), [`especificaciones/pantallas.md`](especificaciones/pantallas.md), [`especificaciones/tasks.md`](especificaciones/tasks.md), [`DISENO.md`](DISENO.md) e [`INSTRUCCIONES.md`](INSTRUCCIONES.md).
+
+## Afiches de las películas
+
+Las 12 películas de ejemplo son títulos reales y sus afiches están en `src/main/resources/static/img/posters/`, para que la cartelera se vea completa sin internet. **Los afiches son material de terceros** (sus titulares son los estudios y distribuidores de cada película) y se usan **solo con fines académicos**, dentro de este proyecto de la UTS; no se ofrecen con licencia de reutilización ni se usan comercialmente.
+
+Se descargaron de estos sitios: acsta.net (Sensacine: John Wick, Mad Max, Coco, IT, Spider-Man, Mi pobre angelito y Free Solo), media-amazon.com (Titanic, La La Land, Interestelar y Blade Runner 2049) y numax.org (El resplandor). Si un titular pide retirar un afiche, se borra el archivo y su fila queda con el degradado de respaldo.
 
 ## Decisiones
 

@@ -593,6 +593,12 @@ button.silla.elegida:hover { background: var(--uf-dorado-claro); }
 .fila-boleta-detalle { flex: 1 1 12rem; min-width: 0; }
 .fila-boleta-codigo { flex: none; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
 
+/* P-19: resultado de validar una boleta (verde = ingresa, rojo = rechazada) */
+.resultado-ingreso { border: 1px solid; border-radius: .9rem; padding: 1rem 1.25rem; color: #fff; overflow-wrap: anywhere; }
+.resultado-ingreso.valido { background: #1f5130; border-color: #4f9a69; }
+.resultado-ingreso.rechazado { background: #6e1a1f; border-color: #ff9a9a; }
+.resultado-detalle { font-family: var(--fuente-marca); font-size: 2rem; letter-spacing: .03em; line-height: 1.1; }
+
 /* Inicio */
 .hero-uf {
   position: relative;

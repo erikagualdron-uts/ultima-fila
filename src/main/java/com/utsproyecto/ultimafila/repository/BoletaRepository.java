@@ -2,13 +2,17 @@ package com.utsproyecto.ultimafila.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.utsproyecto.ultimafila.model.Boleta;
 import com.utsproyecto.ultimafila.model.EstadoBoleta;
+
+import jakarta.persistence.LockModeType;
 
 public interface BoletaRepository extends JpaRepository<Boleta, Long> {
 
@@ -34,4 +38,9 @@ public interface BoletaRepository extends JpaRepository<Boleta, Long> {
 
 	@Query("SELECT b.silla.id FROM Boleta b WHERE b.funcion.id = :idFuncion AND b.estado <> :estado")
 	List<Long> buscarIdsSillasOcupadas(@Param("idFuncion") Long idFuncion, @Param("estado") EstadoBoleta estado);
+
+	// Bloquea solo la fila de la boleta: dos acomodadores no pueden validarla a la vez (BR-CIN-006)
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("SELECT b FROM Boleta b WHERE b.codigo = :codigo")
+	Optional<Boleta> buscarParaValidar(@Param("codigo") String codigo);
 }

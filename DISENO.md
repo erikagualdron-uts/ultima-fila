@@ -1,52 +1,74 @@
-# Diseño de Última Fila
+# Diseño de The Back Row
 
-Estilo **clásico de cine de barrio**: fondo crema, borgoña como color principal y dorado solo como detalle. Referencia visual: `ejemplo_cartelera_v4.html` (cartelera, mapa de sillas, avisos y modal de administración).
+Estilo **sala de cine en modo oscuro**: fondo borgoña casi negro, tarjetas borgoña oscuro con bordes dorados finos y dorado solo como detalle (aros, líneas, precios, botones secundarios). La marca visible es **The Back Row** (el proyecto y el código siguen llamándose Última Fila).
+
+## Logo
+
+Sale de `Logo arreglado.png` (emblema circular + «THE BACK ROW»), sin redibujarlo. Archivos en `static/img/`:
+
+| Archivo | Uso |
+|---|---|
+| `emblema-backrow-128.png` | Navbar (44 px), footer, cabecera del boleto |
+| `emblema-backrow-256.png` | Inicio y tarjeta de login/registro |
+| `favicon-32.png` | Favicon |
+| `apple-touch-icon.png` | Icono al guardar en el celular (180 px) |
+| `logo-backrow.png` | Logo completo con texto (uso sobre fondo claro, p. ej. documentos) |
+
+Sobre fondo oscuro el texto de la marca se escribe en HTML con Bebas Neue al lado del emblema, porque el texto del PNG es borgoña oscuro y no contrasta.
 
 ## Paleta (variables en `:root` de `static/css/ultimafila.css`)
 
 | Variable | Valor | Uso |
 |---|---|---|
-| `--uf-fondo` | `#f6efe1` | Fondo de la página (crema) |
-| `--uf-tarjeta` | `#fffaf0` | Tarjetas, modales, franjas |
-| `--uf-borde` | `#e2d3b3` | Bordes de tarjetas y campos |
-| `--uf-borgona` | `#651823` | Navbar, botones principales, títulos |
-| `--uf-borgona-hover` | `#4a1019` | Hover de botones principales |
-| `--uf-dorado` | `#c9a45c` | Solo detalles: línea bajo la navbar, foco, pantalla de la sala |
-| `--uf-precio` | `#6e4f14` | Precios |
-| `--uf-texto` | `#2b2320` | Texto principal |
-| `--uf-texto-suave` | `#5e514a` | Texto secundario y metadatos |
+| `--uf-fondo` | `#1a0a0d` | Fondo de la página |
+| `--uf-tarjeta` | `#2a1015` | Tarjetas, modales, filas de función |
+| `--uf-tarjeta-alta` | `#36161d` | Degradado de boletos, filas en hover |
+| `--uf-borde` | `#c9a45c` al 38 % | Bordes finos de tarjetas, campos y tablas |
+| `--uf-borgona` | `#651823` | Navbar, cabecera de tablas y modales |
+| `--uf-borgona-boton` | `#8e2433` | Botón principal (texto blanco) |
+| `--uf-borgona-hover` | `#a52d3f` | Hover del botón principal |
+| `--uf-dorado` | `#c9a45c` | Detalles: línea bajo la navbar, aros, foco, pantalla, sillas elegidas, botones secundarios |
+| `--uf-dorado-claro` | `#e3c58a` | Texto dorado (botón secundario, número de silla, fechas) |
+| `--uf-precio` | `#e0c07d` | Precios |
+| `--uf-texto` | `#f3e9dc` | Texto principal |
+| `--uf-texto-suave` | `#c4b2a3` | Texto secundario y metadatos |
+| `--uf-enlace` | `#e8c987` | Enlaces |
 
-Estados de función: pocas sillas `#e8a33d` con texto `#2b1a00`; agotada `#3d3530` con texto blanco. Footer `#2b2320` con texto `#cbbca6`.
+Bootstrap usa su modo oscuro (`data-bs-theme="dark"` en `<html>`), y la hoja propia redefine sus variables con esta paleta, así formularios, tablas, modales y paginación quedan iguales en todas las pantallas.
+
+Estados de función: pocas sillas `#e8a33d` con texto `#2b1a00` y borde punteado; agotada `#3d2a2d` tachada. Footer `#12070a`.
 
 ## Tipografía
 
-- **Playfair Display** (600, 700 e itálica 700): títulos `h1`–`h3`, marca de la navbar, pestañas, títulos de modal.
-- **Lora** (400, 600 e itálica 400): todo el texto, formularios y tablas.
-- Respaldo: `Georgia, serif`. Como la app debe funcionar sin internet, las fuentes se guardan en `static/fonts/` (woff2) con `@font-face`.
-- Título principal con `clamp(2rem, 5vw, 3.2rem)`. Sinopsis máximo 46 caracteres por línea.
+- **Bebas Neue**: marca, `h1`–`h3`, títulos de película, horas de función, pestañas, títulos de modal y número de silla del boleto.
+- **Inter** (variable 400–700): todo el texto, formularios, tablas y botones.
+- Respaldo: `Oswald, "Arial Narrow", Impact` para la marca y `"Segoe UI", system-ui, Arial` para el texto. Como la app debe funcionar sin internet, las fuentes se guardan en `static/fonts/` (`bebas-neue-400.woff2`, `inter-variable.woff2`) con `@font-face`.
+- Título principal con `clamp(2.4rem, 6vw, 3.6rem)`. Sinopsis máximo 46 caracteres por línea.
 
 ## Componentes Bootstrap 5
 
-| Componente | Uso en Última Fila |
+| Componente | Uso en The Back Row |
 |---|---|
-| Navbar (`navbar-dark`, `sticky-top`) | Fondo borgoña, borde inferior dorado 2 px, marca en Playfair itálica, opciones según rol |
-| Card (`.peli`) | Tarjeta de película con afiche 2:3, insignia de clasificación y estado; en celular pasa a horizontal |
-| Botones `.btn-uf` y `.btn-hora` | Principal borgoña relleno; horario con borde borgoña (punteado si quedan pocas sillas, tachado si está agotada) |
-| Nav tabs | «En cartelera» / «Próximos estrenos», activa con línea borgoña de 3 px |
-| Form, form-select | Bordes `--uf-borde`; errores con `th:errors` e `.invalid-feedback` |
-| Table | Listados de administración, con búsqueda y paginación |
-| Modal | Confirmar borrado o cancelación y formularios de administración |
+| Navbar (`navbar-dark`, `sticky-top`) | Fondo `#651823`, borde inferior dorado 2 px, emblema con aro dorado y «The Back Row» en Bebas Neue, opciones según rol |
+| Tarjeta de película (`.peli`, fragmento `tarjetaPeli`) | Póster 2:3 grande con esquinas de 0,9 rem; cinta inferior con clasificación y duración; título en Bebas Neue; en hover sube 6 px, se marca el aro dorado y aparece «Comprar boletas». Dos por fila en celular |
+| Botones `.btn-uf`, `.btn-outline-uf` y `.btn-hora` | Principal borgoña relleno; secundario y horario con borde y texto dorados (punteado y ámbar si quedan pocas sillas, tachado si está agotada) |
+| Nav tabs | Bebas Neue, activa con línea dorada de 3 px |
+| Form, form-select | Fondo `#1f0c10`, borde dorado fino; errores con `th:errors` e `.invalid-feedback` |
+| Table | Cabecera borgoña con línea dorada, cuerpo `--uf-tarjeta`, contorno redondeado |
+| Modal | Fondo de tarjeta, borde dorado, cabecera borgoña |
 | Badge | Clasificación, estado de compra y boleta |
-| Alert / avisos | Mensajes flash del patrón PRG; avisos oscuros con borde dorado abajo a la derecha |
-| Pagination | Cartelera (8 por página) y tablas |
+| Alert / avisos | Avisos oscuros con borde dorado abajo a la derecha |
+| Pagination | Página activa dorada con texto oscuro |
 
-**Mapa de sillas:** pantalla dorada curva al frente, filas con letra, pasillo central. Libre: blanca con borde borgoña. Elegida: borgoña. Vendida o fuera de servicio: gris `#cfc4b6`, deshabilitada. Siempre con leyenda. Sillas de 26×24 px (22×21 px en celular).
+**Mapa de sillas:** sala en penumbra (degradado casi negro con un halo dorado arriba), pantalla dorada curva con brillo y la palabra «PANTALLA», filas con letra y pasillo central. Libre: clara `#efe4d2`. Elegida: dorada con ✓ y brillo. Vendida: apagada `#4a2c31` con ×. Fuera de servicio: rayada. Siempre con leyenda. Sillas de 26×24 px (22×21 px en celular).
 
-**Afiches:** imagen por enlace (`poster_url`) con `object-fit: cover`; si falla, degradado con el título en Playfair.
+**Boleto de cine:** el resumen de sillas, la confirmación (`.boleto`) y el comprobante (`.boleta` con talón) se ven como boletas: borde dorado, líneas punteadas y muescas laterales perforadas. Sin código QR, porque generarlo exige una librería y el stack no permite agregar ninguna; el código de cada boleta va en grande en el talón.
+
+**Afiches:** imagen por enlace (`poster_url`) con `object-fit: cover`; si falla, degradado borgoña con el título en Bebas Neue y marco dorado.
 
 ## Accesibilidad
 
-- Contraste mínimo AA (4,5:1 en texto normal). No usar dorado para texto sobre crema.
+- Contraste mínimo AA (4,5:1 en texto normal). Texto principal `#f3e9dc` sobre `#1a0a0d` ≈ 16:1; secundario `#c4b2a3` ≈ 9:1; dorado claro `#e3c58a` ≈ 11:1. El dorado `#c9a45c` no se usa para texto pequeño sobre borgoña.
 - Foco visible en todo elemento interactivo: `outline: 3px solid var(--uf-dorado); outline-offset: 2px`.
 - El color nunca es la única señal: horarios agotados van tachados, pocas sillas con borde punteado y las sillas tienen `aria-label` («Silla C4, libre»).
 - Toda imagen con `alt`; afiche de respaldo con `role="img"` y `aria-label`.
@@ -82,7 +104,7 @@ El movimiento es sutil y moderado. Sirve para dar contexto (qué cambió, qué s
 | Elemento | Animación | Propiedades | Duración |
 |---|---|---|---|
 | Tarjetas de película | Entran con desvanecido hacia arriba (12 px), retraso escalonado de 60 ms por tarjeta (máximo 8 pasos) | opacity, transform | 0,4 s |
-| Hover de tarjeta | Sube 4 px y la sombra se marca más | transform, opacity de la sombra | 0,25 s |
+| Hover de tarjeta | Sube 6 px, se marca la sombra con aro dorado y aparece «Comprar boletas» | transform, opacity | 0,25 s |
 | Afiche en hover | Se acerca un poco (escala 1,04) | transform | 0,4 s |
 | Botones | Color suave y presión leve al hacer clic (escala 0,97) | color, fondo, transform | 0,15 s |
 | Sillas | Cambian de color al elegirlas y hacen un «pop» corto (escala 1,15 y vuelve) | fondo, transform | 0,25 s |
@@ -117,7 +139,7 @@ El movimiento es sutil y moderado. Sirve para dar contexto (qué cambió, qué s
     transition-duration: .01ms !important;
     scroll-behavior: auto !important;
   }
-  .peli:hover, .peli:hover .afiche img, .btn:active, .navbar.compacta .navbar-brand { transform: none; }
+  .peli:hover, .peli:focus-within, .peli:hover .afiche img, .peli-cta span, .btn:active, .navbar-uf.compacta .navbar-brand { transform: none; }
   .esqueleto::after { display: none; }
 }
 ```

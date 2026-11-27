@@ -1,5 +1,6 @@
 package com.utsproyecto.ultimafila.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,18 @@ public interface BoletaRepository extends JpaRepository<Boleta, Long> {
 
 	@Query("SELECT b.silla.id FROM Boleta b WHERE b.funcion.id = :idFuncion AND b.estado <> :estado")
 	List<Long> buscarIdsSillasOcupadas(@Param("idFuncion") Long idFuncion, @Param("estado") EstadoBoleta estado);
+
+	// Ventas del día (REQ-CIN-022): boletas no canceladas de compras hechas entre dos instantes
+	@Query("SELECT COUNT(b) FROM Boleta b WHERE b.estado <> :estado AND b.compra.fechaCompra >= :desde "
+			+ "AND b.compra.fechaCompra < :hasta")
+	long contarVendidasEntre(@Param("estado") EstadoBoleta estado, @Param("desde") LocalDateTime desde,
+			@Param("hasta") LocalDateTime hasta);
+
+	// Devuelve null cuando no hay ventas en el rango
+	@Query("SELECT SUM(b.precio) FROM Boleta b WHERE b.estado <> :estado AND b.compra.fechaCompra >= :desde "
+			+ "AND b.compra.fechaCompra < :hasta")
+	BigDecimal sumarIngresoEntre(@Param("estado") EstadoBoleta estado, @Param("desde") LocalDateTime desde,
+			@Param("hasta") LocalDateTime hasta);
 
 	// Bloquea solo la fila de la boleta: dos acomodadores no pueden validarla a la vez (BR-CIN-006)
 	@Lock(LockModeType.PESSIMISTIC_WRITE)

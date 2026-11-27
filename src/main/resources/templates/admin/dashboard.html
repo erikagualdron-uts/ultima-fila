@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Dashboard')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <nav th:replace="~{fragmentos/layout :: menuAdmin('dashboard')}"></nav>
+  <h1 class="mb-1">Dashboard</h1>
+  <p class="text-suave" th:text="${#temporals.format(hoy, 'dd/MM/yyyy')}">27/11/2026</p>
+
+  <section aria-labelledby="titulo-resumen">
+    <h2 class="visually-hidden" id="titulo-resumen">Resumen del día</h2>
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-md-4">
+        <div class="metrica">
+          <span class="metrica-valor" th:text="${funciones.size()}">3</span>
+          <span class="metrica-nombre" th:text="${funciones.size() == 1} ? 'función hoy' : 'funciones hoy'">funciones hoy</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="metrica">
+          <span class="metrica-valor" th:text="${boletasVendidas}">50</span>
+          <span class="metrica-nombre" th:text="${boletasVendidas == 1} ? 'boleta vendida hoy' : 'boletas vendidas hoy'">boletas vendidas hoy</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="metrica">
+          <span class="metrica-valor precio" th:text="${'$ ' + #numbers.formatDecimal(ingreso, 1, 'POINT', 0, 'COMMA')}">$ 500.000</span>
+          <span class="metrica-nombre">ingreso del día</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="titulo-ocupacion">
+    <h2 class="h4" id="titulo-ocupacion">Ocupación de las funciones de hoy</h2>
+    <div class="compra">
+      <p th:if="${funciones.isEmpty()}" class="text-suave mb-0">Hoy no hay funciones programadas.</p>
+      <ul class="list-unstyled mb-0">
+        <li class="fila-boleta" th:each="f, i : ${funciones}" th:classappend="${i.first} ? 'border-0 pt-0'">
+          <span class="fila-boleta-silla" th:text="${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">18:30</span>
+          <span class="fila-boleta-detalle">
+            <strong th:text="${f.pelicula.titulo}">Película</strong><br>
+            <span class="text-suave" th:text="${f.sala.nombre}">Sala 1</span>
+          </span>
+          <div class="ocupacion">
+            <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                 th:attr="aria-valuenow=${ocupacion.get(f.id)},aria-label='Ocupación de ' + ${f.pelicula.titulo} + ' a las ' + ${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">
+              <div class="progress-bar" th:style="'width: ' + ${ocupacion.get(f.id)} + '%'"></div>
+            </div>
+            <span class="ocupacion-texto" th:text="${ocupacion.get(f.id)} + ' %'">40 %</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

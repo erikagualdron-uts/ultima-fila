@@ -23,7 +23,7 @@
     <div class="collapse navbar-collapse" id="menuPrincipal">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" th:classappend="${plantilla == 'cartelera'} ? 'activo'" th:attr="aria-current=${plantilla == 'cartelera'} ? 'page'" th:href="@{/cartelera}">Cartelera</a></li>
-        <li class="nav-item" th:if="${session.rol?.name() == 'ADMINISTRADOR'}"><a class="nav-link" th:classappend="${plantilla.startsWith('admin/')} ? 'activo'" th:attr="aria-current=${plantilla.startsWith('admin/')} ? 'page'" th:href="@{/admin/peliculas}">Administración</a></li>
+        <li class="nav-item" th:if="${session.rol?.name() == 'ADMINISTRADOR'}"><a class="nav-link" th:classappend="${plantilla.startsWith('admin/')} ? 'activo'" th:attr="aria-current=${plantilla.startsWith('admin/')} ? 'page'" th:href="@{/admin}">Administración</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'TAQUILLERO'}"><a class="nav-link" th:href="@{/taquilla}">Taquilla</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'ACOMODADOR'}"><a class="nav-link" th:href="@{/acomodador}">Control de ingreso</a></li>
         <li class="nav-item" th:if="${session.rol?.name() == 'CLIENTE'}"><a class="nav-link" th:classappend="${plantilla == 'mis-boletas'} ? 'activo'" th:attr="aria-current=${plantilla == 'mis-boletas'} ? 'page'" th:href="@{/mis-boletas}">Mis boletas</a></li>
@@ -41,6 +41,7 @@
 
 <nav th:fragment="menuAdmin(activo)" class="menu-admin" aria-label="Administración">
   <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link" th:classappend="${activo == 'dashboard'} ? 'active'" th:attr="aria-current=${activo == 'dashboard'} ? 'page'" th:href="@{/admin}">Dashboard</a></li>
     <li class="nav-item"><a class="nav-link" th:classappend="${activo == 'generos'} ? 'active'" th:attr="aria-current=${activo == 'generos'} ? 'page'" th:href="@{/admin/generos}">Géneros</a></li>
     <li class="nav-item"><a class="nav-link" th:classappend="${activo == 'peliculas'} ? 'active'" th:attr="aria-current=${activo == 'peliculas'} ? 'page'" th:href="@{/admin/peliculas}">Películas</a></li>
     <li class="nav-item"><a class="nav-link" th:classappend="${activo == 'salas'} ? 'active'" th:attr="aria-current=${activo == 'salas'} ? 'page'" th:href="@{/admin/salas}">Salas</a></li>

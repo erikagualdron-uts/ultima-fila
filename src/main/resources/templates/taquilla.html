@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Taquilla')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <h1 class="h2">Taquilla</h1>
+  <p class="text-suave" th:text="${#temporals.format(ahora, 'dd/MM/yyyy')}">24/11/2026</p>
+
+  <div class="row g-4">
+    <section class="col-12 col-lg-7" aria-labelledby="titulo-funciones">
+      <h2 class="h4" id="titulo-funciones">Funciones de hoy</h2>
+      <div class="compra">
+        <p th:if="${funciones.isEmpty()}" class="text-suave mb-0">Hoy no hay funciones programadas.</p>
+        <ul class="list-unstyled mb-0">
+          <li class="fila-boleta" th:each="f, i : ${funciones}" th:classappend="${i.first} ? 'border-0 pt-0'">
+            <span class="fila-boleta-silla" th:text="${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">18:30</span>
+            <span class="fila-boleta-detalle">
+              <strong th:text="${f.pelicula.titulo}">Película</strong><br>
+              <span class="text-suave">
+                <span th:text="${f.sala.nombre}">Sala 1</span> ·
+                <span th:text="${libres.get(f.id)} + ' sillas libres'">20 sillas libres</span> ·
+                <span class="precio" th:text="${'$ ' + #numbers.formatDecimal(f.precio, 1, 'POINT', 0, 'COMMA')}">$ 12.000</span>
+              </span>
+            </span>
+            <span class="fila-boleta-codigo">
+              <a class="btn btn-sm btn-uf" th:if="${f.fechaHoraInicio.isAfter(ahora) and libres.get(f.id) > 0}"
+                 th:href="@{/funciones/{id}/sillas(id=${f.id})}"
+                 th:aria-label="'Vender boletas de ' + ${f.pelicula.titulo} + ' a las ' + ${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">Vender</a>
+              <span class="badge insignia-estado estado-cancelada" th:if="${!f.fechaHoraInicio.isAfter(ahora)}">Ya inició</span>
+              <span class="badge insignia-estado estado-cancelada"
+                    th:if="${f.fechaHoraInicio.isAfter(ahora) and libres.get(f.id) <= 0}">Agotada</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="col-12 col-lg-5" aria-labelledby="titulo-ventas">
+      <h2 class="h4" id="titulo-ventas">Mis ventas de hoy</h2>
+      <p class="mb-2" aria-live="polite">
+        <strong th:text="${ventas.size()}">0</strong> ventas ·
+        Total <strong class="precio" th:text="${'$ ' + #numbers.formatDecimal(totalVendido, 1, 'POINT', 0, 'COMMA')}">$ 0</strong>
+      </p>
+      <div class="compra">
+        <p th:if="${ventas.isEmpty()}" class="text-suave mb-0">Aún no has vendido boletas hoy.</p>
+        <ul class="list-unstyled mb-0">
+          <li class="fila-boleta" th:each="venta, i : ${ventas}" th:classappend="${i.first} ? 'border-0 pt-0'">
+            <span class="fila-boleta-detalle">
+              <a th:href="@{/compras/{codigo}(codigo=${venta.key.codigo})}" th:text="${venta.key.codigo}">C-ABC12345</a>
+              · <span th:text="${#temporals.format(venta.key.fechaCompra, 'HH:mm')}">10:15</span><br>
+              <span class="text-suave">
+                <span th:text="${venta.value[0].funcion.pelicula.titulo}">Película</span> ·
+                Sillas
+                <span th:each="b, s : ${venta.value}"><span th:text="${b.silla.fila + b.silla.numero}">A1</span><span th:unless="${s.last}">, </span></span>
+              </span>
+            </span>
+            <span class="precio" th:text="${'$ ' + #numbers.formatDecimal(venta.key.total, 1, 'POINT', 0, 'COMMA')}">$ 24.000</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

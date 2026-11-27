@@ -2,6 +2,7 @@ package com.utsproyecto.ultimafila.controller;
 
 import java.math.BigDecimal;
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -65,7 +66,8 @@ public class CompraController {
 	@GetMapping("/compras/confirmar")
 	public String resumen(@RequestParam Long funcion, @RequestParam(required = false) List<Long> sillas,
 			HttpSession sesion, Model model, RedirectAttributes flash) {
-		if (sesion.getAttribute("rol") != Rol.CLIENTE) {
+		Rol rol = (Rol) sesion.getAttribute("rol");
+		if (rol != Rol.CLIENTE && rol != Rol.TAQUILLERO) {
 			return "redirect:/acceso-denegado";
 		}
 		Funcion laFuncion = buscarFuncion(funcion);
@@ -74,7 +76,7 @@ public class CompraController {
 			flash.addFlashAttribute("error", "Elige al menos una silla disponible");
 			return "redirect:/funciones/" + funcion + "/sillas";
 		}
-		String motivo = motivoRechazo(laFuncion, elegidas);
+		String motivo = motivoRechazo(laFuncion, elegidas, rol);
 		if (motivo != null) {
 			flash.addFlashAttribute("error", motivo);
 			return "redirect:/funciones/" + funcion + "/sillas";
@@ -85,12 +87,13 @@ public class CompraController {
 		return "confirmar";
 	}
 
-	// Pago simulado: crea la compra y una boleta por silla en una sola transacción
+	// Pago simulado del cliente o efectivo en taquilla: crea la compra y una boleta por silla en una sola transacción
 	@PostMapping("/compras/confirmar")
 	@Transactional
 	public String pagar(@RequestParam Long funcion, @RequestParam(required = false) List<Long> sillas,
 			HttpSession sesion, RedirectAttributes flash) {
-		if (sesion.getAttribute("rol") != Rol.CLIENTE) {
+		Rol rol = (Rol) sesion.getAttribute("rol");
+		if (rol != Rol.CLIENTE && rol != Rol.TAQUILLERO) {
 			return "redirect:/acceso-denegado";
 		}
 		Funcion laFuncion = funcionRepository.buscarConBloqueo(funcion)
@@ -100,20 +103,25 @@ public class CompraController {
 			flash.addFlashAttribute("error", "Elige al menos una silla disponible");
 			return "redirect:/funciones/" + funcion + "/sillas";
 		}
-		String motivo = motivoRechazo(laFuncion, elegidas);
+		String motivo = motivoRechazo(laFuncion, elegidas, rol);
 		if (motivo != null) {
 			flash.addFlashAttribute("error", motivo);
 			return "redirect:/funciones/" + funcion + "/sillas";
 		}
-		Usuario cliente = usuarioRepository.findById((Long) sesion.getAttribute("usuarioId"))
+		Usuario usuario = usuarioRepository.findById((Long) sesion.getAttribute("usuarioId"))
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		boolean enTaquilla = rol == Rol.TAQUILLERO;
 
 		Compra compra = new Compra();
 		compra.setCodigo(codigoUnico("C", compraRepository::existsByCodigo));
 		compra.setFechaCompra(LocalDateTime.now());
 		compra.setTotal(laFuncion.getPrecio().multiply(BigDecimal.valueOf(elegidas.size())));
-		compra.setCanal(CanalCompra.EN_LINEA);
-		compra.setCliente(cliente);
+		compra.setCanal(enTaquilla ? CanalCompra.TAQUILLA : CanalCompra.EN_LINEA);
+		if (enTaquilla) {
+			compra.setVendedor(usuario);
+		} else {
+			compra.setCliente(usuario);
+		}
 		compraRepository.save(compra);
 
 		List<Boleta> boletas = new ArrayList<>();
@@ -128,7 +136,8 @@ public class CompraController {
 		}
 		boletaRepository.saveAll(boletas);
 
-		flash.addFlashAttribute("mensaje", "Pago aprobado (simulado). ¡Disfruta la función!");
+		flash.addFlashAttribute("mensaje",
+				enTaquilla ? "Venta registrada en efectivo" : "Pago aprobado (simulado). ¡Disfruta la función!");
 		return "redirect:/compras/" + compra.getCodigo();
 	}
 
@@ -167,13 +176,17 @@ public class CompraController {
 		return todasValidas ? sillas : null;
 	}
 
-	// Reglas de compra: función iniciada o cancelada (BR-005), máximo 6 boletas (BR-002), silla vendida (BR-001)
-	private String motivoRechazo(Funcion funcion, List<Silla> sillas) {
+	// Reglas de compra: función iniciada o cancelada (BR-005), máximo 6 boletas (BR-002), silla vendida (BR-001);
+	// en taquilla solo se venden funciones del día
+	private String motivoRechazo(Funcion funcion, List<Silla> sillas, Rol rol) {
 		if (funcion.getEstado() == EstadoFuncion.CANCELADA) {
 			return "La función fue cancelada";
 		}
 		if (!funcion.getFechaHoraInicio().isAfter(LocalDateTime.now())) {
 			return "La función ya inició";
+		}
+		if (rol == Rol.TAQUILLERO && !funcion.getFechaHoraInicio().toLocalDate().equals(LocalDate.now())) {
+			return "En taquilla solo se venden funciones de hoy";
 		}
 		if (sillas.size() > MAXIMO_BOLETAS) {
 			return "Máximo 6 boletas por compra";

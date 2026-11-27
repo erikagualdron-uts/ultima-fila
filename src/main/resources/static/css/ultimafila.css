@@ -599,6 +599,16 @@ button.silla.elegida:hover { background: var(--uf-dorado-claro); }
 .resultado-ingreso.rechazado { background: #6e1a1f; border-color: #ff9a9a; }
 .resultado-detalle { font-family: var(--fuente-marca); font-size: 2rem; letter-spacing: .03em; line-height: 1.1; }
 
+/* P-09: tarjetas de métricas y ocupación por función del dashboard */
+.metrica { height: 100%; background: var(--uf-tarjeta); border: 1px solid var(--uf-borde); border-radius: .9rem; padding: 1rem 1.25rem; }
+.metrica-valor { display: block; font-family: var(--fuente-marca); font-size: 2.6rem; line-height: 1.05; color: var(--uf-dorado-claro); overflow-wrap: anywhere; }
+.metrica-valor.precio { color: var(--uf-precio); font-weight: 400; }
+.metrica-nombre { color: var(--uf-texto-suave); }
+.ocupacion { flex: 1 1 10rem; min-width: 0; display: flex; align-items: center; gap: .6rem; }
+.ocupacion .progress { flex: 1; height: .6rem; background: #1f0c10; border: 1px solid var(--uf-borde); }
+.ocupacion .progress-bar { background-color: var(--uf-dorado); transition: none; }
+.ocupacion-texto { flex: none; min-width: 3.25rem; text-align: right; font-weight: 600; }
+
 /* Inicio */
 .hero-uf {
   position: relative;

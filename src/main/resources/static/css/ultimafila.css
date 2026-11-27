@@ -90,7 +90,7 @@ a:hover { color: #fff; }
 
 .text-suave { color: var(--uf-texto-suave); }
 .text-danger { color: #ff9a9a !important; }
-.precio { color: var(--uf-precio); font-weight: 600; }
+.precio { color: var(--uf-precio); font-weight: 600; white-space: nowrap; }
 
 /* Foco visible */
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,

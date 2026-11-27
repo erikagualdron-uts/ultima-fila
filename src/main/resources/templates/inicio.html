@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragmentos/layout :: head('Inicio')}"></head>
 <body>
 <nav th:replace="~{fragmentos/layout :: navbar}"></nav>
@@ -7,6 +7,13 @@
 <main>
   <section class="hero-uf" aria-labelledby="titulo-hero" th:with="d=${destacadas.empty ? null : destacadas[0]}">
     <div class="container">
+      <div class="marca-hero entra" style="--paso:0">
+        <img class="hero-emblema" th:src="@{/img/emblema-backrow-256.png}" src="/img/emblema-backrow-256.png" alt="" width="140" height="140">
+        <h1 id="titulo-hero" class="hero-marca">The Back Row</h1>
+        <span class="marca-linea" aria-hidden="true"></span>
+        <p class="marca-frase">Tu cine, tu última fila</p>
+        <p class="marca-sub">Cine Comunitario Luz de Barrio: buenas películas, a precio de barrio.</p>
+      </div>
       <div class="row align-items-center g-4 justify-content-center">
         <div class="col-8 col-sm-5 col-md-4 col-lg-3" th:if="${d != null}">
           <div class="afiche afiche-hero entra" style="--paso:0">
@@ -18,8 +25,6 @@
           </div>
         </div>
         <div class="col-12" th:classappend="${d != null} ? 'col-md-8 col-lg-7 text-center text-md-start' : 'text-center'">
-          <h1 id="titulo-hero" class="hero-marca entra" style="--paso:0">Última Fila</h1>
-          <p class="lead entra" style="--paso:1">Cine Comunitario Luz de Barrio: buenas películas, a precio de barrio.</p>
           <div class="hero-destacada entra" style="--paso:2" th:if="${d != null}">
             <p class="etiqueta-destacada mb-1">Película destacada</p>
             <h2 class="hero-titulo" th:text="${d.titulo}">Título</h2>
@@ -43,22 +48,9 @@
     <h2 id="titulo-destacadas" class="titulo-seccion">Películas destacadas</h2>
     <p class="text-suave" th:if="${destacadas.empty}">Pronto tendremos nuevas películas.
       <a th:href="@{/cartelera}">Ver cartelera</a></p>
-    <div class="row g-4 mt-1" th:unless="${destacadas.empty}">
-      <div class="col-12 col-sm-6 col-lg-3" th:each="p, fila : ${destacadas}">
-        <article class="peli h-100" th:style="'--paso:' + ${fila.index}">
-          <div class="afiche">
-            <img th:if="${p.posterUrl != null and !p.posterUrl.isBlank()}" th:src="${p.posterUrl}"
-                 th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo},data-genero=${p.genero.nombre}" loading="lazy">
-            <th:block th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}">
-              <div th:replace="~{fragmentos/layout :: respaldoAfiche(${p})}"></div>
-            </th:block>
-            <span th:replace="~{fragmentos/layout :: clasificacion(${p.clasificacion})}"></span>
-          </div>
-          <div class="p-3">
-            <h3 class="h5 mb-2"><a class="peli-enlace" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></h3>
-            <p class="mb-1 small text-suave" th:text="${p.genero.nombre} + ' · ' + ${p.duracionMin} + ' min'">Género · 100 min</p>
-          </div>
-        </article>
+    <div class="row g-3 g-md-4 mt-1" th:unless="${destacadas.empty}">
+      <div class="col-6 col-md-4 col-lg-3" th:each="p, fila : ${destacadas}">
+        <article th:replace="~{fragmentos/layout :: tarjetaPeli(${p}, ${fila.index}, 3)}"></article>
       </div>
     </div>
   </section>

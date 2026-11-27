@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head(titulo)">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title th:text="${titulo} + ' · Última Fila'">Última Fila</title>
+  <title th:text="${titulo} + ' · The Back Row'">The Back Row</title>
+  <meta name="theme-color" content="#651823">
+  <link rel="icon" type="image/png" sizes="32x32" th:href="@{/img/favicon-32.png}">
+  <link rel="apple-touch-icon" th:href="@{/img/apple-touch-icon.png}">
   <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
   <link rel="stylesheet" th:href="@{/css/ultimafila.css}">
 </head>
@@ -12,7 +15,7 @@
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark navbar-uf" aria-label="Navegación principal"
      th:with="plantilla=${#execInfo.templateStack[0].template}">
   <div class="container">
-    <a class="navbar-brand" th:href="@{/}">Última Fila</a>
+    <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}"><img class="logo-nav" th:src="@{/img/emblema-backrow-128.png}" src="/img/emblema-backrow-128.png" alt="" width="44" height="44">The Back Row</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal"
             aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú">
       <span class="navbar-toggler-icon"></span>
@@ -63,6 +66,25 @@
   <span class="respaldo-genero" th:text="${p.genero.nombre}">Género</span>
 </div>
 
+<article th:fragment="tarjetaPeli(p, paso, nivel)" class="peli h-100" th:style="'--paso:' + ${paso}">
+  <div class="afiche">
+    <img th:if="${p.posterUrl != null and !p.posterUrl.isBlank()}" th:src="${p.posterUrl}"
+         th:alt="'Afiche de ' + ${p.titulo}" th:attr="data-titulo=${p.titulo},data-genero=${p.genero.nombre}" loading="lazy">
+    <th:block th:unless="${p.posterUrl != null and !p.posterUrl.isBlank()}">
+      <div th:replace="~{fragmentos/layout :: respaldoAfiche(${p})}"></div>
+    </th:block>
+    <div class="cinta">
+      <span th:replace="~{fragmentos/layout :: clasificacion(${p.clasificacion})}"></span>
+      <span th:text="${p.duracionMin} + ' min'">100 min</span>
+    </div>
+    <div class="peli-cta" aria-hidden="true"><span>Comprar boletas</span></div>
+  </div>
+  <div class="peli-info">
+    <p class="peli-titulo" role="heading" th:attr="aria-level=${nivel}"><a class="peli-enlace" th:href="@{/peliculas/{id}(id=${p.id})}" th:text="${p.titulo}">Título</a></p>
+    <p class="mb-0 small text-suave" th:text="${p.genero.nombre}">Género</p>
+  </div>
+</article>
+
 <div th:fragment="alertas" class="alertas-uf" aria-live="polite">
   <div class="aviso-uf" role="status" th:if="${mensaje != null}" th:text="${mensaje}"></div>
   <div class="aviso-uf error" role="alert" th:if="${error != null}" th:text="${error}"></div>
@@ -72,7 +94,8 @@
 <footer th:fragment="footer" class="footer-uf"
         th:with="direccion='Calle 45 # 12-34, Bucaramanga',telefono='(607) 555-0123',correo='contacto@ultimafila.example'">
   <div class="container text-center">
-    <p class="mb-1">Cine Comunitario Luz de Barrio · Última Fila</p>
+    <p class="footer-marca d-flex align-items-center justify-content-center gap-2 mb-1"><img th:src="@{/img/emblema-backrow-128.png}" src="/img/emblema-backrow-128.png" alt="" width="32" height="32">The Back Row</p>
+    <p class="mb-1">Cine Comunitario Luz de Barrio</p>
     <address class="mb-1 small">
       <span th:text="${direccion}"></span> · <span th:text="${telefono}"></span> ·
       <a th:href="'mailto:' + ${correo}" th:text="${correo}"></a>

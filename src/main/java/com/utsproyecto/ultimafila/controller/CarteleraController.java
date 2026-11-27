@@ -2,6 +2,7 @@ package com.utsproyecto.ultimafila.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.utsproyecto.ultimafila.model.EstadoFuncion;
 import com.utsproyecto.ultimafila.model.Pelicula;
+import com.utsproyecto.ultimafila.repository.FuncionRepository;
 import com.utsproyecto.ultimafila.repository.GeneroRepository;
 import com.utsproyecto.ultimafila.repository.PeliculaRepository;
 
@@ -23,10 +25,13 @@ public class CarteleraController {
 
 	private final PeliculaRepository peliculaRepository;
 	private final GeneroRepository generoRepository;
+	private final FuncionRepository funcionRepository;
 
-	public CarteleraController(PeliculaRepository peliculaRepository, GeneroRepository generoRepository) {
+	public CarteleraController(PeliculaRepository peliculaRepository, GeneroRepository generoRepository,
+			FuncionRepository funcionRepository) {
 		this.peliculaRepository = peliculaRepository;
 		this.generoRepository = generoRepository;
+		this.funcionRepository = funcionRepository;
 	}
 
 	@GetMapping("/cartelera")
@@ -51,6 +56,8 @@ public class CarteleraController {
 		model.addAttribute("q", q);
 		model.addAttribute("genero", genero);
 		model.addAttribute("fecha", fecha);
+		model.addAttribute("hoy", LocalDate.now());
+		model.addAttribute("dias", diasConFunciones());
 		return "cartelera";
 	}
 
@@ -58,5 +65,10 @@ public class CarteleraController {
 			LocalDateTime hasta, int indice) {
 		return peliculaRepository.buscarEnCartelera(titulo, idGenero, conFecha, EstadoFuncion.PROGRAMADA, desde, hasta,
 				PageRequest.of(indice, POR_PAGINA));
+	}
+
+	private List<LocalDate> diasConFunciones() {
+		return funcionRepository.inicioDeFuncionesDesde(EstadoFuncion.PROGRAMADA, LocalDate.now().atStartOfDay())
+				.stream().map(LocalDateTime::toLocalDate).distinct().toList();
 	}
 }

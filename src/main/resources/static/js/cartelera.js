@@ -11,7 +11,7 @@
     fila.className = "row g-4 mt-1";
     for (var i = 0; i < 4; i++) {
       var columna = document.createElement("div");
-      columna.className = "col-12 col-sm-6 col-lg-3";
+      columna.className = "col-6 col-md-4 col-lg-3";
       var bloque = document.createElement("div");
       bloque.className = "esqueleto esqueleto-peli";
       columna.appendChild(bloque);

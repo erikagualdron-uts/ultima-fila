@@ -64,7 +64,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 
 ### Ambos
 - [ ] Pruebas de extremo a extremo sobre MySQL (incluida AC-015.1 con dos navegadores)
-- [ ] Revisión responsiva desde 375 px en todas las pantallas
+- [x] Revisión responsiva desde 375 px en todas las pantallas · resultados y hallazgos en `revision-375px.md`
 - [ ] README con pasos para H2 y MySQL (NFR-CIN-007)
 - [ ] Matriz de trazabilidad (REQ → responsable → tarea → código → prueba → pantalla → entidad)
 - [ ] Sprint Review, Retrospective y release v1.0.0

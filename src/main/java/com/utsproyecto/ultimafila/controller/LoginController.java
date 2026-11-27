@@ -63,7 +63,7 @@ public class LoginController {
 	public String cerrar(HttpSession sesion, RedirectAttributes flash) {
 		sesion.invalidate();
 		flash.addFlashAttribute("mensaje", "Sesión cerrada");
-		return "redirect:/";
+		return "redirect:/cartelera";
 	}
 
 	private String panelDe(Rol rol) {
@@ -71,7 +71,7 @@ public class LoginController {
 		case ADMINISTRADOR -> "/admin";
 		case TAQUILLERO -> "/taquilla";
 		case ACOMODADOR -> "/acomodador";
-		case CLIENTE -> "/";
+		case CLIENTE -> "/cartelera";
 		};
 	}
 }

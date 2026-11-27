@@ -1,6 +1,6 @@
 # Requisitos de Última Fila (Especificación v1.0)
 
-24 requisitos funcionales (REQ-CIN-001 a 024), 12 por sprint y 6 por desarrollador en cada sprint. Cada uno tiene historia, requisito **EARS** (Evento *Cuando*, Estado *Mientras*, No deseado *Si… entonces*, Opcional *Donde* o Ubicuo) y criterios **Given/When/Then** (AC). Prioridad MoSCoW: **M** = Must, **S** = Should. **EVGP** = Erika, **YARC** = Yeziel. Quien no implementa, revisa el PR.
+25 requisitos funcionales (REQ-CIN-001 a 025): 13 en el Sprint 1 (Erika 7, Yeziel 6) y 12 en el Sprint 2 (6 cada uno). REQ-CIN-025 (landing) se agregó después del plan original. Cada uno tiene historia, requisito **EARS** (Evento *Cuando*, Estado *Mientras*, No deseado *Si… entonces*, Opcional *Donde* o Ubicuo) y criterios **Given/When/Then** (AC). Prioridad MoSCoW: **M** = Must, **S** = Should. **EVGP** = Erika, **YARC** = Yeziel. Quien no implementa, revisa el PR.
 
 ---
 
@@ -8,9 +8,9 @@
 
 ### REQ-CIN-001 · Ver cartelera · EVGP · P-01 · M
 **Historia:** Como visitante quiero ver la cartelera para saber qué películas se proyectan.
-**EARS (Evento):** Cuando un visitante abra la página de inicio, el sistema deberá mostrar las películas en cartelera paginadas (8 por página) con póster, título, género, clasificación y duración.
-- **AC-001.1** Given 10 películas en cartelera When el visitante abre la página de inicio Then ve 8 películas And un enlace a la página 2.
-- **AC-001.2** Given una película marcada fuera de cartelera When abre la página de inicio Then no la ve.
+**EARS (Evento):** Cuando un visitante abra la cartelera (`/cartelera`), el sistema deberá mostrar las películas en cartelera paginadas (8 por página) con póster, título, género, clasificación y duración.
+- **AC-001.1** Given 10 películas en cartelera When el visitante abre la cartelera Then ve 8 películas And un enlace a la página 2.
+- **AC-001.2** Given una película marcada fuera de cartelera When abre la cartelera Then no la ve.
 
 ### REQ-CIN-002 · Buscar y filtrar cartelera · EVGP · P-01 · S
 **Historia:** Como visitante quiero buscar y filtrar la cartelera por género y fecha para encontrar una función que me sirva.
@@ -81,6 +81,16 @@
 - **AC-012.1** Given la Sala 1 ocupada de 18:00 a 20:15 When se programa otra a las 19:30 en la Sala 1 Then se rechaza And ve «Se cruza con la función de las 18:00».
 - **AC-012.2** Given la misma situación When se programa a las 19:30 en la Sala 2 Then la función se crea.
 - **AC-012.3** Given la misma situación When se programa a las 20:15 en la Sala 1 Then la función se crea.
+
+### REQ-CIN-025 · Página de inicio (landing) · EVGP · P-22 · M
+**Historia:** Como visitante quiero una página de inicio que presente el cine para conocer qué ofrece y llegar rápido a la cartelera o a mi cuenta.
+**EARS (Evento):** Cuando un visitante abra la raíz del sitio (`/`), el sistema deberá mostrar la landing con: hero con la marca y el botón «Ver cartelera»; hasta 4 películas destacadas (en cartelera y con funciones futuras); las funciones de hoy con hora, película y sala; «Cómo comprar» en 3 pasos (elige película, elige sillas, paga y recibe tus códigos); las salas activas con su capacidad y el horario de las funciones de hoy; los botones «Iniciar sesión» y «Registrarme»; y un footer con datos de contacto.
+- **AC-025.1** Given un visitante sin sesión When abre `/` Then ve la landing And el botón «Ver cartelera» lo lleva a `/cartelera`.
+- **AC-025.2** Given 6 películas en cartelera con funciones futuras When abre `/` Then ve 4 películas destacadas And cada una enlaza a su detalle (P-02).
+- **AC-025.3** Given 3 funciones programadas para hoy y 1 para mañana When abre `/` Then ve solo las 3 funciones de hoy.
+- **AC-025.4** Given ninguna función para hoy When abre `/` Then ve «Hoy no hay funciones programadas» And un enlace a la cartelera.
+- **AC-025.5** Given un visitante sin sesión When pulsa «Registrarme» o «Iniciar sesión» Then llega a P-03 o P-04 según el botón.
+- **AC-025.6** Given un cliente con sesión iniciada When abre `/` Then no ve los botones «Registrarme» ni «Iniciar sesión».
 
 ---
 
@@ -179,7 +189,7 @@
 **Historia:** Como usuario quiero mensajes claros ante errores para saber cómo continuar.
 **EARS (No deseado):** Si ocurre un error 404 o 500, entonces el sistema deberá mostrar una pantalla de error amigable con un enlace al inicio.
 - **AC-024.1** Given una ruta que no existe When el usuario la abre Then ve la pantalla 404 And un botón «Volver al inicio».
-- **AC-024.2** Given la pantalla de error When pulsa «Volver al inicio» Then llega a la cartelera.
+- **AC-024.2** Given la pantalla de error When pulsa «Volver al inicio» Then llega a la página de inicio (P-22).
 
 ---
 
@@ -220,3 +230,5 @@ Supuestos acordados por el equipo, por confirmar con el Product Owner en la Puer
 | ¿La venta en taquilla exige que el comprador tenga cuenta? | No; la compra queda a nombre del taquillero como vendedor |
 | ¿Desde cuándo puede el acomodador validar una boleta? | Desde 30 min antes del inicio hasta el fin de la función (BR-CIN-006) |
 | ¿Hay precios distintos por tipo de silla o por edad? | No; precio único por función |
+| ¿Qué datos de contacto lleva el footer de la landing? | Datos ficticios fijos en la plantilla (dirección, teléfono y correo del cine), sin tabla nueva |
+| ¿Cómo se eligen las películas destacadas? | Las 4 primeras en cartelera con la función futura más próxima, sin atributo nuevo en Pelicula |

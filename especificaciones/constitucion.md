@@ -22,7 +22,7 @@ Pasarela de pagos real (el pago es simulado), descuentos, promociones y membres�
 
 | Rol | Qué puede hacer |
 |---|---|
-| Visitante (sin sesión) | Ver cartelera, detalle, mapa de sillas y registrarse como cliente |
+| Visitante (sin sesión) | Ver la landing, cartelera, detalle, mapa de sillas y registrarse como cliente |
 | Administrador | Dashboard; CRUD de géneros y películas; crear salas y marcar sillas fuera de servicio; programar funciones sin solapamiento; crear Taquilleros y Acomodadores; activar o inactivar usuarios |
 | Taquillero | Funciones del día; vender en taquilla con el mapa de sillas; imprimir comprobante; ver sus ventas del día |
 | Acomodador | Validar el código de cada boleta al ingreso; ver la ocupación de las funciones del día |
@@ -52,7 +52,7 @@ Pasarela de pagos real (el pago es simulado), descuentos, promociones y membres�
 |---|---|---|
 | 0. Constitución | Este archivo | Puerta 0 |
 | 1-2. Especificar y clarificar | Roles, `mer.md`, `pantallas.md`, preguntas abiertas | — |
-| 3. Requisitos | `requisitos.md` (24 REQ, NFR, BR) | Puerta 1 (PO) |
+| 3. Requisitos | `requisitos.md` (25 REQ, NFR, BR) | Puerta 1 (PO) |
 | 4. Plan técnico | Mapeo JPA, perfiles, repositorios, rutas y plantillas | Puerta 2 |
 | 5. Tareas | `tasks.md` | Puerta 3 |
 | 6-7. Implementar y validar | PR con revisión cruzada, pruebas por pantalla, matriz de trazabilidad | Revisión de código |

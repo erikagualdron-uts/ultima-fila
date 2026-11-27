@@ -51,7 +51,7 @@ Con el perfil `h2` hay una consola web para consultar la base: **http://localhos
 | Usuario | `sa` |
 | Clave | (vacía) |
 
-La consola solo existe con el perfil `h2`; con `mysql` está desactivada.
+La consola está activada en el perfil `h2`. Al arrancar con `spring-boot:run` (modo desarrollo, con DevTools) Spring Boot la deja disponible también con el perfil `mysql`; en el jar empaquetado (`java -jar`) con `mysql` no existe y responde 404.
 
 ## Arrancar con MySQL
 
@@ -142,5 +142,5 @@ Documentación del proyecto: [`especificaciones/requisitos.md`](especificaciones
 
 ## Decisiones
 
-- **Consola de H2 con un módulo aparte.** Spring Boot 4 separó la consola web de H2 en el módulo `spring-boot-h2console`. Se agregó como complemento de la dependencia H2 (es la herramienta de consulta del perfil `h2`, no una función nueva del sistema) y solo se activa con el perfil `h2`. Está registrado en la nota de [`especificaciones/constitucion.md`](especificaciones/constitucion.md).
+- **Consola de H2 con un módulo aparte.** Spring Boot 4 separó la consola web de H2 en el módulo `spring-boot-h2console`. Se agregó como complemento de la dependencia H2 (es la herramienta de consulta del perfil `h2`, no una función nueva del sistema) y se activa en el perfil `h2`. Está registrado en la nota de [`especificaciones/constitucion.md`](especificaciones/constitucion.md).
 - **Tablas de administración con desplazamiento interno en pantallas pequeñas.** A 375 px ninguna pantalla se desplaza horizontalmente, pero las cinco tablas de administración (géneros, películas, salas, funciones y usuarios) se desplazan **dentro de su propio contenedor** para no recortar columnas. Se acepta como cumplimiento de NFR-CIN-003.

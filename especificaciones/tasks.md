@@ -56,7 +56,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [x] Migración de H2 a MySQL con perfiles
 - [x] REQ-CIN-018 Venta en taquilla (P-18, P-05, P-06, P-08)
 - [x] REQ-CIN-019 Validación de boleta (P-19)
-- [ ] REQ-CIN-020 Rechazo de boletas inválidas (P-19)
+- [x] REQ-CIN-020 Rechazo de boletas inválidas (P-19)
 - [ ] REQ-CIN-021 Ocupación de función (P-20)
 - [ ] REQ-CIN-022 Dashboard (P-09)
 - [x] REQ-CIN-024 Páginas de error con @ControllerAdvice (P-21)

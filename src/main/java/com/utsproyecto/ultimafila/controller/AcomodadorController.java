@@ -34,35 +34,39 @@ public class AcomodadorController {
 		return "acomodador";
 	}
 
-	// BR-CIN-006: una boleta VENDIDA se valida una sola vez, dentro de la ventana de ingreso de su función
+	// BR-CIN-006: una boleta VENDIDA se valida una sola vez, desde 30 min antes del inicio hasta el fin de su función.
+	// Cualquier rechazo muestra el motivo y deja la boleta como estaba (REQ-CIN-020)
 	@PostMapping("/acomodador/validar")
 	@Transactional
 	public String validar(@RequestParam String codigo, RedirectAttributes flash) {
 		Optional<Boleta> encontrada = boletaRepository.buscarParaValidar(codigo.trim().toUpperCase());
 		LocalDateTime ahora = LocalDateTime.now();
 		boolean valida = false;
-		String resultado = "No se pudo validar la boleta";
+		String resultado;
 
-		if (encontrada.isPresent()) {
+		if (encontrada.isEmpty()) {
+			resultado = "Boleta no encontrada";
+		} else {
 			Boleta boleta = encontrada.get();
-			if (boleta.getEstado() == EstadoBoleta.USADA) {
+			Funcion funcion = boleta.getFuncion();
+			if (boleta.getEstado() == EstadoBoleta.CANCELADA) {
+				resultado = "Boleta cancelada";
+			} else if (boleta.getEstado() == EstadoBoleta.USADA) {
 				resultado = "Boleta ya usada a las " + boleta.getFechaIngreso().format(HORA);
-			} else if (boleta.getEstado() == EstadoBoleta.VENDIDA && dentroDeLaVentana(boleta.getFuncion(), ahora)) {
+			} else if (ahora.isBefore(funcion.getFechaHoraInicio().minusMinutes(MINUTOS_ANTES_DEL_INGRESO))) {
+				resultado = "Aún no se permite el ingreso";
+			} else if (ahora.isAfter(funcion.getFechaHoraFin())) {
+				resultado = "La función ya terminó";
+			} else {
 				boleta.setEstado(EstadoBoleta.USADA);
 				boleta.setFechaIngreso(ahora);
 				valida = true;
-				resultado = boleta.getFuncion().getSala().getNombre() + ", silla " + boleta.getSilla().getFila()
+				resultado = funcion.getSala().getNombre() + ", silla " + boleta.getSilla().getFila()
 						+ boleta.getSilla().getNumero();
 			}
 		}
 		flash.addFlashAttribute("valida", valida);
 		flash.addFlashAttribute("resultado", resultado);
 		return "redirect:/acomodador";
-	}
-
-	// Desde 30 minutos antes del inicio hasta el fin de la función, extremos incluidos
-	static boolean dentroDeLaVentana(Funcion funcion, LocalDateTime ahora) {
-		return !ahora.isBefore(funcion.getFechaHoraInicio().minusMinutes(MINUTOS_ANTES_DEL_INGRESO))
-				&& !ahora.isAfter(funcion.getFechaHoraFin());
 	}
 }

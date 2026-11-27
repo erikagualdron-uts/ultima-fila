@@ -705,6 +705,9 @@ button.silla.elegida:hover { background: var(--uf-dorado-claro); }
 .butaca::before { content: ""; position: absolute; left: .7rem; right: .7rem; top: 0; height: 3.3rem; background: var(--uf-borgona-boton); border: 2px solid var(--uf-dorado); border-radius: 1.2rem 1.2rem .3rem .3rem; }
 .butaca::after { content: ""; position: absolute; left: 0; right: 0; bottom: .9rem; height: 1.9rem; background: var(--uf-borgona); border-radius: .6rem; }
 .vacio-uf { margin-top: 2rem; padding: 2rem 1rem; text-align: center; color: var(--uf-texto-suave); }
+/* Icono de la página de error: boleto dorado con brillo suave */
+.icono-error { display: block; width: 6.5rem; height: 6.5rem; margin: 0 auto .75rem; color: var(--uf-dorado); transform: rotate(-12deg); filter: drop-shadow(0 0 18px rgba(201, 164, 92, .35)); }
+@media (max-width: 575.98px) { .icono-error { width: 5rem; height: 5rem; } }
 .silla-vacia { font-style: italic; color: var(--uf-texto-suave); }
 .codigo-error { font-family: var(--fuente-marca); font-weight: 400; color: var(--uf-dorado-claro); }
 

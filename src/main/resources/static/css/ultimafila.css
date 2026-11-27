@@ -467,6 +467,14 @@ button.silla.elegida:hover { background: var(--uf-dorado-claro); }
   background: repeating-linear-gradient(45deg, #2a1015 0 3px, var(--uf-silla-vendida) 3px 6px);
   border: 1px dashed #8d7a72;
 }
+/* P-20: silla ya ingresada (verde con ✓) en el mapa de ocupación, que es de solo lectura */
+.silla.ingresada { background: #1f5130; border-color: #4f9a69; }
+.silla.ingresada::after {
+  content: "\2713"; color: #fff;
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font: 700 .8rem/1 var(--fuente-texto);
+}
+.mapa-lectura .silla { cursor: default; }
 .silla.pasillo, .fila-sillas > form.pasillo { margin-left: 18px; }
 @keyframes pop { 50% { transform: scale(1.15); } }
 @media (max-width: 575.98px) {

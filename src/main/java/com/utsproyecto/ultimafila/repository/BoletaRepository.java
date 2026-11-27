@@ -40,6 +40,10 @@ public interface BoletaRepository extends JpaRepository<Boleta, Long> {
 	@Query("SELECT b.silla.id FROM Boleta b WHERE b.funcion.id = :idFuncion AND b.estado <> :estado")
 	List<Long> buscarIdsSillasOcupadas(@Param("idFuncion") Long idFuncion, @Param("estado") EstadoBoleta estado);
 
+	// Boletas no canceladas de una función con su silla, para el mapa de ocupación (REQ-CIN-021)
+	@Query("SELECT b FROM Boleta b JOIN FETCH b.silla WHERE b.funcion.id = :idFuncion AND b.estado <> :estado")
+	List<Boleta> buscarVigentesDeFuncion(@Param("idFuncion") Long idFuncion, @Param("estado") EstadoBoleta estado);
+
 	// Ventas del día (REQ-CIN-022): boletas no canceladas de compras hechas entre dos instantes
 	@Query("SELECT COUNT(b) FROM Boleta b WHERE b.estado <> :estado AND b.compra.fechaCompra >= :desde "
 			+ "AND b.compra.fechaCompra < :hasta")

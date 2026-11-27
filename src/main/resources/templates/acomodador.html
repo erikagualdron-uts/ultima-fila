@@ -30,6 +30,26 @@
       </div>
     </div>
   </div>
+
+  <section class="mt-4" aria-labelledby="titulo-funciones">
+    <h2 class="h4" id="titulo-funciones">Funciones de hoy</h2>
+    <div class="compra">
+      <p th:if="${funcionesHoy.isEmpty()}" class="text-suave mb-0">Hoy no hay funciones programadas.</p>
+      <ul class="list-unstyled mb-0">
+        <li class="fila-boleta" th:each="f, i : ${funcionesHoy}" th:classappend="${i.first} ? 'border-0 pt-0'">
+          <span class="fila-boleta-silla" th:text="${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">18:30</span>
+          <span class="fila-boleta-detalle">
+            <strong th:text="${f.pelicula.titulo}">Película</strong><br>
+            <span class="text-suave" th:text="${f.sala.nombre}">Sala 1</span>
+          </span>
+          <span class="fila-boleta-codigo">
+            <a class="btn btn-sm btn-outline-uf" th:href="@{/acomodador/funciones/{id}(id=${f.id})}"
+               th:aria-label="'Ver ocupación de ' + ${f.pelicula.titulo} + ' a las ' + ${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">Ver ocupación</a>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
 </main>
 
 <footer th:replace="~{fragmentos/layout :: footer}"></footer>

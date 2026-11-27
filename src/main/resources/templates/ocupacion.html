@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/layout :: head('Ocupación de la función')}"></head>
+<body>
+<nav th:replace="~{fragmentos/layout :: navbar}"></nav>
+
+<main class="container py-4">
+  <a th:href="@{/acomodador}">&larr; Volver al control de ingreso</a>
+
+  <h1 class="h2 mt-2" th:text="${funcion.pelicula.titulo}">Película</h1>
+  <p class="text-suave">
+    <span th:text="${funcion.sala.nombre}">Sala 1</span> ·
+    <span th:text="${#temporals.format(funcion.fechaHoraInicio, 'dd/MM/yyyy HH:mm')}">27/11/2026 18:30</span>
+  </p>
+  <p class="h5 mb-3" th:text="${libres + ' libres, ' + porIngresar + ' por ingresar, ' + ingresadas + ' ingresadas'}">15 libres, 15 por ingresar, 10 ingresadas</p>
+
+  <div id="mapa" class="mapa-lectura" role="group" aria-label="Mapa de ocupación de la sala">
+    <div class="pantalla-sala" aria-hidden="true"></div>
+    <p class="text-center pantalla-texto mb-4">Pantalla</p>
+
+    <div class="fila-sillas" th:each="fila : ${filas}">
+      <span class="letra" aria-hidden="true" th:text="${fila.key}">A</span>
+      <span class="silla" role="img" th:each="silla, estado : ${fila.value}"
+            th:classappend="${(estado.index == fila.value.size() / 2 ? 'pasillo ' : '') + clases.get(silla.id)}"
+            th:attr="aria-label=${'Silla ' + fila.key + silla.numero + ', ' + etiquetas.get(silla.id)}"></span>
+    </div>
+
+    <ul class="leyenda-sillas list-inline text-center mt-3 mb-0 small">
+      <li class="list-inline-item"><span class="silla"></span> Libre</li>
+      <li class="list-inline-item"><span class="silla vendida"></span> Por ingresar</li>
+      <li class="list-inline-item"><span class="silla ingresada"></span> Ingresada</li>
+      <li class="list-inline-item"><span class="silla fuera"></span> Fuera de servicio</li>
+    </ul>
+  </div>
+</main>
+
+<footer th:replace="~{fragmentos/layout :: footer}"></footer>
+<div th:replace="~{fragmentos/layout :: alertas}"></div>
+<th:block th:replace="~{fragmentos/layout :: scripts}"></th:block>
+</body>
+</html>

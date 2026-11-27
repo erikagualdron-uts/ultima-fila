@@ -49,7 +49,7 @@ public class TaquillaController {
 		Map<Long, Long> libres = new LinkedHashMap<>();
 		for (Funcion funcion : funciones) {
 			long activas = sillaRepository.countBySalaIdAndActivaTrue(funcion.getSala().getId());
-			long ocupadas = boletaRepository.countByFuncionIdAndEstadoNot(funcion.getId(), EstadoBoleta.CANCELADA);
+			long ocupadas = boletaRepository.countByFuncionIdAndEstadoNotAndSillaActivaTrue(funcion.getId(), EstadoBoleta.CANCELADA);
 			libres.put(funcion.getId(), activas - ocupadas);
 		}
 

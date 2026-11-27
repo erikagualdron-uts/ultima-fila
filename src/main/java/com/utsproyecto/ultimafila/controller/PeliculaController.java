@@ -48,7 +48,7 @@ public class PeliculaController {
 		Map<Long, Long> disponibles = new HashMap<>();
 		for (Funcion f : funciones) {
 			long activas = sillaRepository.countBySalaIdAndActivaTrue(f.getSala().getId());
-			long ocupadas = boletaRepository.countByFuncionIdAndEstadoNot(f.getId(), EstadoBoleta.CANCELADA);
+			long ocupadas = boletaRepository.countByFuncionIdAndEstadoNotAndSillaActivaTrue(f.getId(), EstadoBoleta.CANCELADA);
 			disponibles.put(f.getId(), activas - ocupadas);
 		}
 		model.addAttribute("pelicula", pelicula);

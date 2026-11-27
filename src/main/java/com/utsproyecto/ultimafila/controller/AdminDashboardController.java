@@ -43,7 +43,7 @@ public class AdminDashboardController {
 		Map<Long, Integer> ocupacion = new LinkedHashMap<>();
 		for (Funcion funcion : funciones) {
 			long activas = sillaRepository.countBySalaIdAndActivaTrue(funcion.getSala().getId());
-			long ocupadas = boletaRepository.countByFuncionIdAndEstadoNot(funcion.getId(), EstadoBoleta.CANCELADA);
+			long ocupadas = boletaRepository.countByFuncionIdAndEstadoNotAndSillaActivaTrue(funcion.getId(), EstadoBoleta.CANCELADA);
 			ocupacion.put(funcion.getId(), porcentaje(ocupadas, activas));
 		}
 		BigDecimal ingreso = boletaRepository.sumarIngresoEntre(EstadoBoleta.CANCELADA, desde, hasta);

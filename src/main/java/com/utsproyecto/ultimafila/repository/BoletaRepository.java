@@ -19,6 +19,9 @@ public interface BoletaRepository extends JpaRepository<Boleta, Long> {
 
 	long countByFuncionIdAndEstadoNot(Long idFuncion, EstadoBoleta estado);
 
+	// Boletas no canceladas en sillas activas: una silla vendida que luego queda fuera de servicio no se descuenta dos veces
+	long countByFuncionIdAndEstadoNotAndSillaActivaTrue(Long idFuncion, EstadoBoleta estado);
+
 	boolean existsByCodigo(String codigo);
 
 	@Query("SELECT b FROM Boleta b JOIN FETCH b.silla JOIN FETCH b.funcion f JOIN FETCH f.pelicula JOIN FETCH f.sala "

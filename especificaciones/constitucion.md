@@ -32,6 +32,7 @@ Pasarela de pagos real (el pago es simulado), descuentos, promociones y membres�
 
 1. Java 21 + Spring Boot (Spring Web MVC) con Maven en Spring Tools for Eclipse, puerto **8093**.
 2. Solo 7 dependencias: Spring Web, Thymeleaf, Spring Data JPA, H2, MySQL Driver, DevTools, Validation. Bootstrap como archivos estáticos.
+   *Nota (Puerta del cambio):* Spring Boot 4 separa la consola web de H2 en el módulo `spring-boot-h2console`. Es un complemento de la dependencia H2 (la consola es la herramienta de consulta del perfil `h2`), no una función nueva; no cuenta como octava dependencia.
 3. `@Controller` con vistas Thymeleaf y redirecciones PRG. **Sin API REST.**
 4. JPA con H2 (Sprint 1) y MySQL (Sprint 2) cambiando solo el perfil (`application-h2.properties`, `application-mysql.properties`).
 5. Todas las entidades con `id` Long autoincremental (`GenerationType.IDENTITY`).

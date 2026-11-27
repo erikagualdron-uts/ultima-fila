@@ -43,7 +43,7 @@ public class ManejadorErrores {
 		vista.setStatus(estado);
 		vista.addObject("codigo", estado.value());
 		vista.addObject("titulo", titulo);
-		vista.addObject("mensaje", mensaje);
+		vista.addObject("detalle", mensaje);
 		return vista;
 	}
 }

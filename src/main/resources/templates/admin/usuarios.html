@@ -34,7 +34,7 @@
           <label for="clave" class="form-label">Clave</label>
           <input type="password" class="form-control" id="clave" th:field="*{clave}"
                  th:classappend="${#fields.hasErrors('clave')} ? 'is-invalid'" maxlength="100" autocomplete="new-password">
-          <div class="form-text">Mínimo 8 caracteres</div>
+          <div class="form-text" th:unless="${#fields.hasErrors('clave')}">Mínimo 8 caracteres</div>
           <div class="invalid-feedback" th:errors="*{clave}"></div>
         </div>
         <div class="mb-3">

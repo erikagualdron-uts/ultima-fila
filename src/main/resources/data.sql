@@ -22,7 +22,9 @@ INSERT INTO peliculas (titulo, sinopsis, duracion_min, clasificacion, poster_url
 ('La La Land', 'Una aspirante a actriz y un pianista de jazz se enamoran en Los Ángeles mientras persiguen sus sueños.', 128, 'MAYOR_7', '/img/posters/la-la-land.jpg', TRUE, 8),
 ('Interestelar', 'Un grupo de astronautas viaja a través de un agujero de gusano en busca de un nuevo hogar para la humanidad.', 169, 'MAYOR_7', '/img/posters/interestelar.jpg', TRUE, 7),
 ('El resplandor', 'Jack Torrance cuida un hotel aislado durante el invierno con su familia, y el lugar empieza a trastornarlo.', 146, 'MAYOR_15', '/img/posters/el-resplandor.jpg', TRUE, 4),
-('Blade Runner 2049', 'El agente K descubre un secreto enterrado que lo lleva a buscar a Rick Deckard, desaparecido hace treinta años.', 164, 'MAYOR_15', '/img/posters/blade-runner-2049.jpg', TRUE, 7);
+('Blade Runner 2049', 'El agente K descubre un secreto enterrado que lo lleva a buscar a Rick Deckard, desaparecido hace treinta años.', 164, 'MAYOR_15', '/img/posters/blade-runner-2049.jpg', TRUE, 7),
+('Mi pobre angelito', 'Un niño de ocho años se queda solo en casa en Navidad y debe defenderla de dos ladrones con trampas muy ingeniosas.', 103, 'MAYOR_7', '/img/posters/mi-pobre-angelito.jpg', TRUE, 2),
+('Free Solo', 'El escalador Alex Honnold se prepara para subir sin cuerdas ni arnés los 900 metros de la pared El Capitán, en Yosemite.', 100, 'MAYOR_12', '/img/posters/free-solo.jpg', TRUE, 5);
 
 INSERT INTO salas (nombre, filas, sillas_por_fila, activa) VALUES
 
@@ -242,7 +244,35 @@ INSERT INTO funciones (fecha_hora_inicio, fecha_hora_fin, precio, estado, id_pel
 ('2026-12-06 15:00:00', '2026-12-06 16:56:00', 10000.00, 'PROGRAMADA', 1, 2),
 ('2026-12-06 18:30:00', '2026-12-06 20:45:00', 12000.00, 'PROGRAMADA', 2, 2),
 ('2026-12-06 15:00:00', '2026-12-06 17:00:00', 10000.00, 'PROGRAMADA', 3, 3),
-('2026-12-06 18:30:00', '2026-12-06 21:00:00', 12000.00, 'PROGRAMADA', 4, 3);
+('2026-12-06 18:30:00', '2026-12-06 21:00:00', 12000.00, 'PROGRAMADA', 4, 3),
+('2026-11-23 13:00:00', '2026-11-23 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-11-23 13:00:00', '2026-11-23 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-11-24 13:00:00', '2026-11-24 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-11-24 13:00:00', '2026-11-24 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-11-25 13:00:00', '2026-11-25 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-11-25 13:00:00', '2026-11-25 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-11-26 13:00:00', '2026-11-26 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-11-26 13:00:00', '2026-11-26 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-11-27 13:00:00', '2026-11-27 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-11-27 13:00:00', '2026-11-27 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-11-28 13:00:00', '2026-11-28 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-11-28 13:00:00', '2026-11-28 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-11-29 13:00:00', '2026-11-29 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-11-29 13:00:00', '2026-11-29 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-11-30 13:00:00', '2026-11-30 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-11-30 13:00:00', '2026-11-30 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-12-01 13:00:00', '2026-12-01 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-12-01 13:00:00', '2026-12-01 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-12-02 13:00:00', '2026-12-02 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-12-02 13:00:00', '2026-12-02 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-12-03 13:00:00', '2026-12-03 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-12-03 13:00:00', '2026-12-03 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-12-04 13:00:00', '2026-12-04 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-12-04 13:00:00', '2026-12-04 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-12-05 13:00:00', '2026-12-05 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-12-05 13:00:00', '2026-12-05 14:55:00', 10000.00, 'PROGRAMADA', 12, 2),
+('2026-12-06 13:00:00', '2026-12-06 14:58:00', 10000.00, 'PROGRAMADA', 11, 1),
+('2026-12-06 13:00:00', '2026-12-06 14:55:00', 10000.00, 'PROGRAMADA', 12, 2);
 
 INSERT INTO usuarios (nombre_completo, documento, correo, password_hash, rol, activo, fecha_registro) VALUES
 

@@ -140,6 +140,12 @@ especificaciones   constitución, requisitos, MER, pantallas, tareas y resultado
 
 Documentación del proyecto: [`especificaciones/requisitos.md`](especificaciones/requisitos.md) (25 requisitos con criterios Given/When/Then), [`especificaciones/mer.md`](especificaciones/mer.md), [`especificaciones/pantallas.md`](especificaciones/pantallas.md), [`especificaciones/tasks.md`](especificaciones/tasks.md), [`DISENO.md`](DISENO.md) e [`INSTRUCCIONES.md`](INSTRUCCIONES.md).
 
+## Afiches de las películas
+
+Las 10 películas de ejemplo son títulos reales y sus afiches están en `src/main/resources/static/img/posters/`, para que la cartelera se vea completa sin internet. **Los afiches son material de terceros** (sus titulares son los estudios y distribuidores de cada película) y se usan **solo con fines académicos**, dentro de este proyecto de la UTS; no se ofrecen con licencia de reutilización ni se usan comercialmente.
+
+Se descargaron de estos sitios: acsta.net (Sensacine: John Wick, Mad Max, Coco, IT y Spider-Man), media-amazon.com (Titanic, La La Land, Interestelar y Blade Runner 2049) y numax.org (El resplandor). Si un titular pide retirar un afiche, se borra el archivo y su fila queda con el degradado de respaldo.
+
 ## Decisiones
 
 - **Consola de H2 con un módulo aparte.** Spring Boot 4 separó la consola web de H2 en el módulo `spring-boot-h2console`. Se agregó como complemento de la dependencia H2 (es la herramienta de consulta del perfil `h2`, no una función nueva del sistema) y se activa en el perfil `h2`. Está registrado en la nota de [`especificaciones/constitucion.md`](especificaciones/constitucion.md).

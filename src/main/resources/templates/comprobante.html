@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragmentos/layout :: head('Comprobante de compra')}"></head>
 <body>
 <nav th:replace="~{fragmentos/layout :: navbar}"></nav>
@@ -18,7 +18,7 @@
     <div class="col-12 col-lg-6" th:each="boleta : ${boletas}">
       <article class="boleta" th:aria-label="'Boleta de la silla ' + ${boleta.silla.fila + boleta.silla.numero}">
         <div class="boleta-cuerpo">
-          <p class="boleta-marca mb-1">Última Fila · Luz de Barrio</p>
+          <p class="boleta-marca mb-1">The Back Row · Luz de Barrio</p>
           <h2 class="h4 mb-1" th:text="${funcion.pelicula.titulo}">Película</h2>
           <p class="text-suave mb-1">
             <span th:text="${funcion.sala.nombre}">Sala 1</span> ·

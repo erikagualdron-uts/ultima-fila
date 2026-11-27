@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragmentos/layout :: head('Registro')}"></head>
 <body>
 <nav th:replace="~{fragmentos/layout :: navbar}"></nav>
 
-<main class="container py-4">
+<main class="container acceso">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-5">
-      <h1>Crear cuenta</h1>
-      <p class="text-suave">Regístrate como cliente para comprar tus boletas en línea.</p>
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 
       <form class="card card-uf tarjeta-acceso" th:action="@{/registro}" th:object="${registroForm}" method="post" novalidate>
-        <div class="tarjeta-marca" aria-hidden="true">Última Fila</div>
-        <div class="p-3">
+        <div class="tarjeta-marca" aria-hidden="true"><img th:src="@{/img/emblema-backrow-256.png}" src="/img/emblema-backrow-256.png" alt="" width="88" height="88"></div>
+        <div class="p-4">
+        <h1 class="titulo-acceso">Crear cuenta</h1>
+        <p class="text-suave text-center">Regístrate como cliente para comprar tus boletas en línea.</p>
+
         <div class="mb-3">
           <label for="nombreCompleto" class="form-label">Nombre completo</label>
           <input type="text" class="form-control" id="nombreCompleto" th:field="*{nombreCompleto}"
@@ -43,8 +44,8 @@
           </div>
           <div class="form-text" id="ayudaClave">Mínimo 8 caracteres.</div>
         </div>
-        <button type="submit" class="btn btn-uf">Registrarme</button>
-        <p class="mb-0 mt-3 small text-suave">¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión</a></p>
+        <button type="submit" class="btn btn-uf w-100">Registrarme</button>
+        <p class="mb-0 mt-3 small text-suave text-center">¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión</a></p>
         </div>
       </form>
     </div>

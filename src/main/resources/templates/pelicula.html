@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragmentos/layout :: head(${pelicula.titulo})}"></head>
 <body>
 <nav th:replace="~{fragmentos/layout :: navbar}"></nav>
@@ -45,11 +45,14 @@
         <h3 class="dia-funciones"
             th:if="${it.first or f.fechaHoraInicio.toLocalDate() != funciones[it.index - 1].fechaHoraInicio.toLocalDate()}"
             th:text="${#strings.capitalize(#temporals.format(f.fechaHoraInicio, 'EEEE d ''de'' MMMM', new java.util.Locale('es', 'CO')))}">Sábado 28 de noviembre</h3>
-        <div class="funcion-fila">
+        <div class="funcion-fila" th:with="estado=${libres <= 0 ? 'agotada' : (libres <= pocasSillas ? 'pocas' : 'libres')}">
           <span class="funcion-hora" th:text="${#temporals.format(f.fechaHoraInicio, 'HH:mm')}">18:00</span>
           <span class="funcion-sala" th:text="${f.sala.nombre}">Sala 1</span>
-          <span class="precio" th:text="${'$' + #numbers.formatDecimal(f.precio, 1, 'POINT', 0, 'COMMA')}">$12.000</span>
-          <span class="funcion-libres" th:text="${libres == 1 ? '1 silla libre' : libres + ' sillas libres'}">40 sillas libres</span>
+          <span class="precio funcion-precio" th:text="${'$' + #numbers.formatDecimal(f.precio, 1, 'POINT', 0, 'COMMA')}">$12.000</span>
+          <span class="funcion-libres">
+            <span class="punto-disp" th:classappend="'disp-' + ${estado}" aria-hidden="true"></span>
+            <span th:text="${libres <= 0 ? 'Sin sillas' : (libres == 1 ? '1 silla libre' : libres + ' sillas libres')}">40 sillas libres</span>
+          </span>
           <span th:if="${libres <= 0}" class="btn btn-hora agotada" aria-disabled="true">Agotada</span>
           <a th:unless="${libres <= 0}" class="btn btn-hora"
              th:classappend="${libres <= pocasSillas} ? 'pocas'"

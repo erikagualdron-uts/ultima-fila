@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" data-bs-theme="dark" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragmentos/layout :: head('Confirmar compra')}"></head>
 <body>
 <nav th:replace="~{fragmentos/layout :: navbar}"></nav>
@@ -10,30 +10,34 @@
   <h1 class="h2 mt-2" th:text="${session.rol?.name() == 'TAQUILLERO'} ? 'Confirmar venta en taquilla' : 'Confirmar compra'">Confirmar compra</h1>
 
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
-      <div class="resumen-sillas p-3">
-        <h2 class="h5" th:text="${funcion.pelicula.titulo}">Película</h2>
+    <div class="col-12 col-md-9 col-lg-6">
+      <article class="boleto" aria-labelledby="titulo-boleto">
+        <div class="boleto-cabecera">
+          <img th:src="@{/img/emblema-backrow-128.png}" src="/img/emblema-backrow-128.png" alt="" width="36" height="36">
+          <span class="boleto-marca">The Back Row</span>
+        </div>
+        <h2 id="titulo-boleto" class="boleto-titulo" th:text="${funcion.pelicula.titulo}">Película</h2>
         <p class="text-suave mb-2">
           <span th:text="${funcion.sala.nombre}">Sala 1</span> ·
           <span th:text="${#temporals.format(funcion.fechaHoraInicio, 'dd/MM/yyyy HH:mm')}">01/12/2026 18:30</span>
         </p>
-        <ul class="list-unstyled mb-2">
-          <li th:each="silla : ${sillas}">
-            Silla <span th:text="${silla.fila + silla.numero}">A1</span> ·
+        <ul class="list-unstyled mb-0">
+          <li class="d-flex justify-content-between" th:each="silla : ${sillas}">
+            <span>Silla <strong th:text="${silla.fila + silla.numero}">A1</strong></span>
             <span class="precio" th:text="${'$ ' + #numbers.formatDecimal(funcion.precio, 1, 'POINT', 0, 'COMMA')}">$ 12.000</span>
           </li>
         </ul>
-        <p class="mb-3">Total: <strong class="precio" th:text="${'$ ' + #numbers.formatDecimal(total, 1, 'POINT', 0, 'COMMA')}">$ 24.000</strong></p>
+        <p class="boleto-total">Total <strong class="precio" th:text="${'$ ' + #numbers.formatDecimal(total, 1, 'POINT', 0, 'COMMA')}">$ 24.000</strong></p>
 
         <p class="small text-suave" th:if="${session.rol?.name() == 'TAQUILLERO'}">Pago en efectivo: cobra el total al cliente antes de registrar la venta.</p>
         <p class="small text-suave" th:unless="${session.rol?.name() == 'TAQUILLERO'}">Pago simulado: no se cobra dinero real.</p>
         <form th:action="@{/compras/confirmar}" method="post" data-envio-unico="Procesando…">
           <input type="hidden" name="funcion" th:value="${funcion.id}">
           <input type="hidden" name="sillas" th:each="silla : ${sillas}" th:value="${silla.id}">
-          <button type="submit" class="btn btn-uf"
+          <button type="submit" class="btn btn-uf w-100"
                   th:text="${session.rol?.name() == 'TAQUILLERO'} ? 'Registrar venta en efectivo' : 'Pagar (simulado)'">Pagar (simulado)</button>
         </form>
-      </div>
+      </article>
     </div>
   </div>
 </main>

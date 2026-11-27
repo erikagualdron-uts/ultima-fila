@@ -22,6 +22,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [x] REQ-CIN-004 Registro de cliente con Bean Validation y hash con sal (P-03)
 - [x] REQ-CIN-005 Inicio y cierre de sesión con HttpSession (P-04)
 - [x] REQ-CIN-006 Interceptor por rol y acceso denegado (P-21)
+- [x] REQ-CIN-025 Landing en `/` con destacadas, funciones de hoy, 3 pasos, salas y footer (P-22)
 - [ ] Revisión cruzada de los PR de Yeziel
 
 ### Yeziel (YARC)
@@ -58,7 +59,7 @@ Marca `[x]` al terminar. Cada requisito va en su rama `feature/REQ-CIN-XXX` con 
 - [ ] REQ-CIN-020 Rechazo de boletas inválidas (P-19)
 - [ ] REQ-CIN-021 Ocupación de función (P-20)
 - [ ] REQ-CIN-022 Dashboard (P-09)
-- [ ] REQ-CIN-024 Páginas de error con @ControllerAdvice (P-21)
+- [x] REQ-CIN-024 Páginas de error con @ControllerAdvice (P-21)
 - [ ] Revisión cruzada de los PR de Erika
 
 ### Ambos

@@ -1,6 +1,7 @@
 package com.utsproyecto.ultimafila.config;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -17,7 +18,8 @@ public class ManejadorErrores {
 				"La página que buscas no existe o fue movida.");
 	}
 
-	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	// Parámetro con tipo equivocado o faltante en la dirección: se trata como página inexistente
+	@ExceptionHandler({ MethodArgumentTypeMismatchException.class, MissingServletRequestParameterException.class })
 	public ModelAndView identificadorInvalido() {
 		return noEncontrado();
 	}
